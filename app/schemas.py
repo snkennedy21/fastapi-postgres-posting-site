@@ -27,7 +27,6 @@ class PostBase(BaseModel):
   content: str
   published: bool = True
 
-
 class PostCreate(PostBase):
   pass
 
@@ -39,6 +38,14 @@ class Post(PostBase):
   owner: UserOut
 
   # Pydantic is typically only able to read dictionaries. This will enure that pydantic can read the ORM model returned by SQL Alchemy.
+  class Config:
+    orm_mode = True
+
+ 
+class PostOut(BaseModel):
+  Post: Post
+  votes: int
+
   class Config:
     orm_mode = True
 
