@@ -20,10 +20,11 @@ function LoginPage() {
     }
   }, []);
 
-  function execute(e) {
+  async function execute(e) {
     e.preventDefault();
-    login(e.target);
-    console.log(isSuccess);
+    const payload = await login(e.target);
+    if ("error" in payload) return;
+    dispatch(validateToken());
   }
 
   function emailChangeHandler(e) {
