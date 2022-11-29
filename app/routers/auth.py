@@ -28,6 +28,6 @@ def login(response: Response, user_credentials: OAuth2PasswordRequestForm = Depe
 
   access_token = oauth2.create_access_token(data={"user_id": user.id})
 
-  response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
-  response.set_cookie(key="session_id", value=user.email)
+  response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, expires=50)
+  response.set_cookie(key="session_id", value=user.email, expires=50)
   return {"access_token": access_token, "token_type": "bearer"}

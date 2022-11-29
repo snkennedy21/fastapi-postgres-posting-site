@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 function DesktopNavigation() {
   const token = useSelector((state) => state.token).token;
 
+  function logoutUser() {
+    console.log("hello");
+  }
+
   return (
     <nav className="bg-orange-200 flex justify-between px-12 py-4">
       <ul className="flex gap-6">
@@ -21,7 +25,9 @@ function DesktopNavigation() {
       <ul className="flex gap-6">
         {token ? (
           <li>
-            <Link to="/login">Logout</Link>
+            <Link onClick={logoutUser} to="/">
+              Logout
+            </Link>
           </li>
         ) : (
           <li>
