@@ -23,7 +23,15 @@ export const accountApi = createApi({
         };
       },
     }),
+
+    logout: builder.mutation({
+      query: () => ({
+        url: "/logout",
+        method: "delete",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = accountApi;
+export const { useLoginMutation, useLogoutMutation } = accountApi;

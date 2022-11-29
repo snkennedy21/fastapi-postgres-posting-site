@@ -1,15 +1,21 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLogoutMutation } from "../../store/rtk-query-apis/accountApi";
+
+import { invalidateToken } from "../../store/rtk-slices/tokenSlice";
 
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function DesktopNavigation() {
   const token = useSelector((state) => state.token).token;
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
 
   function logoutUser() {
-    console.log("hello");
+    logout();
+    dispatch(invalidateToken());
   }
 
   return (
@@ -25,9 +31,7 @@ function DesktopNavigation() {
       <ul className="flex gap-6">
         {token ? (
           <li>
-            <Link onClick={logoutUser} to="/">
-              Logout
-            </Link>
+            <button onClick={logoutUser}>Logout</button>
           </li>
         ) : (
           <li>
