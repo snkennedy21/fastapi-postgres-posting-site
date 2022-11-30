@@ -1,4 +1,4 @@
-from fastapi import Depends, status, HTTPException
+from fastapi import Depends, status, HTTPException, Cookie
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
@@ -34,7 +34,6 @@ def create_access_token(data: dict):
 
 def verify_access_token(token: str, credentials_exception):
   try:
-    print(token)
     payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     id: str = payload.get("user_id")
     if id is None:

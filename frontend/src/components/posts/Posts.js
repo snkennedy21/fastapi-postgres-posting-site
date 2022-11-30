@@ -10,11 +10,8 @@ function Posts() {
 
   async function getPosts() {
     const url = "http://localhost:8000/posts";
-    console.log(tokenValue);
     const fetchConfig = {
-      headers: {
-        Authorization: `Bearer ${tokenValue}`,
-      },
+      credentials: "include",
     };
     const response = await fetch(url, fetchConfig);
     const posts = await response.json();
