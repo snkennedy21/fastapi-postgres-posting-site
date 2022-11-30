@@ -1,9 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLoginMutation } from "../../store/rtk-query-apis/accountApi";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { validateToken } from "../../store/rtk-slices/tokenSlice";
+import {
+  validateToken,
+  setTokenValue,
+} from "../../store/rtk-slices/tokenSlice";
 
 function LoginPage() {
   const [login, { isError, isSuccess }] = useLoginMutation();
@@ -23,6 +26,8 @@ function LoginPage() {
   async function execute(e) {
     e.preventDefault();
     const payload = await login(e.target);
+    console.log("here");
+    dispatch(setTokenValue(payload.data.access_token));
     if ("error" in payload) return;
     dispatch(validateToken());
   }
