@@ -19,7 +19,6 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 client = TestClient(app)
 
 
-
 @pytest.fixture
 def session():
   Base.metadata.drop_all(bind=engine)
