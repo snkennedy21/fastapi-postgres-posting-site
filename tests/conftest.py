@@ -69,7 +69,7 @@ def token(test_user):
 def authorized_client(client, token):
   client.headers = {
     **client.headers,
-    "Authorization": f"Bearer {token}"
+    "Cookie": f"access_token=Bearer {token}"
   }
   return client
 
