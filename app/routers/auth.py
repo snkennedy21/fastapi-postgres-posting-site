@@ -12,7 +12,7 @@ router = APIRouter(
 @router.post('/login', response_model=schemas.Token)
 def login(response: Response, user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
 
-  print('this user was able to log into the webstite!!!!!!!!!!!!!').sys.stdout.flush()
+  print('this user was able to log into the webstite!!!!!!!!!!!!!')
   
   user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
 
