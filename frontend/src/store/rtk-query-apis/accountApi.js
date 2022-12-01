@@ -1,10 +1,12 @@
 import { create } from "@mui/material/styles/createTransitions";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const { REACT_APP_BASE_URL } = process.env;
+
 export const accountApi = createApi({
   reducerPath: "account",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/",
+    baseUrl: `${REACT_APP_BASE_URL}`,
   }),
 
   endpoints: (builder) => ({
