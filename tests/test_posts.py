@@ -21,13 +21,13 @@ def test_get_one_post(authorized_client, test_posts):
 
 def test_unauthorized_user_get_all_posts(client, test_posts):
   res = client.get('/posts/')
-  assert res.status_code == 401
+  assert res.status_code == 422
 
 
 def test_unauthorized_user_get_one_posts(client, test_posts):
   res = client.get(f'/posts/{test_posts[0].id}')
   print(res.status_code)
-  assert res.status_code == 401
+  assert res.status_code == 422
 
 
 def test_get_one_post_not_exist(authorized_client, test_posts):
@@ -74,11 +74,11 @@ def test_create_post_default_published_true(authorized_client, test_user, test_p
 
 def test_unauthorized_user_create_post(client, test_posts):
   res = client.post("/posts/", json={"title": "title", "content": "content"})
-  assert res.status_code == 401
+  assert res.status_code == 422
 
 def test_unauthorized_user_delete_post(client, test_user, test_posts):
   res = client.delete(f"/posts/{test_posts[0].id}")
-  assert res.status_code == 401
+  assert res.status_code == 422
 
 def test_delete_post_success(authorized_client, test_user, test_posts):
   res = authorized_client.delete(f'/posts/{test_posts[0].id}')
@@ -119,7 +119,7 @@ def test_update_other_user_post(authorized_client, test_user, test_user2, test_p
 
 def test_unauthorized_user_update_post(client, test_user, test_posts):
   res = client.put(f"/posts/{test_posts[0].id}")
-  assert res.status_code == 401
+  assert res.status_code == 422
 
 
 def test_update_post_non_exist(authorized_client, test_user, test_posts):
