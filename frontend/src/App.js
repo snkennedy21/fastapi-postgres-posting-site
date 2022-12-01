@@ -4,15 +4,20 @@ import DesktopNavigation from "./components/navigation/DesktopNavigation";
 import Posts from "./components/posts/Posts";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { validateToken } from "./store/rtk-slices/tokenSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { invalidateToken, validateToken } from "./store/rtk-slices/tokenSlice";
 
 function App() {
+  const token = useSelector((state) => state.token).token;
+
   const dispatch = useDispatch();
   useEffect(() => {
-    let cook = document.cookie;
-    if (cook) {
+    const authorizationCookie = document.cookie;
+    console.log(authorizationCookie);
+    if (authorizationCookie === "auth=auth") {
       dispatch(validateToken());
+    } else {
+      dispatch(invalidateToken());
     }
   }, []);
 

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function Posts() {
-  // const { data } = useGetAllPostsQuery();
+  const token = useSelector((state) => state.token).token;
   const dispatch = useDispatch();
+  const [posts, setPosts] = useState([]);
   const tokenValue = useSelector((state) => state.token.tokenValue);
 
   async function getPosts() {
@@ -14,15 +15,29 @@ function Posts() {
       credentials: "include",
     };
     const response = await fetch(url, fetchConfig);
-    const posts = await response.json();
-    console.log(posts);
+    if (response.ok) {
+      const postData = await response.json();
+      setPosts(postData);
+    }
   }
 
   useEffect(() => {
     getPosts();
   }, [tokenValue]);
 
-  return <div className="flex justify-center items-center h-32">Posts</div>;
+  console.log(posts);
+
+  if (token) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        {posts.map((post) => {
+          return <p>{post.Post.title}</p>;
+        })}
+      </div>
+    );
+  } else {
+    return <div>Not Authenticated</div>;
+  }
 }
 
 export default Posts;

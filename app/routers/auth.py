@@ -29,12 +29,13 @@ def login(response: Response, user_credentials: OAuth2PasswordRequestForm = Depe
   access_token = oauth2.create_access_token(data={"user_id": user.id})
 
   response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, expires=20)
+  response.set_cookie(key="auth", value="auth", expires=20)
   return {"access_token": access_token, "token_type": "bearer"}
 
 @router.delete('/logout')
 def logout(response: Response):
   response.delete_cookie(key="access_token")
+  response.delete_cookie(key="auth")
   response.status_code=status.HTTP_204_NO_CONTENT
-  print('hello')
   return response.status_code
   
