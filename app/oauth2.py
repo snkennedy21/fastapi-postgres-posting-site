@@ -1,4 +1,4 @@
-from fastapi import Depends, status, HTTPException, Cookie
+from fastapi import Depends, status, HTTPException, Cookie, Response
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
@@ -33,7 +33,6 @@ def create_access_token(data: dict):
 
 
 def verify_access_token(token: str, credentials_exception):
-  print(token)
   # try:
   payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
   print(payload)
@@ -55,7 +54,8 @@ def get_current_user(access_token: str = Cookie(), db: Session = Depends(databas
     headers={"WWW-Authenticate": "Bearer"}
   )
 
-  new_token = access_token[7:-1]
+  new_token = access_token[7:]
+  print(new_token)
 
   token = verify_access_token(new_token, credentials_exception)
   user = db.query(models.User).filter(models.User.id == token.id).first()
