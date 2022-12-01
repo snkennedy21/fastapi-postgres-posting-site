@@ -10,7 +10,7 @@ function Posts() {
   const tokenValue = useSelector((state) => state.token.tokenValue);
 
   async function getPosts() {
-    const url = "http://localhost:8000/posts";
+    const url = "https://fastapi-postgres-snkennedy21.herokuapp.com/posts";
     const fetchConfig = {
       credentials: "include",
     };

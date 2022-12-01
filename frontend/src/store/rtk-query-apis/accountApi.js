@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const accountApi = createApi({
   reducerPath: "account",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/",
+    baseUrl: "https://fastapi-postgres-snkennedy21.herokuapp.com/",
   }),
 
   endpoints: (builder) => ({

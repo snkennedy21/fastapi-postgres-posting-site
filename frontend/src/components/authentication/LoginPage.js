@@ -23,6 +23,7 @@ function LoginPage() {
   async function execute(e) {
     e.preventDefault();
     const payload = await login(e.target);
+    console.log(payload);
     if ("error" in payload) return;
     dispatch(validateToken());
   }
