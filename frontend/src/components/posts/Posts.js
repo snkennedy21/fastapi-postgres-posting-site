@@ -1,37 +1,27 @@
 import React from "react";
 // import { useGetAllPostsQuery } from "../../store/rtk-query-apis/postsApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetAllPostsQuery } from "../../store/rtk-query-apis/postsApi";
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const tokenValue = useSelector((state) => state.token.tokenValue);
+  const { data, isLoading } = useGetAllPostsQuery();
 
-  async function getPosts() {
-    const url = `${process.env.REACT_APP_BASE_URL}/posts`;
-    const fetchConfig = {
-      credentials: "include",
-    };
-    const response = await fetch(url, fetchConfig);
-    if (response.ok) {
-      const postData = await response.json();
-      setPosts(postData);
-    }
+  console.log(isLoading);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-
-  useEffect(() => {
-    getPosts();
-  }, [tokenValue]);
-
-  console.log(posts);
 
   if (token) {
     return (
       <div className="flex justify-center items-center h-32">
-        {posts.map((post) => {
-          return <p>{post.Post.title}</p>;
+        {data.map((post) => {
+          return <p key={post.Post.id}>{post.Post.title}</p>;
         })}
       </div>
     );
