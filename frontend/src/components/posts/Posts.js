@@ -3,8 +3,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const { REACT_APP_BASE_URL } = process.env;
-
 function Posts() {
   const token = useSelector((state) => state.token).token;
   const dispatch = useDispatch();
@@ -12,7 +10,7 @@ function Posts() {
   const tokenValue = useSelector((state) => state.token.tokenValue);
 
   async function getPosts() {
-    const url = `${REACT_APP_BASE_URL}/posts`;
+    const url = `${process.env.REACT_APP_BASE_URL}/posts`;
     const fetchConfig = {
       credentials: "include",
     };
