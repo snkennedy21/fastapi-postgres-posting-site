@@ -13,7 +13,6 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const authorizationCookie = document.cookie;
-    console.log(authorizationCookie);
     if (authorizationCookie === "auth=auth") {
       dispatch(validateToken());
     } else {

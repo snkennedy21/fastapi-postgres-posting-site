@@ -3,9 +3,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const postsApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/",
+    baseUrl: `${process.env.REACT_APP_BASE_URL}`,
   }),
 
+  tagTypes: ["Post"],
   endpoints: (builder) => ({
     getAllPosts: builder.query({
       query: () => ({
@@ -13,8 +14,23 @@ export const postsApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Post"],
+    }),
+
+    vote: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "/vote",
+          method: "post",
+          body: data,
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Post"],
     }),
   }),
 });
 
-export const { useGetAllPostsQuery } = postsApi;
+export const { useGetAllPostsQuery, useVoteMutation } = postsApi;

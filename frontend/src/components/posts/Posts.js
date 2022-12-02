@@ -1,37 +1,67 @@
+// React Imports
 import React from "react";
-// import { useGetAllPostsQuery } from "../../store/rtk-query-apis/postsApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+// Redux Imports
 import { useDispatch, useSelector } from "react-redux";
+
+// RTK Query Imports
+import {
+  useGetAllPostsQuery,
+  useVoteMutation,
+} from "../../store/rtk-query-apis/postsApi";
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
-  const dispatch = useDispatch();
-  const [posts, setPosts] = useState([]);
-  const tokenValue = useSelector((state) => state.token.tokenValue);
+  const { data: posts, isLoading } = useGetAllPostsQuery();
+  const [vote] = useVoteMutation();
 
-  async function getPosts() {
-    const url = "https://fastapi-postgres-snkennedy21.herokuapp.com/posts";
-    const fetchConfig = {
-      credentials: "include",
-    };
-    const response = await fetch(url, fetchConfig);
-    if (response.ok) {
-      const postData = await response.json();
-      setPosts(postData);
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  useEffect(() => {
-    getPosts();
-  }, [tokenValue]);
-
-  console.log(posts);
+  function voteHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    const voteDirection = parseInt(e.target.dataset.direction);
+    const voteData = {
+      post_id: postId,
+      direction: voteDirection,
+    };
+    vote(voteData);
+  }
 
   if (token) {
     return (
-      <div className="flex justify-center items-center h-32">
+      <div className="flex gap-12 justify-center items-center h-32 pt-10">
         {posts.map((post) => {
-          return <p>{post.Post.title}</p>;
+          return (
+            <div key={post.Post.id} className="flex flex-col">
+              <div>
+                <h2>Title: {post.Post.title}</h2>
+                <p>Content: {post.Post.content}</p>
+                <p>Owner: {post.Post.owner.email}</p>
+                <p>Votes: {post.votes}</p>
+              </div>
+              <div>
+                <button
+                  onClick={voteHandler}
+                  data-post={post.Post.id}
+                  data-direction={1}
+                  className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
+                >
+                  +
+                </button>
+                <button
+                  onClick={voteHandler}
+                  data-post={post.Post.id}
+                  data-direction={0}
+                  className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
+                >
+                  -
+                </button>
+              </div>
+            </div>
+          );
         })}
       </div>
     );
