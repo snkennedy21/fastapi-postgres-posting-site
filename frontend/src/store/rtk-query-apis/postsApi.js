@@ -6,6 +6,7 @@ export const postsApi = createApi({
     baseUrl: `${process.env.REACT_APP_BASE_URL}`,
   }),
 
+  tagTypes: ["Post"],
   endpoints: (builder) => ({
     getAllPosts: builder.query({
       query: () => ({
@@ -13,8 +14,23 @@ export const postsApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Post"],
+    }),
+
+    vote: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "/vote",
+          method: "post",
+          body: data,
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Post"],
     }),
   }),
 });
 
-export const { useGetAllPostsQuery } = postsApi;
+export const { useGetAllPostsQuery, useVoteMutation } = postsApi;

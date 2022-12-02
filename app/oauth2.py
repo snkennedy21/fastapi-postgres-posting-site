@@ -51,10 +51,13 @@ def get_current_user(access_token: str = Cookie(), db: Session = Depends(databas
     detail=f"Could not validate credentials",
     headers={"WWW-Authenticate": "Bearer"}
   )
-  
+
   new_token = access_token[7:]
+
+  print(new_token)
 
   token = verify_access_token(new_token, credentials_exception)
   user = db.query(models.User).filter(models.User.id == token.id).first()
+
 
   return user

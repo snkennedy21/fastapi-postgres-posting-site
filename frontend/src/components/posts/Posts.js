@@ -6,31 +6,61 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // RTK Query Imports
-import { useGetAllPostsQuery } from "../../store/rtk-query-apis/postsApi";
+import {
+  useGetAllPostsQuery,
+  useVoteMutation,
+} from "../../store/rtk-query-apis/postsApi";
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
   const { data: posts, isLoading } = useGetAllPostsQuery();
-
-  console.log(posts);
+  const [vote] = useVoteMutation();
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  function voteHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    const voteDirection = parseInt(e.target.dataset.direction);
+    const voteData = {
+      post_id: postId,
+      direction: voteDirection,
+    };
+    vote(voteData);
+  }
+
   if (token) {
     return (
-      <div className="flex justify-center items-center h-32">
+      <div className="flex gap-12 justify-center items-center h-32 pt-10">
         {posts.map((post) => {
           return (
-            <React.Fragment key={post.Post.id}>
+            <div key={post.Post.id} className="flex flex-col">
               <div>
                 <h2>Title: {post.Post.title}</h2>
                 <p>Content: {post.Post.content}</p>
                 <p>Owner: {post.Post.owner.email}</p>
                 <p>Votes: {post.votes}</p>
               </div>
-            </React.Fragment>
+              <div>
+                <button
+                  onClick={voteHandler}
+                  data-post={post.Post.id}
+                  data-direction={1}
+                  className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
+                >
+                  +
+                </button>
+                <button
+                  onClick={voteHandler}
+                  data-post={post.Post.id}
+                  data-direction={0}
+                  className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
+                >
+                  -
+                </button>
+              </div>
+            </div>
           );
         })}
       </div>
