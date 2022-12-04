@@ -30,6 +30,7 @@ function Posts() {
     vote(voteData);
   }
 
+  console.log(posts);
   if (token) {
     return (
       <div className="flex gap-12 justify-center items-center h-32 pt-10">
