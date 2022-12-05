@@ -1,6 +1,6 @@
 // React Imports
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Redux Imports
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,7 @@ import {
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
-  const { data: posts, isLoading } = useGetAllPostsQuery();
+  const { data: data, isLoading } = useGetAllPostsQuery();
   const [vote] = useVoteMutation();
 
   if (isLoading) {
@@ -30,23 +30,23 @@ function Posts() {
     vote(voteData);
   }
 
-  console.log(posts);
+  console.log(data);
   if (token) {
     return (
       <div className="flex gap-12 justify-center items-center h-32 pt-10">
-        {posts.map((post) => {
+        {data.posts.map((post) => {
           return (
-            <div key={post.Post.id} className="flex flex-col">
+            <div key={post.id} className="flex flex-col">
               <div>
-                <h2>Title: {post.Post.title}</h2>
-                <p>Content: {post.Post.content}</p>
+                <h2>Title: {post.title}</h2>
+                <p>Content: {post.content}</p>
                 {/* <p>Owner: {post.Post.owner.username}</p> */}
-                <p>Votes: {post.votes}</p>
+                <p>Votes: {data.votes.reduce(() => {})}</p>
               </div>
               <div>
                 <button
                   onClick={voteHandler}
-                  data-post={post.Post.id}
+                  data-post={post.id}
                   data-direction={1}
                   className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
                 >
@@ -54,7 +54,7 @@ function Posts() {
                 </button>
                 <button
                   onClick={voteHandler}
-                  data-post={post.Post.id}
+                  data-post={post.id}
                   data-direction={0}
                   className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
                 >

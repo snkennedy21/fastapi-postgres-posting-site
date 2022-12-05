@@ -16,15 +16,18 @@ router = APIRouter(
 
 @router.get("/")
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', current_user: int = Depends(oauth2.get_current_user)):
-    results = db.query(
-      models.Post, func.count(models.Vote.post_id).label("votes"), models.Vote.user_id
+    posts = db.query(
+      models.Post
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
     ).group_by(
-      models.Post.id, models.Vote.user_id
+      models.Post.id
     ).all()
-    print(results)
-    return results
+
+    votes = db.query(models.Vote).all()
+
+    test = db.query(models.Post, models.Vote).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).all()
+    return {"posts": posts, "votes": votes}
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
