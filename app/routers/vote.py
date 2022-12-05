@@ -35,12 +35,13 @@ def vote(vote: schemas.Vote, db: Session = Depends(database.get_db), current_use
     db.commit()
     return {"message": "successfully added vote"}
   else:
-    if not found_vote:
+    if found_vote:
       raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Vote does not exist"
+        status_code=status.HTTP_409_CONFLICT,
+        detail=f"User: {current_user.id} has already voted on post {vote.post_id}"
       )
-    vote_query.delete(synchronize_session=False)
+    new_vote = models.Vote(post_id = vote.post_id, user_id = current_user.id, upvote=False)
+    db.add(new_vote)
     db.commit()
-    return {"message": "successfully deleted vote"}
+    return {"message": "successfully added vote"}
 
