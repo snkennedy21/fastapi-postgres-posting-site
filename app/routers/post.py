@@ -19,7 +19,7 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
 
     subquery = select(models.Vote.post_id).distinct().where(models.Vote.user_id == current_user.id)
     posts = db.query(
-      models.Post, func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"), func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"), distinct().where(models.Vote.user_id == current_user.id).label("voted")
+      models.Post, func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"), func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"), models.Post.id.in_(subquery).label('user_voted')
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
     ).group_by(
