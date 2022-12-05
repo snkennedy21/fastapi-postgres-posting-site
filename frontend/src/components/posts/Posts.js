@@ -9,12 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   useGetAllPostsQuery,
   useVoteMutation,
+  useDeleteVoteMutation,
 } from "../../store/rtk-query-apis/postsApi";
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
   const { data: data, isLoading } = useGetAllPostsQuery();
   const [vote] = useVoteMutation();
+  const [deleteVote] = useDeleteVoteMutation();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -27,7 +29,22 @@ function Posts() {
       post_id: postId,
       direction: voteDirection,
     };
-    vote(voteData);
+    const deleteVoteData = {
+      post_id: postId,
+    };
+
+    data.currentUsersVotes.forEach((vote) => {
+      if (vote === { post_id: postId, upvote: true } && voteDirection === 0) {
+        deleteVote(deleteVoteData);
+      } else if (
+        vote === { post_id: postId, upvote: false } &&
+        voteDirection === 1
+      ) {
+        deleteVote(deleteVoteData);
+      } else {
+        vote(voteData);
+      }
+    });
   }
 
   console.log(data);
@@ -36,17 +53,17 @@ function Posts() {
       <div className="flex gap-12 justify-center items-center h-32 pt-10">
         {data.posts.map((post) => {
           return (
-            <div key={post.id} className="flex flex-col">
+            <div key={post.Post.id} className="flex flex-col">
               <div>
-                <h2>Title: {post.title}</h2>
-                <p>Content: {post.content}</p>
+                <h2>Title: {post.Post.title}</h2>
+                <p>Content: {post.Post.content}</p>
                 {/* <p>Owner: {post.Post.owner.username}</p> */}
-                <p>Votes: {data.votes.reduce(() => {})}</p>
+                <p>Votes: {post.upvotes - post.downvotes}</p>
               </div>
               <div>
                 <button
                   onClick={voteHandler}
-                  data-post={post.id}
+                  data-post={post.Post.id}
                   data-direction={1}
                   className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
                 >
@@ -54,7 +71,7 @@ function Posts() {
                 </button>
                 <button
                   onClick={voteHandler}
-                  data-post={post.id}
+                  data-post={post.Post.id}
                   data-direction={0}
                   className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
                 >

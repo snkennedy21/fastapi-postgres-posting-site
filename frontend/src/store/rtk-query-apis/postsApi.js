@@ -30,7 +30,21 @@ export const postsApi = createApi({
       },
       invalidatesTags: ["Post"],
     }),
+
+    deleteVote: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/vote",
+          method: "delete",
+          body: data,
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Post"],
+    }),
   }),
 });
 
-export const { useGetAllPostsQuery, useVoteMutation } = postsApi;
+export const { useGetAllPostsQuery, useVoteMutation, useDeleteVoteMutation } =
+  postsApi;
