@@ -3,7 +3,7 @@ from .. import models, schemas, oauth2
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from ..database import get_db
-from sqlalchemy import func
+from sqlalchemy import func, distinct, select
 
 router = APIRouter(
   prefix='/posts',
@@ -16,8 +16,10 @@ router = APIRouter(
 
 @router.get("/")
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', current_user: int = Depends(oauth2.get_current_user)):
+
+    subquery = select(models.Vote.post_id).distinct().where(models.Vote.user_id == current_user.id)
     posts = db.query(
-      models.Post, func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"), func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
+      models.Post, func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"), func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"), distinct().where(models.Vote.user_id == current_user.id).label("voted")
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
     ).group_by(

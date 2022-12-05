@@ -15,7 +15,7 @@ import {
 function Posts() {
   const token = useSelector((state) => state.token).token;
   const { data: data, isLoading } = useGetAllPostsQuery();
-  const [vote] = useVoteMutation();
+  const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
 
   if (isLoading) {
@@ -33,18 +33,45 @@ function Posts() {
       post_id: postId,
     };
 
-    data.currentUsersVotes.forEach((vote) => {
-      if (vote === { post_id: postId, upvote: true } && voteDirection === 0) {
-        deleteVote(deleteVoteData);
+    const userVotes = data.currentUsersVotes;
+
+    if (userVotes.length === 0) {
+      console.log("Add vote");
+    }
+
+    for (let i = 0; i < userVotes.length; i++) {
+      if (
+        userVotes[i]["post_id"] === postId &&
+        userVotes[i]["upvote"] === true &&
+        voteDirection === 0
+      ) {
+        console.log("Delete the vote");
+        break;
       } else if (
-        vote === { post_id: postId, upvote: false } &&
+        userVotes[i]["post_id"] === postId &&
+        userVotes[i]["upvote"] === true &&
         voteDirection === 1
       ) {
-        deleteVote(deleteVoteData);
+        console.log("Add vote");
+        break;
+      } else if (
+        userVotes[i]["post_id"] === postId &&
+        userVotes[i]["upvote"] === false &&
+        voteDirection === 0
+      ) {
+        console.log("Add vote");
+        break;
+      } else if (
+        userVotes[i]["post_id"] === postId &&
+        userVotes[i]["upvote"] === false &&
+        voteDirection === 1
+      ) {
+        console.log("Delete the vote");
+        break;
       } else {
-        vote(voteData);
+        console.log("Add vote");
       }
-    });
+    }
   }
 
   console.log(data);

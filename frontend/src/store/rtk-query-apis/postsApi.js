@@ -19,7 +19,6 @@ export const postsApi = createApi({
 
     vote: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/vote",
           method: "post",

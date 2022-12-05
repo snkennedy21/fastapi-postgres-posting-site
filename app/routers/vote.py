@@ -46,5 +46,17 @@ def vote(vote: schemas.Vote, db: Session = Depends(database.get_db), current_use
 
 
 @router.delete('/')
-def delete_post():
-  pass
+def deleteVote(vote, db: Session = Depends(database.get_db), current_user: int = Depends(oauth2.get_current_user)):
+
+  vote_query = db.query(models.Vote).filter(models.Vote.post_id == vote.post_id, models.Vote.user_id == current_user.id)
+  vote = vote_query.first()
+
+  if vote == None:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail=f"Could not find vote"
+    )
+
+  vote_query.delete(synchronize_session=False)
+  db.commit()
+  return Response(status_code=status.HTTP_204_NO_CONTENT)
