@@ -55,7 +55,7 @@ function Posts() {
               <div>
                 <h2>Title: {post.Post.title}</h2>
                 <p>Content: {post.Post.content}</p>
-                {/* <p>Owner: {post.Post.owner.username}</p> */}
+                <p>Owner: {post.Post.owner.username}</p>
                 <p>Votes: {post.upvotes - post.downvotes}</p>
               </div>
               <div>
