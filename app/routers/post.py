@@ -35,21 +35,14 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       models.Post,
       func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
       func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
-      models.Post.id.in_(user_voted_subquery).label('user_voted'),
+      # models.Post.id.in_(user_voted_subquery).label('user_voted'),
       (upvote_subquery).label('upvote')
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
     ).group_by(
       models.Post.id
     )
-
-    
-
     posts = posts_query.all()
-
-    votes = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id).all()
-
-    test = db.query(models.Post, models.Vote).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).all()
     return posts
 
 
