@@ -46,7 +46,9 @@ def vote(vote: schemas.Vote, db: Session = Depends(database.get_db), current_use
 
 
 @router.delete('/')
-def deleteVote(vote, db: Session = Depends(database.get_db), current_user: int = Depends(oauth2.get_current_user)):
+def deleteVote(vote: schemas.DeleteVote, db: Session = Depends(database.get_db), current_user: int = Depends(oauth2.get_current_user)):
+
+  print('hello')
 
   vote_query = db.query(models.Vote).filter(models.Vote.post_id == vote.post_id, models.Vote.user_id == current_user.id)
   vote = vote_query.first()

@@ -32,6 +32,7 @@ export const postsApi = createApi({
 
     deleteVote: builder.mutation({
       query: (data) => {
+        console.log(data);
         return {
           url: "/vote",
           method: "delete",

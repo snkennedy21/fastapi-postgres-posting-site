@@ -26,6 +26,7 @@ function Posts() {
     const postId = parseInt(e.target.dataset.post);
     const voteDirection = parseInt(e.target.dataset.direction);
     const userVoted = e.target.dataset.user_voted;
+    const upvote = e.target.dataset.upvote;
     const voteData = {
       post_id: postId,
       direction: voteDirection,
@@ -34,8 +35,12 @@ function Posts() {
       post_id: postId,
     };
 
-    if (voteDirection === 1 && userVoted) {
-      console.log("Delete Vote");
+    if (upvote === undefined) {
+      addVote(voteData);
+    } else if (upvote === "true" && voteDirection === 0) {
+      deleteVote(deleteVoteData);
+    } else if (upvote === "false" && voteDirection === 1) {
+      deleteVote(deleteVoteData);
     }
   }
 
@@ -58,6 +63,7 @@ function Posts() {
                   onClick={voteHandler}
                   data-post={post.Post.id}
                   data-user_voted={post.user_voted}
+                  data-upvote={post.upvote}
                   data-direction={1}
                   className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
                 >
@@ -66,8 +72,9 @@ function Posts() {
                 <button
                   onClick={voteHandler}
                   data-post={post.Post.id}
-                  data-direction={0}
                   data-user_voted={post.user_voted}
+                  data-upvote={post.upvote}
+                  data-direction={0}
                   className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
                 >
                   -
