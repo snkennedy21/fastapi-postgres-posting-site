@@ -25,6 +25,7 @@ function Posts() {
   function voteHandler(e) {
     const postId = parseInt(e.target.dataset.post);
     const voteDirection = parseInt(e.target.dataset.direction);
+    const userVoted = e.target.dataset.user_voted;
     const voteData = {
       post_id: postId,
       direction: voteDirection,
@@ -33,52 +34,17 @@ function Posts() {
       post_id: postId,
     };
 
-    const userVotes = data.currentUsersVotes;
-
-    if (userVotes.length === 0) {
-      console.log("Add vote");
-    }
-
-    for (let i = 0; i < userVotes.length; i++) {
-      if (
-        userVotes[i]["post_id"] === postId &&
-        userVotes[i]["upvote"] === true &&
-        voteDirection === 0
-      ) {
-        console.log("Delete the vote");
-        break;
-      } else if (
-        userVotes[i]["post_id"] === postId &&
-        userVotes[i]["upvote"] === true &&
-        voteDirection === 1
-      ) {
-        console.log("Add vote");
-        break;
-      } else if (
-        userVotes[i]["post_id"] === postId &&
-        userVotes[i]["upvote"] === false &&
-        voteDirection === 0
-      ) {
-        console.log("Add vote");
-        break;
-      } else if (
-        userVotes[i]["post_id"] === postId &&
-        userVotes[i]["upvote"] === false &&
-        voteDirection === 1
-      ) {
-        console.log("Delete the vote");
-        break;
-      } else {
-        console.log("Add vote");
-      }
+    if (voteDirection === 1 && userVoted) {
+      console.log("Delete Vote");
     }
   }
 
   console.log(data);
+
   if (token) {
     return (
       <div className="flex gap-12 justify-center items-center h-32 pt-10">
-        {data.posts.map((post) => {
+        {data.map((post) => {
           return (
             <div key={post.Post.id} className="flex flex-col">
               <div>
@@ -91,6 +57,7 @@ function Posts() {
                 <button
                   onClick={voteHandler}
                   data-post={post.Post.id}
+                  data-user_voted={post.user_voted}
                   data-direction={1}
                   className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
                 >
@@ -100,6 +67,7 @@ function Posts() {
                   onClick={voteHandler}
                   data-post={post.Post.id}
                   data-direction={0}
+                  data-user_voted={post.user_voted}
                   className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
                 >
                   -
