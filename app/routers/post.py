@@ -25,17 +25,10 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       (models.Vote.post_id == models.Post.id)
     ).correlate(models.Post)
 
-    user_voted_subquery = select(
-      models.Vote.post_id
-    ).distinct().where(
-      models.Vote.user_id == current_user.id
-    )
-
     posts_query = db.query(
       models.Post,
       func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
       func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
-      # models.Post.id.in_(user_voted_subquery).label('user_voted'),
       (upvote_subquery).label('upvote')
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
