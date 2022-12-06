@@ -10,13 +10,15 @@ import {
   useGetAllPostsQuery,
   useVoteMutation,
   useDeleteVoteMutation,
-} from "../../store/rtk-query-apis/postsApi";
+  useDeletePostMutation,
+} from "../../store/rtk-query-apis/mainApi";
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
   const { data: data, isLoading } = useGetAllPostsQuery();
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
+  const [deletePost] = useDeletePostMutation();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -44,7 +46,10 @@ function Posts() {
     }
   }
 
-  console.log(data);
+  function deletePostHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    deletePost(postId);
+  }
 
   if (token) {
     return (
@@ -81,7 +86,11 @@ function Posts() {
                 </button>
               </div>
               {post.owner ? (
-                <button className="mt-2 py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600">
+                <button
+                  onClick={deletePostHandler}
+                  data-post={post.Post.id}
+                  className="mt-2 py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
+                >
                   Delete
                 </button>
               ) : (

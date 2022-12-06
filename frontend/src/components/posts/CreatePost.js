@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useCreatePostMutation } from "../../store/rtk-query-apis/postsApi";
+import { useCreatePostMutation } from "../../store/rtk-query-apis/mainApi";
 import { useSelector } from "react-redux";
 
 function CreatePost() {

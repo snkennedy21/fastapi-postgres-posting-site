@@ -62,6 +62,7 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT,)
 def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+  print('AAAAAAAAAAAAAAAAAA')
   post_query = db.query(models.Post).filter(models.Post.id == id)
 
   post = post_query.first()

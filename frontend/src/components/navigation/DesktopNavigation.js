@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // RTK Query Imports
-import { useLogoutMutation } from "../../store/rtk-query-apis/accountApi";
+import { useLogoutMutation } from "../../store/rtk-query-apis/mainApi";
 
 // RTK Slice Imports
 import { invalidateToken } from "../../store/rtk-slices/tokenSlice";

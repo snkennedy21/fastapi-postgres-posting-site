@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const postsApi = createApi({
+export const mainApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_BASE_URL}`,
@@ -29,6 +29,19 @@ export const postsApi = createApi({
       },
     }),
 
+    deletePost: builder.mutation({
+      query: (postId) => {
+        console.log(postId);
+        return {
+          url: `/posts/${postId}`,
+          method: "delete",
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Post"],
+    }),
+
     vote: builder.mutation({
       query: (data) => {
         return {
@@ -55,12 +68,40 @@ export const postsApi = createApi({
       },
       invalidatesTags: ["Post"],
     }),
+
+    login: builder.mutation({
+      query: (info) => {
+        let formData = null;
+        if (info instanceof HTMLElement) {
+          formData = new FormData(info);
+          formData.append("username", info.email.value);
+        }
+        return {
+          url: "/login",
+          method: "post",
+          body: formData,
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["Post"],
+    }),
+
+    logout: builder.mutation({
+      query: () => ({
+        url: "/logout",
+        method: "delete",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllPostsQuery,
   useCreatePostMutation,
+  useDeletePostMutation,
   useVoteMutation,
   useDeleteVoteMutation,
-} = postsApi;
+  useLoginMutation,
+  useLogoutMutation,
+} = mainApi;
