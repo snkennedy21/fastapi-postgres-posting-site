@@ -36,6 +36,9 @@ function DesktopNavigation() {
         <li>
           <Link to="/posts">Posts</Link>
         </li>
+        <li>
+          <Link to="/posts/create">Create Post</Link>
+        </li>
       </ul>
       <ul className="flex gap-6">
         {token ? (

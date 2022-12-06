@@ -17,6 +17,18 @@ export const postsApi = createApi({
       providesTags: ["Post"],
     }),
 
+    createPost: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/posts",
+          method: "POST",
+          body: data,
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+    }),
+
     vote: builder.mutation({
       query: (data) => {
         return {
@@ -46,5 +58,9 @@ export const postsApi = createApi({
   }),
 });
 
-export const { useGetAllPostsQuery, useVoteMutation, useDeleteVoteMutation } =
-  postsApi;
+export const {
+  useGetAllPostsQuery,
+  useCreatePostMutation,
+  useVoteMutation,
+  useDeleteVoteMutation,
+} = postsApi;
