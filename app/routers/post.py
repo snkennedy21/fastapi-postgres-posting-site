@@ -3,7 +3,7 @@ from .. import models, schemas, oauth2
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from ..database import get_db
-from sqlalchemy import func
+from sqlalchemy import func, distinct, select, and_
 
 router = APIRouter(
   prefix='/posts',
@@ -12,10 +12,46 @@ router = APIRouter(
 
 # current_user: int = Depends(oauth2.get_current_user)
 
-@router.get("/", response_model=List[schemas.PostOut])
+# response_model=List[schemas.PostOut]
+
+@router.get("/")
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', current_user: int = Depends(oauth2.get_current_user)):
-    results = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
-    return results
+
+    upvote_subquery = select(
+      models.Vote.upvote
+    ).where(
+      and_
+      (models.Vote.user_id == current_user.id),
+      (models.Vote.post_id == models.Post.id)
+    ).correlate(models.Post)
+
+    user_voted_subquery = select(
+      models.Vote.post_id
+    ).distinct().where(
+      models.Vote.user_id == current_user.id
+    )
+
+    posts_query = db.query(
+      models.Post,
+      func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
+      func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
+      models.Post.id.in_(user_voted_subquery).label('user_voted'),
+      (upvote_subquery).label('upvote')
+    ).join(
+      models.Vote, models.Vote.post_id == models.Post.id, isouter=True
+    ).group_by(
+      models.Post.id
+    )
+
+    
+
+    posts = posts_query.all()
+
+    votes = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id).all()
+
+    test = db.query(models.Post, models.Vote).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).all()
+    return posts
+
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
