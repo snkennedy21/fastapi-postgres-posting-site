@@ -22,6 +22,7 @@ export const accountApi = createApi({
           credentials: "include",
         };
       },
+      invalidatesTags: ["Post"],
     }),
 
     logout: builder.mutation({

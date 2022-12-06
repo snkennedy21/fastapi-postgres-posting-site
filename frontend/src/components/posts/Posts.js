@@ -48,14 +48,14 @@ function Posts() {
 
   if (token) {
     return (
-      <div className="flex gap-12 justify-center items-center h-32 pt-10">
+      <div className="mt-10 flex gap-12 justify-center items-center h-32 pt-10">
         {data.map((post) => {
           return (
             <div key={post.Post.id} className="flex flex-col">
               <div>
                 <h2>Title: {post.Post.title}</h2>
                 <p>Content: {post.Post.content}</p>
-                <p>Owner: {post.Post.owner.username}</p>
+                {/* <p>Owner: {post.Post.owner.username}</p> */}
                 <p>Votes: {post.upvotes - post.downvotes}</p>
               </div>
               <div>
@@ -80,6 +80,13 @@ function Posts() {
                   -
                 </button>
               </div>
+              {post.owner ? (
+                <button className="mt-2 py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600">
+                  Delete
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           );
         })}
