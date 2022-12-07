@@ -1,12 +1,22 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useGetPostQuery } from "../../store/rtk-query-apis/mainApi";
+import { useNavigate } from "react-router-dom";
+import {
+  useGetPostQuery,
+  useDeletePostMutation,
+} from "../../store/rtk-query-apis/mainApi";
 
 function PostDetail() {
   const { postId } = useParams();
   const { data: post, isLoading } = useGetPostQuery(postId);
+  const [deletePost] = useDeletePostMutation();
+  const navigate = useNavigate();
 
-  console.log(post);
+  function deletePostHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    deletePost(postId);
+    navigate("/posts");
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -17,7 +27,7 @@ function PostDetail() {
       <div>
         <h2>Title: {post.Post.title}</h2>
         <p>Content: {post.Post.content}</p>
-        {/* <p>Owner: {post.Post.owner.username}</p> */}
+        <p>Owner: {post.Post.owner.username}</p>
         <p>Votes: {post.upvotes - post.downvotes}</p>
       </div>
       <div>
@@ -42,6 +52,7 @@ function PostDetail() {
       </div>
       {post.owner ? (
         <button
+          onClick={deletePostHandler}
           data-post={post.Post.id}
           className="mt-2 py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
         >
