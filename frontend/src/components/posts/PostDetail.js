@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,14 +7,17 @@ import {
   useDeletePostMutation,
   useVoteMutation,
   useDeleteVoteMutation,
+  useCreateCommentMutation,
 } from "../../store/rtk-query-apis/mainApi";
 
 function PostDetail() {
+  const [content, setContent] = useState("");
   const { postId } = useParams();
   const { data: post, isLoading } = useGetPostQuery(postId);
   const [deletePost] = useDeletePostMutation();
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
+  const [createComment] = useCreateCommentMutation();
   const navigate = useNavigate();
 
   function voteHandler(e) {
@@ -50,14 +54,26 @@ function PostDetail() {
     navigate("/posts");
   }
 
-  console.log(post);
+  function contentChangeHandler(e) {
+    setContent(e.target.value);
+  }
+
+  function commentSubmitHandler(e) {
+    e.preventDefault();
+    const commentData = {
+      post_id: post.Post.id,
+      content: content,
+    };
+    console.log(commentData);
+    createComment(commentData);
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col justify-center items-center">
       <div>
         <h2>Title: {post.Post.title}</h2>
         <p>Content: {post.Post.content}</p>
@@ -100,6 +116,18 @@ function PostDetail() {
         <></>
       )}
       <Link to="/posts">Posts</Link>
+      <form
+        onSubmit={commentSubmitHandler}
+        className="bg-blue-100 flex flex-col gap-6 w-60 p-12"
+      >
+        <textarea
+          onChange={contentChangeHandler}
+          value={content}
+          name="content"
+          placeholder="Content"
+        ></textarea>
+        <button className="bg-green-400">Login</button>
+      </form>
     </div>
   );
 }

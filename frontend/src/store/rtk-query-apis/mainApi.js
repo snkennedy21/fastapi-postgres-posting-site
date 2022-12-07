@@ -6,7 +6,7 @@ export const mainApi = createApi({
     baseUrl: `${process.env.REACT_APP_BASE_URL}`,
   }),
 
-  tagTypes: ["Post"],
+  tagTypes: ["Post", "Comment"],
   endpoints: (builder) => ({
     // ************** //
     // POST ENDPOINTS //
@@ -112,6 +112,47 @@ export const mainApi = createApi({
         credentials: "include",
       }),
     }),
+
+    // ***************** //
+    // COMMENT ENDPOINTS //
+    // ***************** //
+
+    getComments: builder.query({
+      query: (postId) => ({
+        url: `/comments/post/${postId}`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
+    createComment: builder.mutation({
+      query: (data) => ({
+        url: "/comments",
+        method: "POST",
+        body: data,
+        credentials: "include",
+        contentType: "application/json",
+      }),
+    }),
+
+    updateComment: builder.mutation({
+      query: (data) => ({
+        url: `/comments/${data.id}`,
+        method: "PUT",
+        body: data,
+        credentials: "include",
+        contentType: "application/json",
+      }),
+    }),
+
+    deleteComment: builder.mutation({
+      query: (postId) => ({
+        url: `/comments/${postId}`,
+        method: "DELETE",
+        credentials: "include",
+        contentType: "application/json",
+      }),
+    }),
   }),
 });
 
@@ -124,4 +165,8 @@ export const {
   useDeleteVoteMutation,
   useLoginMutation,
   useLogoutMutation,
+  useGetCommentsQuery,
+  useCreateCommentMutation,
+  useUpdateCommentMutation,
+  useDeleteCommentMutation,
 } = mainApi;
