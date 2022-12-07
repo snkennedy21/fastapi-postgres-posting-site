@@ -2,6 +2,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 // Redux Imports
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,6 +21,7 @@ function Posts() {
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
   const [deletePost] = useDeletePostMutation();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -49,6 +52,12 @@ function Posts() {
   function deletePostHandler(e) {
     const postId = parseInt(e.target.dataset.post);
     deletePost(postId);
+  }
+
+  function viewPostDetailHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    console.log(postId);
+    navigate(`/posts/${postId}`);
   }
 
   if (token) {
@@ -96,7 +105,11 @@ function Posts() {
               ) : (
                 <></>
               )}
-              <button className="mt-2 py-2 px-6 bg-yellow-400 text-2xl hover:bg-yellow-500 active:bg-yellow-600">
+              <button
+                onClick={viewPostDetailHandler}
+                data-post={post.Post.id}
+                className="mt-2 py-2 px-6 bg-yellow-400 text-2xl hover:bg-yellow-500 active:bg-yellow-600"
+              >
                 View Details
               </button>
             </div>
