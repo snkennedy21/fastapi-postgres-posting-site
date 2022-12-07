@@ -32,6 +32,9 @@ class PostBase(BaseModel):
 class PostCreate(PostBase):
   pass
 
+class PostId(BaseModel):
+  id: int
+
 
 class Post(PostBase):
   id: int
@@ -54,11 +57,19 @@ class PostOut(BaseModel):
   class Config:
     orm_mode = True
 
+class Comment(BaseModel):
+  post_id: int
+  content: str
+
+class CommentIn(BaseModel):
+  content: str
+
 
 class CommentOut(BaseModel):
   id: int
   post_id: int
-  user_id: int
+  owner_id: int
+  owner: UserOut
   created_at: datetime
   content: str
 
