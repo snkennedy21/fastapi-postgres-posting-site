@@ -16,7 +16,7 @@ import {
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
-  const { data: data, isLoading } = useGetAllPostsQuery();
+  const { data: posts, isLoading } = useGetAllPostsQuery();
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ function Posts() {
     const voteDirection = parseInt(e.target.dataset.direction);
     const userVoted = e.target.dataset.user_voted;
     const upvote = e.target.dataset.upvote;
+    const postOwnedByCurrentUser = e.target.dataset.post_owned_by_current_user;
     const voteData = {
       post_id: postId,
       direction: voteDirection,
@@ -37,6 +38,11 @@ function Posts() {
     const deleteVoteData = {
       post_id: postId,
     };
+
+    if (postOwnedByCurrentUser === "true") {
+      alert("Cannot Vote on Your Own Post");
+      return;
+    }
 
     if (upvote === undefined) {
       addVote(voteData);
@@ -53,10 +59,12 @@ function Posts() {
     navigate(`/posts/${postId}`);
   }
 
+  console.log(posts);
+
   if (token) {
     return (
       <div className="mt-10 flex gap-12 justify-center items-center h-32 pt-10">
-        {data.map((post) => {
+        {posts.map((post) => {
           return (
             <div key={post.Post.id} className="flex flex-col">
               <div>
@@ -68,6 +76,7 @@ function Posts() {
               <div>
                 <button
                   onClick={voteHandler}
+                  data-post_owned_by_current_user={post.owner}
                   data-post={post.Post.id}
                   data-user_voted={post.user_voted}
                   data-upvote={post.upvote}
@@ -78,6 +87,7 @@ function Posts() {
                 </button>
                 <button
                   onClick={voteHandler}
+                  data-post_owned_by_current_user={post.owner}
                   data-post={post.Post.id}
                   data-user_voted={post.user_voted}
                   data-upvote={post.upvote}
