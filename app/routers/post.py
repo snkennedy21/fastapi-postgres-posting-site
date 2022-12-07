@@ -42,17 +42,30 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
 
 @router.get('/{id}', response_model=schemas.PostOut)
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  post = db.query(
-    models.Post,
-    func.count(models.Vote.post_id).label("votes")
-  ).join(
-    models.Vote, models.Vote.post_id == models.Post.id, isouter=True
-  ).group_by(
-    models.Post.id
-  ).filter(
-    models.Post.id == id
-  ).first()
 
+  upvote_subquery = select(
+      models.Vote.upvote
+    ).where(
+      and_
+      (models.Vote.user_id == current_user.id),
+      (models.Vote.post_id == models.Post.id)
+    ).correlate(models.Post)
+
+  post_query = db.query(
+      models.Post,
+      func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
+      func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
+      (upvote_subquery).label('upvote'),
+      (models.Post.owner_id == current_user.id).label("owner")
+    ).join(
+      models.Vote, models.Vote.post_id == models.Post.id, isouter=True
+    ).group_by(
+      models.Post.id
+    ).filter(
+      models.Post.id == id
+    )
+  
+  post = post_query.first()
 
   if not post:
     raise HTTPException(
