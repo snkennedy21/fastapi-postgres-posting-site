@@ -34,3 +34,4 @@ class Vote(Base):
   post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True)
   post = relationship("Post", backref="votes")
   upvote = Column(Boolean, nullable=False)
+

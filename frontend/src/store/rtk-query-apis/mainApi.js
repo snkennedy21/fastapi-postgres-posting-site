@@ -39,6 +39,7 @@ export const mainApi = createApi({
           contentType: "application/json",
         };
       },
+      invalidatesTags: ["Post"],
     }),
 
     deletePost: builder.mutation({
