@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
   useGetPostQuery,
@@ -99,6 +99,7 @@ function PostDetail() {
       ) : (
         <></>
       )}
+      <Link to="/posts">Posts</Link>
     </div>
   );
 }
