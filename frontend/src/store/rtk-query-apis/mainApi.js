@@ -8,6 +8,9 @@ export const mainApi = createApi({
 
   tagTypes: ["Post"],
   endpoints: (builder) => ({
+    // ************** //
+    // POST ENDPOINTS //
+    // ************** //
     getAllPosts: builder.query({
       query: () => ({
         url: "/posts",
@@ -15,6 +18,14 @@ export const mainApi = createApi({
         credentials: "include",
       }),
       providesTags: ["Post"],
+    }),
+
+    getPost: builder.query({
+      query: (id) => ({
+        url: `/posts/${id}`,
+        method: "GET",
+        credentials: "include",
+      }),
     }),
 
     createPost: builder.mutation({
@@ -34,7 +45,7 @@ export const mainApi = createApi({
         console.log(postId);
         return {
           url: `/posts/${postId}`,
-          method: "delete",
+          method: "DELETE",
           credentials: "include",
           contentType: "application/json",
         };
@@ -42,11 +53,14 @@ export const mainApi = createApi({
       invalidatesTags: ["Post"],
     }),
 
+    // ************** //
+    // VOTE ENDPOINTS //
+    // ************** //
     vote: builder.mutation({
       query: (data) => {
         return {
           url: "/vote",
-          method: "post",
+          method: "POST",
           body: data,
           credentials: "include",
           contentType: "application/json",
@@ -60,7 +74,7 @@ export const mainApi = createApi({
         console.log(data);
         return {
           url: "/vote",
-          method: "delete",
+          method: "DELETE",
           body: data,
           credentials: "include",
           contentType: "application/json",
@@ -69,6 +83,9 @@ export const mainApi = createApi({
       invalidatesTags: ["Post"],
     }),
 
+    // ************** //
+    // AUTH ENDPOINTS //
+    // ************** //
     login: builder.mutation({
       query: (info) => {
         let formData = null;
@@ -78,7 +95,7 @@ export const mainApi = createApi({
         }
         return {
           url: "/login",
-          method: "post",
+          method: "POST",
           body: formData,
           credentials: "include",
         };
@@ -89,7 +106,7 @@ export const mainApi = createApi({
     logout: builder.mutation({
       query: () => ({
         url: "/logout",
-        method: "delete",
+        method: "DELETE",
         credentials: "include",
       }),
     }),
@@ -98,6 +115,7 @@ export const mainApi = createApi({
 
 export const {
   useGetAllPostsQuery,
+  useGetPostQuery,
   useCreatePostMutation,
   useDeletePostMutation,
   useVoteMutation,

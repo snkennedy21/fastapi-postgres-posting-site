@@ -96,6 +96,9 @@ function Posts() {
               ) : (
                 <></>
               )}
+              <button className="mt-2 py-2 px-6 bg-yellow-400 text-2xl hover:bg-yellow-500 active:bg-yellow-600">
+                View Details
+              </button>
             </div>
           );
         })}

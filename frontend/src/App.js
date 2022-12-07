@@ -3,6 +3,7 @@ import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
 import Posts from "./components/posts/Posts";
 import CreatePost from "./components/posts/CreatePost";
+import PostDetail from "./components/posts/PostDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +31,7 @@ function App() {
           <Route path="/posts" element={<Posts />} />
           <Route path="/posts/create" element={<CreatePost />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/posts/:postId" element={<PostDetail />} />
         </Routes>
       </BrowserRouter>
     </div>
