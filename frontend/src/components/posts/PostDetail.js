@@ -21,6 +21,7 @@ function PostDetail() {
     const voteDirection = parseInt(e.target.dataset.direction);
     const userVoted = e.target.dataset.user_voted;
     const upvote = e.target.dataset.upvote;
+    const postOwnedByCurrentUser = e.target.dataset.post_owned_by_current_user;
     const voteData = {
       post_id: postId,
       direction: voteDirection,
@@ -28,6 +29,11 @@ function PostDetail() {
     const deleteVoteData = {
       post_id: postId,
     };
+
+    if (postOwnedByCurrentUser === "true") {
+      alert("Cannot Vote on Your Own Post");
+      return;
+    }
 
     if (upvote === undefined) {
       addVote(voteData);
@@ -61,6 +67,7 @@ function PostDetail() {
       <div>
         <button
           onClick={voteHandler}
+          data-post_owned_by_current_user={post.owner}
           data-post={post.Post.id}
           data-user_voted={post.user_voted}
           data-upvote={post.upvote}
@@ -71,6 +78,7 @@ function PostDetail() {
         </button>
         <button
           onClick={voteHandler}
+          data-post_owned_by_current_user={post.owner}
           data-post={post.Post.id}
           data-user_voted={post.user_voted}
           data-upvote={post.upvote}
