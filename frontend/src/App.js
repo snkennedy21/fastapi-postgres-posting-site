@@ -1,7 +1,7 @@
 import LoginPage from "./components/authentication/LoginPage";
 import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
-import Posts from "./components/posts/Posts";
+import Posts from "./components/posts/PostsList";
 import CreatePost from "./components/posts/CreatePost";
 import PostDetail from "./components/posts/PostDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
