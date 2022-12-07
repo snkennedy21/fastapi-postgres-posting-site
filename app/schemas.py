@@ -55,6 +55,17 @@ class PostOut(BaseModel):
     orm_mode = True
 
 
+class CommentOut(BaseModel):
+  id: int
+  post_id: int
+  user_id: int
+  created_at: datetime
+  content: str
+
+  class Config:
+    orm_mode = True
+
+
 class Token(BaseModel):
   access_token: str
   token_type: str
