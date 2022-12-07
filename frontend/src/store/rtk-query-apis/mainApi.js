@@ -26,6 +26,7 @@ export const mainApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Post"],
     }),
 
     createPost: builder.mutation({

@@ -4,19 +4,47 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetPostQuery,
   useDeletePostMutation,
+  useVoteMutation,
+  useDeleteVoteMutation,
 } from "../../store/rtk-query-apis/mainApi";
 
 function PostDetail() {
   const { postId } = useParams();
   const { data: post, isLoading } = useGetPostQuery(postId);
   const [deletePost] = useDeletePostMutation();
+  const [addVote] = useVoteMutation();
+  const [deleteVote] = useDeleteVoteMutation();
   const navigate = useNavigate();
+
+  function voteHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    const voteDirection = parseInt(e.target.dataset.direction);
+    const userVoted = e.target.dataset.user_voted;
+    const upvote = e.target.dataset.upvote;
+    const voteData = {
+      post_id: postId,
+      direction: voteDirection,
+    };
+    const deleteVoteData = {
+      post_id: postId,
+    };
+
+    if (upvote === undefined) {
+      addVote(voteData);
+    } else if (upvote === "true" && voteDirection === 0) {
+      deleteVote(deleteVoteData);
+    } else if (upvote === "false" && voteDirection === 1) {
+      deleteVote(deleteVoteData);
+    }
+  }
 
   function deletePostHandler(e) {
     const postId = parseInt(e.target.dataset.post);
     deletePost(postId);
     navigate("/posts");
   }
+
+  console.log(post);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -32,6 +60,7 @@ function PostDetail() {
       </div>
       <div>
         <button
+          onClick={voteHandler}
           data-post={post.Post.id}
           data-user_voted={post.user_voted}
           data-upvote={post.upvote}
@@ -41,6 +70,7 @@ function PostDetail() {
           +
         </button>
         <button
+          onClick={voteHandler}
           data-post={post.Post.id}
           data-user_voted={post.user_voted}
           data-upvote={post.upvote}
