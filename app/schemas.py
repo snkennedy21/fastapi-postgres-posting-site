@@ -58,19 +58,6 @@ class PostOut(BaseModel):
     orm_mode = True
 
 class Comment(BaseModel):
-  post_id: int
-  content: str
-
-class CommentIn(BaseModel):
-  content: str
-
-
-class CommentOut(BaseModel):
-  Comment: Comment
-  owned_by_current_user: bool
-
-
-class CommentOut(BaseModel):
   id: int
   post_id: int
   owner_id: int
@@ -80,6 +67,15 @@ class CommentOut(BaseModel):
 
   class Config:
     orm_mode = True
+
+class CommentIn(BaseModel):
+  post_id: int
+  content: str
+  
+
+class CommentOut(BaseModel):
+  Comment: Comment
+  owned_by_current_user: bool
 
 
 class Token(BaseModel):

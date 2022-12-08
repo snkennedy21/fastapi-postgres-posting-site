@@ -15,7 +15,7 @@ router = APIRouter(
 def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
   comments_query = db.query(
     models.Comment,
-    # (models.Comment.owner_id == current_user.id).label("ownedByCurrentUser")
+    (models.Comment.owner_id == current_user.id).label("owned_by_current_user")
   ).filter(
     models.Comment.post_id == id
   )
@@ -26,7 +26,7 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
   return comments
 
 @router.post("/")
-def create_comment(comment: schemas.Comment, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+def create_comment(comment: schemas.CommentIn, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
   print(comment.dict())
   new_comment = models.Comment(owner_id=current_user.id, **comment.dict())
   db.add(new_comment)

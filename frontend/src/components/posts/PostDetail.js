@@ -135,11 +135,18 @@ function PostDetail() {
         ></textarea>
         <button className="bg-green-400">Login</button>
       </form>
-      {comments.map((comment) => {
+      {comments.map((commentObj) => {
         return (
-          <div key={comment.id}>
-            <p>Comment: {comment.content}</p>
-            <p>Posted by: {comment.owner.username}</p>
+          <div key={commentObj.Comment.id}>
+            <p>Comment: {commentObj.Comment.content}</p>
+            <p>Posted by: {commentObj.Comment.owner.username}</p>
+            {commentObj.owned_by_current_user ? (
+              <button className="bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600">
+                Delete
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
         );
       })}
