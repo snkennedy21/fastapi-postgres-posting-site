@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import {
   useVoteMutation,
   useDeleteVoteMutation,
-} from "../../store/rtk-query-apis/mainApi";
+} from "../../../store/rtk-query-apis/mainApi";
 
-function Post(props) {
+function PostListItem(props) {
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
   const navigate = useNavigate();
@@ -87,4 +87,4 @@ function Post(props) {
   );
 }
 
-export default Post;
+export default PostListItem;

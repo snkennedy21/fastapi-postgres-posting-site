@@ -1,13 +1,13 @@
 // React Imports
 import React from "react";
 import { useState, useEffect } from "react";
-import Post from "./Post";
+import PostListItem from "./PostListItem";
 
 // Redux Imports
 import { useSelector } from "react-redux";
 
 // RTK Query Imports
-import { useGetAllPostsQuery } from "../../store/rtk-query-apis/mainApi";
+import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
 function Posts() {
   const token = useSelector((state) => state.token).token;
@@ -23,7 +23,7 @@ function Posts() {
     return (
       <div className="mt-10 flex gap-12 justify-center items-center h-32 pt-10">
         {posts.map((postObj) => {
-          return <Post key={postObj.Post.id} postObj={postObj} />;
+          return <PostListItem key={postObj.Post.id} postObj={postObj} />;
         })}
       </div>
     );

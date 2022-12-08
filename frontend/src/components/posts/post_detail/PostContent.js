@@ -1,27 +1,29 @@
 import React from "react";
-import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+
 import { useNavigate } from "react-router-dom";
+
+import { useParams } from "react-router-dom";
+
 import {
-  useGetPostQuery,
   useDeletePostMutation,
   useVoteMutation,
   useDeleteVoteMutation,
-  useCreateCommentMutation,
-  useGetCommentsQuery,
-} from "../../store/rtk-query-apis/mainApi";
+  useGetPostQuery,
+} from "../../../store/rtk-query-apis/mainApi";
 
-function PostDetail() {
-  const [content, setContent] = useState("");
+function PostContent() {
   const { postId } = useParams();
-  const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
-  const [deletePost] = useDeletePostMutation();
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
-  const [createComment] = useCreateCommentMutation();
-  const { data: comments, isLoading: commentsLoading } =
-    useGetCommentsQuery(postId);
+  const [deletePost] = useDeletePostMutation();
+  const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
   const navigate = useNavigate();
+
+  function deletePostHandler(e) {
+    const postId = parseInt(e.target.dataset.post);
+    deletePost(postId);
+    navigate("/posts");
+  }
 
   function voteHandler(e) {
     const postId = parseInt(e.target.dataset.post);
@@ -50,37 +52,13 @@ function PostDetail() {
     }
   }
 
-  function deletePostHandler(e) {
-    const postId = parseInt(e.target.dataset.post);
-    deletePost(postId);
-    navigate("/posts");
-  }
-
-  function contentChangeHandler(e) {
-    setContent(e.target.value);
-  }
-
-  function commentSubmitHandler(e) {
-    e.preventDefault();
-    const commentData = {
-      post_id: post.Post.id,
-      content: content,
-    };
-    createComment(commentData);
-  }
-
   if (postLoading) {
     return <div>Loading...</div>;
   }
 
-  if (commentsLoading) {
-    return <div>Loading...</div>;
-  }
-
-  console.log(comments);
-
   return (
-    <div className="flex flex-col justify-center items-center">
+    <React.Fragment>
+      {" "}
       <div>
         <h2>Title: {post.Post.title}</h2>
         <p>Content: {post.Post.content}</p>
@@ -122,36 +100,8 @@ function PostDetail() {
       ) : (
         <></>
       )}
-      <Link to="/posts">Posts</Link>
-      <form
-        onSubmit={commentSubmitHandler}
-        className="bg-blue-100 flex flex-col gap-6 w-60 p-12"
-      >
-        <textarea
-          onChange={contentChangeHandler}
-          value={content}
-          name="content"
-          placeholder="Content"
-        ></textarea>
-        <button className="bg-green-400">Login</button>
-      </form>
-      {comments.map((commentObj) => {
-        return (
-          <div key={commentObj.Comment.id}>
-            <p>Comment: {commentObj.Comment.content}</p>
-            <p>Posted by: {commentObj.Comment.owner.username}</p>
-            {commentObj.owned_by_current_user ? (
-              <button className="bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600">
-                Delete
-              </button>
-            ) : (
-              <></>
-            )}
-          </div>
-        );
-      })}
-    </div>
+    </React.Fragment>
   );
 }
 
-export default PostDetail;
+export default PostContent;

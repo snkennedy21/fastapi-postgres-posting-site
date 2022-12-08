@@ -1,9 +1,9 @@
 import LoginPage from "./components/authentication/LoginPage";
 import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
-import Posts from "./components/posts/PostsList";
+import Posts from "./components/posts/post_list/PostsList";
 import CreatePost from "./components/posts/CreatePost";
-import PostDetail from "./components/posts/PostDetail";
+import PostDetail from "./components/posts/post_detail/PostDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
