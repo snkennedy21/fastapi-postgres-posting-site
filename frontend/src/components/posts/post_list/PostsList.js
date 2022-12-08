@@ -1,6 +1,5 @@
 // React Imports
 import React from "react";
-import { useState, useEffect } from "react";
 import PostListItem from "./PostListItem";
 
 // Redux Imports
