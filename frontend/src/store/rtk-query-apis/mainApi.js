@@ -123,6 +123,7 @@ export const mainApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Comment"],
     }),
 
     createComment: builder.mutation({
@@ -133,6 +134,7 @@ export const mainApi = createApi({
         credentials: "include",
         contentType: "application/json",
       }),
+      invalidatesTags: ["Comment"],
     }),
 
     updateComment: builder.mutation({
@@ -143,6 +145,7 @@ export const mainApi = createApi({
         credentials: "include",
         contentType: "application/json",
       }),
+      invalidatesTags: ["Comment"],
     }),
 
     deleteComment: builder.mutation({
@@ -152,6 +155,7 @@ export const mainApi = createApi({
         credentials: "include",
         contentType: "application/json",
       }),
+      invalidatesTags: ["Comment"],
     }),
   }),
 });

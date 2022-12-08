@@ -14,11 +14,14 @@ router = APIRouter(
 @router.get("/post/{id}", response_model=List[schemas.CommentOut])
 def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
   comments_query = db.query(
-    models.Comment
+    models.Comment,
+    # (models.Comment.owner_id == current_user.id).label("ownedByCurrentUser")
   ).filter(
     models.Comment.post_id == id
   )
+
   comments = comments_query.all()
+  print(comments)
 
   return comments
 

@@ -66,6 +66,11 @@ class CommentIn(BaseModel):
 
 
 class CommentOut(BaseModel):
+  Comment: Comment
+  owned_by_current_user: bool
+
+
+class CommentOut(BaseModel):
   id: int
   post_id: int
   owner_id: int

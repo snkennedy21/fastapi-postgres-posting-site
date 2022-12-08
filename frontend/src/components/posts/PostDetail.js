@@ -8,22 +8,24 @@ import {
   useVoteMutation,
   useDeleteVoteMutation,
   useCreateCommentMutation,
+  useGetCommentsQuery,
 } from "../../store/rtk-query-apis/mainApi";
 
 function PostDetail() {
   const [content, setContent] = useState("");
   const { postId } = useParams();
-  const { data: post, isLoading } = useGetPostQuery(postId);
+  const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
   const [deletePost] = useDeletePostMutation();
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
   const [createComment] = useCreateCommentMutation();
+  const { data: comments, isLoading: commentsLoading } =
+    useGetCommentsQuery(postId);
   const navigate = useNavigate();
 
   function voteHandler(e) {
     const postId = parseInt(e.target.dataset.post);
     const voteDirection = parseInt(e.target.dataset.direction);
-    const userVoted = e.target.dataset.user_voted;
     const upvote = e.target.dataset.upvote;
     const postOwnedByCurrentUser = e.target.dataset.post_owned_by_current_user;
     const voteData = {
@@ -64,13 +66,18 @@ function PostDetail() {
       post_id: post.Post.id,
       content: content,
     };
-    console.log(commentData);
     createComment(commentData);
   }
 
-  if (isLoading) {
+  if (postLoading) {
     return <div>Loading...</div>;
   }
+
+  if (commentsLoading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(comments);
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -128,6 +135,14 @@ function PostDetail() {
         ></textarea>
         <button className="bg-green-400">Login</button>
       </form>
+      {comments.map((comment) => {
+        return (
+          <div key={comment.id}>
+            <p>Comment: {comment.content}</p>
+            <p>Posted by: {comment.owner.username}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
