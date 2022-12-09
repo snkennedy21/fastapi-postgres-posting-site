@@ -53,6 +53,7 @@ class PostOut(BaseModel):
   downvotes: int
   upvote: Optional[bool]
   owner: bool
+  comments: int
 
   class Config:
     orm_mode = True

@@ -30,9 +30,12 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
       func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
       (upvote_subquery).label('upvote'),
-      (models.Post.owner_id == current_user.id).label("owner")
+      (models.Post.owner_id == current_user.id).label("owner"),
+      func.count(models.Comment.post_id).label("comments")
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
+    ).join(
+      models.Comment, models.Comment.post_id == models.Post.id, isouter=True
     ).group_by(
       models.Post.id
     )
@@ -56,9 +59,12 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
       func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
       func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
       (upvote_subquery).label('upvote'),
-      (models.Post.owner_id == current_user.id).label("owner")
+      (models.Post.owner_id == current_user.id).label("owner"),
+      func.count(models.Comment.post_id).label("comments")
     ).join(
       models.Vote, models.Vote.post_id == models.Post.id, isouter=True
+    ).join(
+      models.Comment, models.Comment.post_id == models.Post.id, isouter=True
     ).group_by(
       models.Post.id
     ).filter(
