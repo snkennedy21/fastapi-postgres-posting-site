@@ -1,7 +1,7 @@
 import LoginPage from "./components/authentication/LoginPage";
 import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
-import Posts from "./components/posts/post_list/PostsList";
+import PostsList from "./components/posts/post_list/PostsList";
 import CreatePost from "./components/posts/CreatePost";
 import PostDetail from "./components/posts/post_detail/PostDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -28,7 +28,7 @@ function App() {
         <DesktopNavigation />
         <Routes>
           <Route path="/home" element={<Homepage />} />
-          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts" element={<PostsList />} />
           <Route path="/posts/create" element={<CreatePost />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/posts/:postId" element={<PostDetail />} />

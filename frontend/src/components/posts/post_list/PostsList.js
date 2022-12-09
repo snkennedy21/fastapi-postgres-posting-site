@@ -1,6 +1,7 @@
 // React Imports
 import React from "react";
 import PostListItem from "./PostListItem";
+import PostVoting from "../PostVoting";
 
 // Redux Imports
 import { useSelector } from "react-redux";
@@ -8,7 +9,7 @@ import { useSelector } from "react-redux";
 // RTK Query Imports
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
-function Posts() {
+function PostsList() {
   const token = useSelector((state) => state.token).token;
   const { data: posts, isLoading } = useGetAllPostsQuery();
 
@@ -16,14 +17,20 @@ function Posts() {
     return <div>Loading...</div>;
   }
 
-  console.log(posts);
-
   if (token) {
     return (
       <div className="flex justify-center">
-        <div className="mt-10 flex flex-col">
+        <div className="p-10 flex flex-col gap-4 w-[800px]">
           {posts.map((postObj) => {
-            return <PostListItem key={postObj.Post.id} postObj={postObj} />;
+            return (
+              <div
+                className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative"
+                key={postObj.Post.id}
+              >
+                <PostVoting postObj={postObj}></PostVoting>
+                <PostListItem postObj={postObj} />
+              </div>
+            );
           })}
         </div>
       </div>
@@ -33,4 +40,4 @@ function Posts() {
   }
 }
 
-export default Posts;
+export default PostsList;

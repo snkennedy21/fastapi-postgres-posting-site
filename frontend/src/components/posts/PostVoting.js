@@ -40,7 +40,7 @@ function PostVoting(props) {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col items-center px-4 border-r-solid border-r-primary border-r-2">
       <button
         onClick={voteHandler}
         data-post_owned_by_current_user={props.postObj.owner}
