@@ -27,7 +27,7 @@ function App() {
       <BrowserRouter>
         <DesktopNavigation />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/home" element={<Homepage />} />
           <Route path="/posts" element={<Posts />} />
           <Route path="/posts/create" element={<CreatePost />} />
           <Route path="/login" element={<LoginPage />} />

@@ -27,27 +27,46 @@ function DesktopNavigation() {
     navigate("/");
   }
 
+  function navigateHandler(e) {
+    const location = e.target.dataset.value;
+    navigate(location);
+  }
+
   return (
-    <nav className="bg-orange-200 flex justify-between px-12 py-4">
-      <ul className="flex gap-6">
-        <li>
-          <Link to="/">Home</Link>
+    <nav className="bg-primary flex justify-between px-12">
+      <ul className="flex text-xl font-normal gap-1 my-1">
+        <li onClick={navigateHandler} data-value="/home" className="nav-button">
+          Home
         </li>
-        <li>
-          <Link to="/posts">Posts</Link>
+        <li
+          onClick={navigateHandler}
+          data-value="/posts"
+          className="nav-button"
+        >
+          Posts
         </li>
-        <li>
-          <Link to="/posts/create">Create Post</Link>
+        <li
+          onClick={navigateHandler}
+          data-value="/posts/create"
+          className="nav-button"
+        >
+          Create Post
         </li>
       </ul>
-      <ul className="flex gap-6">
+      <ul className="flex gap-6 text-xl font-normal my-1">
         {token ? (
           <li>
-            <button onClick={logoutUser}>Logout</button>
+            <button className="nav-button" onClick={logoutUser}>
+              Logout
+            </button>
           </li>
         ) : (
-          <li>
-            <Link to="/login">Login</Link>
+          <li
+            onClick={navigateHandler}
+            data-value="/login"
+            className="nav-button"
+          >
+            Login
           </li>
         )}
       </ul>

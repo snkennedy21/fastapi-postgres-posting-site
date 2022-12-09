@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -14,4 +14,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+} */
+
+.nav-button {
+  @apply hover:bg-blue-200 hover:cursor-pointer transition-colors px-4 py-2 rounded-md active:bg-blue-400;
 }

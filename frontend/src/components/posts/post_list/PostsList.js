@@ -20,7 +20,7 @@ function Posts() {
 
   if (token) {
     return (
-      <div className="mt-10 flex gap-12 justify-center items-center h-32 pt-10">
+      <div className="mt-10 flex flex-col items-center">
         {posts.map((postObj) => {
           return <PostListItem key={postObj.Post.id} postObj={postObj} />;
         })}

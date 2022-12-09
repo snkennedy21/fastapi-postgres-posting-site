@@ -7,16 +7,19 @@ import {
   useDeleteVoteMutation,
 } from "../../../store/rtk-query-apis/mainApi";
 
+import { FaAngleUp, FaAngleDown } from "react-icons/fa";
+
 function PostListItem(props) {
   const [addVote] = useVoteMutation();
   const [deleteVote] = useDeleteVoteMutation();
   const navigate = useNavigate();
 
   function voteHandler(e) {
-    const postId = parseInt(e.target.dataset.post);
-    const voteDirection = parseInt(e.target.dataset.direction);
-    const upvote = e.target.dataset.upvote;
-    const postOwnedByCurrentUser = e.target.dataset.post_owned_by_current_user;
+    const postId = parseInt(e.currentTarget.dataset.post);
+    const voteDirection = parseInt(e.currentTarget.dataset.direction);
+    const upvote = e.currentTarget.dataset.upvote;
+    const postOwnedByCurrentUser =
+      e.currentTarget.dataset.post_owned_by_current_user;
     const addVoteData = {
       post_id: postId,
       direction: voteDirection,
@@ -46,43 +49,57 @@ function PostListItem(props) {
 
   return (
     <div className="flex flex-col">
-      <div>
-        <h2>Title: {props.postObj.Post.title}</h2>
-        <p>Content: {props.postObj.Post.content}</p>
-        <p>Owner: {props.postObj.Post.owner.username}</p>
-        <p>Votes: {props.postObj.upvotes - props.postObj.downvotes}</p>
+      <div className="flex gap-4">
+        <div className="flex flex-col justify-center items-center bg-orange-400">
+          <button
+            onClick={voteHandler}
+            data-post_owned_by_current_user={props.postObj.owner}
+            data-post={props.postObj.Post.id}
+            data-user_voted={props.postObj.user_voted}
+            data-upvote={props.postObj.upvote}
+            data-direction={1}
+            className="button"
+          >
+            <FaAngleUp
+              className={`${
+                props.postObj.upvote === true ? "text-primary" : ""
+              } text-4xl hover:text-primary hover:cursor-pointer`}
+            />
+          </button>
+          <p className="text-2xl font-bold">
+            {props.postObj.upvotes - props.postObj.downvotes}
+          </p>
+          <button
+            onClick={voteHandler}
+            data-post_owned_by_current_user={props.postObj.owner}
+            data-post={props.postObj.Post.id}
+            data-user_voted={props.postObj.user_voted}
+            data-upvote={props.postObj.upvote}
+            data-direction={0}
+          >
+            <FaAngleDown
+              className={`${
+                props.postObj.upvote === false ? "text-primary" : ""
+              } text-4xl hover:text-primary hover:cursor-pointer`}
+            />
+          </button>
+        </div>
+        <div className="flex flex-col justify-between bg-green-500">
+          <h2
+            onClick={viewPostDetailHandler}
+            data-post={props.postObj.Post.id}
+            className="text-3xl font-medium"
+          >
+            {props.postObj.Post.title}
+          </h2>
+          {/* <p>Content: {props.postObj.Post.content}</p> */}
+
+          <div className="flex gap-3">
+            <p>Posted by: {props.postObj.Post.owner.username}</p>
+            <p>Comments: 0</p>
+          </div>
+        </div>
       </div>
-      <div>
-        <button
-          onClick={voteHandler}
-          data-post_owned_by_current_user={props.postObj.owner}
-          data-post={props.postObj.Post.id}
-          data-user_voted={props.postObj.user_voted}
-          data-upvote={props.postObj.upvote}
-          data-direction={1}
-          className="py-2 px-6 bg-green-400 text-2xl hover:bg-green-500 active:bg-green-600"
-        >
-          +
-        </button>
-        <button
-          onClick={voteHandler}
-          data-post_owned_by_current_user={props.postObj.owner}
-          data-post={props.postObj.Post.id}
-          data-user_voted={props.postObj.user_voted}
-          data-upvote={props.postObj.upvote}
-          data-direction={0}
-          className="py-2 px-6 bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
-        >
-          -
-        </button>
-      </div>
-      <button
-        onClick={viewPostDetailHandler}
-        data-post={props.postObj.Post.id}
-        className="mt-2 py-2 px-6 bg-yellow-400 text-2xl hover:bg-yellow-500 active:bg-yellow-600"
-      >
-        View Details
-      </button>
     </div>
   );
 }
