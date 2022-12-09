@@ -21,7 +21,7 @@ function PostListItem(props) {
         <h2
           onClick={viewPostDetailHandler}
           data-post={props.postObj.Post.id}
-          className="text-3xl font-medium mb-10"
+          className="text-3xl font-medium mb-10 hover:text-primary transition hover:cursor-pointer"
         >
           {props.postObj.Post.title}
         </h2>
