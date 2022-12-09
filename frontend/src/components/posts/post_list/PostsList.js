@@ -20,10 +20,12 @@ function Posts() {
 
   if (token) {
     return (
-      <div className="mt-10 flex flex-col items-center">
-        {posts.map((postObj) => {
-          return <PostListItem key={postObj.Post.id} postObj={postObj} />;
-        })}
+      <div className="flex justify-center">
+        <div className="mt-10 flex flex-col">
+          {posts.map((postObj) => {
+            return <PostListItem key={postObj.Post.id} postObj={postObj} />;
+          })}
+        </div>
       </div>
     );
   } else {
