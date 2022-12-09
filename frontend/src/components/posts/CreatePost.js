@@ -28,24 +28,32 @@ function CreatePost() {
 
   if (token) {
     return (
-      <div className="flex flex-col justify-center items-center py-28">
+      <div className="flex flex-col items-center m-10">
         <form
           onSubmit={submitPostHandler}
-          className="bg-blue-100 flex flex-col gap-6 w-60 p-12"
+          className="px-0 md:px-10 py-7 w-full max-w-[900px]"
         >
-          <input
-            onChange={titleChangeHandler}
-            value={title}
-            name="title"
-            placeholder="Title"
-          ></input>
-          <textarea
-            onChange={contentChangeHandler}
-            value={content}
-            name="content"
-            placeholder="Content"
-          ></textarea>
-          <button className="bg-green-400">Post</button>
+          <div className="mb-3 flex flex-col md:flex-row md:justify-between md:gap-2">
+            <input
+              onChange={titleChangeHandler}
+              className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+              type="text"
+              placeholder="Title"
+            ></input>
+          </div>
+          <div className="flex flex-col mb-3">
+            <textarea
+              onChange={contentChangeHandler}
+              className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+              rows="10"
+              placeholder="Content"
+            ></textarea>
+          </div>
+          <div className="flex justify-end">
+            <button className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     );
