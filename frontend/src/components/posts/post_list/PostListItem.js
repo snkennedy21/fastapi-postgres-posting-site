@@ -26,7 +26,7 @@ function PostListItem(props) {
           {props.postObj.Post.title}
         </h2>
         <div className="flex items-center gap-1 text-sm absolute bottom-0">
-          <FaCommentAlt /> {props.postObj.comments} Comments
+          <FaCommentAlt /> 0 Comments
         </div>
       </div>
     </div>
