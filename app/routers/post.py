@@ -2,8 +2,8 @@ from fastapi import Response, status, HTTPException, Depends, APIRouter
 from .. import models, schemas, oauth2
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from ..database import get_db
-from sqlalchemy import func, distinct, select, and_
+from ..database import get_db, engine
+from sqlalchemy import func, distinct, select, and_, text
 
 router = APIRouter(
   prefix='/posts',
@@ -14,30 +14,46 @@ router = APIRouter(
 
 # response_model=List[schemas.PostOut]
 
-@router.get("/", response_model=List[schemas.PostOut])
+@router.get("/")
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', current_user: int = Depends(oauth2.get_current_user)):
 
-    upvote_subquery = select(
-      models.Vote.upvote
-    ).where(
-      and_
-      (models.Vote.user_id == current_user.id),
-      (models.Vote.post_id == models.Post.id)
-    ).correlate(models.Post)
+  sql = text(
+    '''
+    SELECT 
+      p.id AS posts_id,
+      p.title AS posts_title,
+      p.content AS posts_content,
+      p.published AS posts_published,
+      p.created_at AS posts_created_at,
+      p.owner_id AS posts_owner_id,
+      COALESCE(v.cnt_up, 0) AS upvotes,
+      COALESCE(v.cnt_down, 0) AS downvotes,
+      COALESCE(c.cnt, 0) AS comments 
+    FROM posts p
+    LEFT OUTER JOIN
+    (
+      SELECT
+        post_id,
+        COUNT(*) FILTER (WHERE upvote = true) AS cnt_up,
+        COUNT(*) FILTER (WHERE upvote = false) AS cnt_down
+      FROM votes
+      GROUP BY post_id
+    ) v ON v.post_id = p.id
+    LEFT OUTER JOIN
+    (
+      SELECT post_id, COUNT(*) AS cnt
+      FROM comments
+      GROUP BY post_id
+    ) c ON c.post_id = p.id
+    ORDER BY p.id;
+    '''
+  )
 
-    posts_query = db.query(
-      models.Post,
-      func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
-      func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
-      (upvote_subquery).label('upvote'),
-      (models.Post.owner_id == current_user.id).label("owner"),
-    ).join(
-      models.Vote, models.Vote.post_id == models.Post.id, isouter=True
-    ).group_by(
-      models.Post.id
-    )
-    posts = posts_query.all()
-    return posts
+  results = engine.execute(sql)
+
+  stuff = results.all()
+
+  return stuff
 
 
 @router.get('/{id}', response_model=schemas.PostOut)
