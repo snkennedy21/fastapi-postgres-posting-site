@@ -35,6 +35,7 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
 		  votes.post_id
 		  FROM votes
 		  WHERE votes.user_id = :user_id
+      AND votes.post_id = p.id
 	  ) AS user_voted
     FROM posts p
     LEFT OUTER JOIN
