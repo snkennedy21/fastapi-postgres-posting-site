@@ -37,8 +37,9 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       models.Post.id
     )
 
-    print(posts_query)
     posts = posts_query.all()
+    print(posts_query)
+    print(posts)
     return posts
 
 
