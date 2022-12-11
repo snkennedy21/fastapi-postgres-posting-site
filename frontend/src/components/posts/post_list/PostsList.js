@@ -17,20 +17,20 @@ function PostsList() {
     return <div>Loading...</div>;
   }
 
-  console.log(posts);
+  // console.log(posts);
 
   if (token) {
     return (
       <div className="flex justify-center">
         <div className="p-10 flex flex-col gap-4 w-[900px]">
-          {posts.map((postObj) => {
+          {posts.map((post) => {
             return (
               <div
                 className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative"
-                key={postObj.Post.id}
+                key={post.post_id}
               >
-                <PostVoting postObj={postObj}></PostVoting>
-                <PostListItem postObj={postObj} />
+                <PostVoting post={post}></PostVoting>
+                <PostListItem post={post} />
               </div>
             );
           })}

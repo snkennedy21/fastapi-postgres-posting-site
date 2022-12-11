@@ -20,23 +20,23 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
   sql = text(
     '''
     SELECT 
-      p.id AS posts_id,
-      p.title AS posts_title,
-      p.content AS posts_content,
-      p.published AS posts_published,
-      p.created_at AS posts_created_at,
-      p.owner_id AS posts_owner_id,
-      COALESCE(v.cnt_up, 0) AS upvotes,
-      COALESCE(v.cnt_down, 0) AS downvotes,
-      COALESCE(c.cnt, 0) AS comments,
-	  users.username AS owner,
-	  p.id IN (
+      p.id AS post_id,
+      p.title AS title,
+      p.content AS content,
+      p.published AS is_published,
+      p.created_at AS time_created,
+      p.owner_id AS owner_id,
+      COALESCE(v.cnt_up, 0) AS num_upvotes,
+      COALESCE(v.cnt_down, 0) AS num_downvotes,
+      COALESCE(c.cnt, 0) AS num_comments,
+	  users.username AS owner_username,
+	  (
 		SELECT DISTINCT
-		  votes.post_id
+		  votes.upvote
 		  FROM votes
 		  WHERE votes.user_id = :user_id
       AND votes.post_id = p.id
-	  ) AS user_voted
+	  ) AS user_vote_direction
     FROM posts p
     LEFT OUTER JOIN
     (
