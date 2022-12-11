@@ -63,6 +63,7 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
 
   results = engine.execute(sql, user_id=current_user.id)
   stuff = results.all()
+  print(stuff)
   return stuff
 
 
