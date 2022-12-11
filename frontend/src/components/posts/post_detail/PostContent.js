@@ -13,21 +13,16 @@ function PostContent(props) {
     <React.Fragment>
       <div className="flex flex-col">
         <div className="flex flex-col px-2 justify-between">
-          <p className="text-sm">
-            Posted by: {props.postObj.Post.owner.username}
-          </p>
-          <h2
-            data-post={props.postObj.Post.id}
-            className="text-3xl font-medium"
-          >
-            {props.postObj.Post.title}
+          <p className="text-sm">Posted by: {props.post.owner_username}</p>
+          <h2 data-post={props.post.post_id} className="text-3xl font-medium">
+            {props.post.title}
           </h2>
-          {props.postObj.owner ? (
-            <DeletePost postObj={props.postObj} />
+          {props.post.current_user_is_owner ? (
+            <DeletePost post={props.post} />
           ) : (
             <div className="mb-4"></div>
           )}
-          <p>{props.postObj.Post.content}</p>
+          <p>{props.post.content}</p>
         </div>
       </div>
     </React.Fragment>

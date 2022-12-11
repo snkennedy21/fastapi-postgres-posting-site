@@ -44,7 +44,6 @@ export const mainApi = createApi({
 
     deletePost: builder.mutation({
       query: (postId) => {
-        console.log(postId);
         return {
           url: `/posts/${postId}`,
           method: "DELETE",
@@ -73,7 +72,6 @@ export const mainApi = createApi({
 
     deleteVote: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/vote",
           method: "DELETE",

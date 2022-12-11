@@ -22,7 +22,7 @@ function CommentForm(props) {
   function commentSubmitHandler(e) {
     e.preventDefault();
     const commentData = {
-      post_id: post.Post.id,
+      post_id: post.post_id,
       content: comment,
     };
     createComment(commentData);

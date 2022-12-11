@@ -43,7 +43,7 @@ function PostVoting(props) {
     <div className="flex flex-col items-center px-4 border-r-solid border-r-primary border-r-2">
       <button
         onClick={voteHandler}
-        data-post_owned_by_current_user={props.post.owner_username}
+        data-post_owned_by_current_user={props.post.current_user_is_owner}
         data-post={props.post.post_id}
         data-upvote={props.post.user_vote_direction}
         data-direction={1}
@@ -60,7 +60,7 @@ function PostVoting(props) {
       </p>
       <button
         onClick={voteHandler}
-        data-post_owned_by_current_user={props.post.owner_username}
+        data-post_owned_by_current_user={props.post.current_user_is_owner}
         data-post={props.post.post_id}
         data-upvote={props.post.user_vote_direction}
         data-direction={0}

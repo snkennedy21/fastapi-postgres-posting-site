@@ -29,6 +29,7 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       COALESCE(v.cnt_up, 0) AS num_upvotes,
       COALESCE(v.cnt_down, 0) AS num_downvotes,
       COALESCE(c.cnt, 0) AS num_comments,
+      p.owner_id = :user_id AS current_user_is_owner,
 	  users.username AS owner_username,
 	  (
 		SELECT DISTINCT
@@ -65,32 +66,58 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
   return stuff
 
 
-@router.get('/{id}', response_model=schemas.PostOut)
+#  response_model=schemas.PostOut
+@router.get('/{id}')
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-  upvote_subquery = select(
-      models.Vote.upvote
-    ).where(
-      and_
-      (models.Vote.user_id == current_user.id),
-      (models.Vote.post_id == models.Post.id)
-    ).correlate(models.Post)
+  sql = text(
+    '''
+    SELECT 
+      p.id AS post_id,
+      p.title AS title,
+      p.content AS content,
+      p.published AS is_published,
+      p.created_at AS time_created,
+      p.owner_id AS owner_id,
+      COALESCE(v.cnt_up, 0) AS num_upvotes,
+      COALESCE(v.cnt_down, 0) AS num_downvotes,
+      COALESCE(c.cnt, 0) AS num_comments,
+      p.owner_id = :user_id AS current_user_is_owner,
+	  users.username AS owner_username,
+	  (
+		SELECT DISTINCT
+		  votes.upvote
+		  FROM votes
+		  WHERE votes.user_id = :user_id
+      AND votes.post_id = p.id
+	  ) AS user_vote_direction
+    FROM posts p
+    LEFT OUTER JOIN
+    (
+      SELECT
+        post_id,
+        COUNT(*) FILTER (WHERE upvote = true) AS cnt_up,
+        COUNT(*) FILTER (WHERE upvote = false) AS cnt_down
+      FROM votes
+      GROUP BY post_id
+    ) v ON v.post_id = p.id
+    LEFT OUTER JOIN
+    (
+      SELECT
+        post_id,
+        COUNT(*) AS cnt
+        FROM comments
+        GROUP BY post_id
+    ) c ON c.post_id = p.id
+	  LEFT OUTER JOIN users ON users.id = p.owner_id
+    WHERE p.id = :post_id
+    ORDER BY p.id;
+    '''
+  )
 
-  post_query = db.query(
-      models.Post,
-      func.count(models.Vote.post_id).filter(models.Vote.upvote == True).label("upvotes"),
-      func.count(models.Vote.post_id).filter(models.Vote.upvote == False).label("downvotes"),
-      (upvote_subquery).label('upvote'),
-      (models.Post.owner_id == current_user.id).label("owner")
-    ).join(
-      models.Vote, models.Vote.post_id == models.Post.id, isouter=True
-    ).group_by(
-      models.Post.id
-    ).filter(
-      models.Post.id == id
-    )
-  
-  post = post_query.first()
+  results = engine.execute(sql, user_id=current_user.id, post_id=id)
+  stuff = results.first()
+  return stuff
 
   if not post:
     raise HTTPException(

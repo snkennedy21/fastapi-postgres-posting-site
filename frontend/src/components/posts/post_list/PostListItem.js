@@ -7,8 +7,6 @@ import { FaCommentAlt } from "react-icons/fa";
 function PostListItem(props) {
   const navigate = useNavigate();
 
-  console.log(props.post);
-
   function viewPostDetailHandler(e) {
     const postId = parseInt(e.target.dataset.post);
     navigate(`/posts/${postId}`);
@@ -26,7 +24,7 @@ function PostListItem(props) {
           {props.post.title}
         </h2>
         <div className="flex items-center gap-1 text-sm absolute bottom-0">
-          <FaCommentAlt /> 0 Comments
+          <FaCommentAlt /> {props.post.num_comments} Comments
         </div>
       </div>
     </div>
