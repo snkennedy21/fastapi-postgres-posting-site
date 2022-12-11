@@ -28,7 +28,14 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       p.owner_id AS posts_owner_id,
       COALESCE(v.cnt_up, 0) AS upvotes,
       COALESCE(v.cnt_down, 0) AS downvotes,
-      COALESCE(c.cnt, 0) AS comments 
+      COALESCE(c.cnt, 0) AS comments,
+	  users.username AS owner,
+	  p.id IN (
+		SELECT DISTINCT
+		  votes.post_id
+		  FROM votes
+		  WHERE votes.user_id = :user_id
+	  ) AS user_voted
     FROM posts p
     LEFT OUTER JOIN
     (
@@ -41,18 +48,19 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
     ) v ON v.post_id = p.id
     LEFT OUTER JOIN
     (
-      SELECT post_id, COUNT(*) AS cnt
-      FROM comments
-      GROUP BY post_id
+      SELECT
+        post_id,
+        COUNT(*) AS cnt
+        FROM comments
+        GROUP BY post_id
     ) c ON c.post_id = p.id
+	  LEFT OUTER JOIN users ON users.id = p.owner_id
     ORDER BY p.id;
     '''
   )
 
-  results = engine.execute(sql)
-
+  results = engine.execute(sql, user_id=current_user.id)
   stuff = results.all()
-
   return stuff
 
 
