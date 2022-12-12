@@ -17,6 +17,8 @@ function PostsList() {
     return <div>Loading...</div>;
   }
 
+  console.log(posts)
+
   if (token) {
     return (
       <div className="flex justify-center">
