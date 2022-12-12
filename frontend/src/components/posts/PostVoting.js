@@ -45,13 +45,13 @@ function PostVoting(props) {
         onClick={voteHandler}
         data-post_owned_by_current_user={props.post.current_user_is_owner}
         data-post={props.post.post_id}
-        data-upvote={props.post.user_vote_direction}
+        data-upvote={props.post.vote_is_upvote}
         data-direction={1}
         className="button"
       >
         <FaAngleUp
           className={`${
-            props.post.user_vote_direction === true ? "text-primary" : ""
+            props.post.vote_is_upvote === true ? "text-primary" : ""
           } text-4xl hover:text-primary hover:cursor-pointer`}
         />
       </button>
@@ -62,12 +62,12 @@ function PostVoting(props) {
         onClick={voteHandler}
         data-post_owned_by_current_user={props.post.current_user_is_owner}
         data-post={props.post.post_id}
-        data-upvote={props.post.user_vote_direction}
+        data-upvote={props.post.vote_is_upvote}
         data-direction={0}
       >
         <FaAngleDown
           className={`${
-            props.post.user_vote_direction === false ? "text-primary" : ""
+            props.post.vote_is_upvote === false ? "text-primary" : ""
           } text-4xl hover:text-primary hover:cursor-pointer`}
         />
       </button>

@@ -38,7 +38,7 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
 		  FROM votes
 		  WHERE votes.user_id = :user_id
       AND votes.post_id = p.id
-	  ) AS user_vote_direction
+	  ) AS vote_is_upvote
     FROM posts p
     LEFT OUTER JOIN
     (
@@ -92,7 +92,7 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
 		  FROM votes
 		  WHERE votes.user_id = :user_id
       AND votes.post_id = p.id
-	  ) AS user_vote_direction
+	  ) AS vote_is_upvote
     FROM posts p
     LEFT OUTER JOIN
     (
