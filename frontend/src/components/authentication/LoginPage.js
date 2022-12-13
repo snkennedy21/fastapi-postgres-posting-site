@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 // React Router Imports
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // Redux Imports
 import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +39,7 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center mt-40 mx-10">
+    <div className="flex flex-col items-center my-40 mx-10">
       <form
         onSubmit={loginHandler}
         className="px-0 py-7 w-full max-w-[500px] bg-white rounded-md"
@@ -70,7 +70,15 @@ function LoginPage() {
           <button className="bg-primary px-12 py-2 rounded-md text-lg">
             Login
           </button>
-          <p>Sign Up Here</p>
+          <p>
+            Sign Up{" "}
+            <Link
+              className="text-primary hover:text-red-500"
+              to="/account/signup"
+            >
+              Here
+            </Link>
+          </p>
         </div>
       </form>
     </div>

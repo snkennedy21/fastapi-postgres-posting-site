@@ -1,4 +1,6 @@
 import LoginPage from "./components/authentication/LoginPage";
+import Signup from "./components/authentication/Signup";
+import Account from "./components/authentication/Account";
 import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
 import PostsList from "./components/posts/post_list/PostsList";
@@ -27,11 +29,14 @@ function App() {
       <BrowserRouter>
         <DesktopNavigation />
         <Routes>
-          <Route path="/home" element={<Homepage />} />
-          <Route path="/posts" element={<PostsList />} />
-          <Route path="/posts/create" element={<CreatePost />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="home" element={<Homepage />} />
+          <Route path="posts" element={<PostsList />} />
+          <Route path="posts/create" element={<CreatePost />} />
           <Route path="/posts/:postId" element={<PostDetail />} />
+          <Route path="account">
+            <Route path="login" element={<LoginPage />} />
+            <Route path="signup" element={<Signup />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

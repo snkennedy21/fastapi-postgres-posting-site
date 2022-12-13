@@ -103,6 +103,17 @@ export const mainApi = createApi({
       invalidatesTags: ["Post"],
     }),
 
+    signup: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/users",
+          method: "POST",
+          body: data,
+          credentials: "include",
+        };
+      },
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: "/logout",
@@ -166,6 +177,7 @@ export const {
   useVoteMutation,
   useDeleteVoteMutation,
   useLoginMutation,
+  useSignupMutation,
   useLogoutMutation,
   useGetCommentsQuery,
   useCreateCommentMutation,
