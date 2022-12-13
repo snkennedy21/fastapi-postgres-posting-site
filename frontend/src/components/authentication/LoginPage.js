@@ -39,27 +39,40 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center py-28">
+    <div className="flex flex-col items-center mt-40 mx-10">
       <form
         onSubmit={loginHandler}
-        className="bg-blue-100 flex flex-col gap-6 w-60 p-12"
+        className="px-0 py-7 w-full max-w-[500px] bg-white rounded-md"
       >
-        <input
-          name="email"
-          value={email}
-          onChange={emailChangeHandler}
-          placeholder="Email"
-        ></input>
-        <input
-          name="password"
-          onChange={passwordChangeHandler}
-          value={password}
-          placeholder="Password"
-          type="password"
-        ></input>
-        <button className="bg-green-400">Login</button>
+        <div className="mb-10 flex justify-center text-4xl">
+          <h2>Login</h2>
+        </div>
+        <div className="mb-10 flex flex-col items-center">
+          <input
+            name="email"
+            value={email}
+            onChange={emailChangeHandler}
+            placeholder="Email"
+            className="w-3/4 p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+          ></input>
+        </div>
+        <div className="mb-10 flex flex-col mb-3 items-center">
+          <input
+            name="password"
+            onChange={passwordChangeHandler}
+            value={password}
+            placeholder="Password"
+            type="password"
+            className="w-3/4 p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+          ></input>
+        </div>
+        <div className="flex flex-col items-center gap-6">
+          <button className="bg-primary px-12 py-2 rounded-md text-lg">
+            Login
+          </button>
+          <p>Sign Up Here</p>
+        </div>
       </form>
-      {token ? <p>Hello Cookie</p> : <p>No Cookie</p>}
     </div>
   );
 }
