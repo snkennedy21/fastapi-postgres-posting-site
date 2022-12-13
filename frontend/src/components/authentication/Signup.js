@@ -8,6 +8,7 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
+  const [passwordIsNotAcceptable, setPasswordIsNotAcceptable] = useState(false);
   const [emailExists, setEmailExists] = useState(false);
   const [usernameExists, setUsernameExists] = useState(false);
   const [signup, { error }] = useSignupMutation();
@@ -24,9 +25,19 @@ function Signup() {
       .unwrap()
       .then((payload) => {})
       .catch((error) => {
-        if (error.status === "FETCH_ERROR") {
-          console.log(error);
-          console.log("user already exists");
+        console.log(error);
+        if (
+          error.data.detail ===
+          `username ${username} and email ${email} already exist`
+        ) {
+          setUsernameExists(true);
+          setEmailExists(true);
+        } else if (
+          error.data.detail === `username ${username} already exists`
+        ) {
+          setUsernameExists(true);
+        } else if (error.data.detail === `email ${email} already exists`) {
+          setEmailExists(true);
         } else if (error.status === 422) {
           console.log("invalid credentials");
         }
@@ -39,6 +50,16 @@ function Signup() {
       return;
     }
     setPasswordsDontMatch(true);
+  }
+
+  function usernameChangeHandler(e) {
+    setUsername(e.target.value);
+    setUsernameExists(false);
+  }
+
+  function emailChangeHandler(e) {
+    setEmail(e.target.value);
+    setEmailExists(false);
   }
 
   function passwordChangeHandler(e) {
@@ -61,27 +82,39 @@ function Signup() {
           <h2>Create Account</h2>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
-          <p className="text-red-500 text-sm">
-            User with this username already exists
-          </p>
+          {usernameExists ? (
+            <p className="text-red-500 text-sm">
+              User with this username already exists
+            </p>
+          ) : (
+            <div className="h-5"></div>
+          )}
           <input
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={usernameChangeHandler}
             name="username"
             placeholder="Username"
-            className="p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+            className={`${
+              usernameExists ? "border-red-500" : "border-black"
+            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
-          <p className="text-red-500 text-sm">
-            User with this email already exists
-          </p>
+          {emailExists ? (
+            <p className="text-red-500 text-sm">
+              User with this email already exists
+            </p>
+          ) : (
+            <div className="h-5"></div>
+          )}
           <input
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={emailChangeHandler}
             name="email"
             placeholder="Email"
-            className="p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+            className={`${
+              emailExists ? "border-red-500" : "border-black"
+            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
