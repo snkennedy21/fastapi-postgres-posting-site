@@ -48,11 +48,18 @@ class Post(PostBase):
 
  
 class PostOut(BaseModel):
-  Post: Post
-  upvotes: int
-  downvotes: int
-  upvote: Optional[bool]
-  owner: bool
+  post_id: int
+  title: str
+  content: str
+  time_created: datetime
+  current_user_is_owner: bool
+  is_published: bool
+  num_comments: int
+  num_downvotes: int
+  num_upvotes: int
+  owner_id: int
+  owner_username: str
+  vote_is_upvote: Optional[bool]
 
   class Config:
     orm_mode = True

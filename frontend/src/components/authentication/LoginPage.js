@@ -25,7 +25,6 @@ function LoginPage() {
   async function loginHandler(e) {
     e.preventDefault();
     const payload = await login(e.target);
-    console.log(payload);
     if ("error" in payload) return;
     dispatch(validateToken());
     navigate("/");

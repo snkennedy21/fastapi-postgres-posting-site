@@ -29,8 +29,8 @@ function PostDetail() {
     <div className="flex flex-col justify-center items-center">
       <div className="p-10 flex flex-col gap-4 w-[900px]">
         <div className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative">
-          <PostVoting postObj={post} />
-          <Postcontent postObj={post} />
+          <PostVoting post={post} />
+          <Postcontent post={post} />
         </div>
         <div className="flex justify-end">
           <button

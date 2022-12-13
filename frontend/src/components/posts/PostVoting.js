@@ -43,33 +43,31 @@ function PostVoting(props) {
     <div className="flex flex-col items-center px-4 border-r-solid border-r-primary border-r-2">
       <button
         onClick={voteHandler}
-        data-post_owned_by_current_user={props.postObj.owner}
-        data-post={props.postObj.Post.id}
-        data-user_voted={props.postObj.user_voted}
-        data-upvote={props.postObj.upvote}
+        data-post_owned_by_current_user={props.post.current_user_is_owner}
+        data-post={props.post.post_id}
+        data-upvote={props.post.vote_is_upvote}
         data-direction={1}
         className="button"
       >
         <FaAngleUp
           className={`${
-            props.postObj.upvote === true ? "text-primary" : ""
+            props.post.vote_is_upvote === true ? "text-primary" : ""
           } text-4xl hover:text-primary hover:cursor-pointer`}
         />
       </button>
       <p className="text-2xl font-bold">
-        {props.postObj.upvotes - props.postObj.downvotes}
+        {props.post.num_upvotes - props.post.num_downvotes}
       </p>
       <button
         onClick={voteHandler}
-        data-post_owned_by_current_user={props.postObj.owner}
-        data-post={props.postObj.Post.id}
-        data-user_voted={props.postObj.user_voted}
-        data-upvote={props.postObj.upvote}
+        data-post_owned_by_current_user={props.post.current_user_is_owner}
+        data-post={props.post.post_id}
+        data-upvote={props.post.vote_is_upvote}
         data-direction={0}
       >
         <FaAngleDown
           className={`${
-            props.postObj.upvote === false ? "text-primary" : ""
+            props.post.vote_is_upvote === false ? "text-primary" : ""
           } text-4xl hover:text-primary hover:cursor-pointer`}
         />
       </button>
