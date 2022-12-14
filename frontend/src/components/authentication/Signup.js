@@ -1,9 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSignupMutation } from "../../store/rtk-query-apis/mainApi";
+import { useDispatch, useSelector } from "react-redux";
+import { validateToken } from "../../store/rtk-slices/tokenSlice";
 
 function Signup() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,8 +36,12 @@ function Signup() {
     };
     signup(data)
       .unwrap()
-      .then((payload) => {})
+      .then((payload) => {
+        dispatch(validateToken());
+        navigate("/home");
+      })
       .catch((error) => {
+        console.log("hello");
         console.log(error);
         if (
           error.data.detail ===
