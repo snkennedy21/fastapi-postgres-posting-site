@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSignupMutation } from "../../store/rtk-query-apis/mainApi";
@@ -10,6 +11,7 @@ function Signup() {
   const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
   const [passwordIsNotAcceptable, setPasswordIsNotAcceptable] = useState(false);
   const [emailExists, setEmailExists] = useState(false);
+  const [emailIsInvalid, setEmailIsInvalid] = useState(false);
   const [usernameExists, setUsernameExists] = useState(false);
   const [signup, { error }] = useSignupMutation();
 
@@ -25,7 +27,6 @@ function Signup() {
       .unwrap()
       .then((payload) => {})
       .catch((error) => {
-        console.log(error);
         if (
           error.data.detail ===
           `username ${username} and email ${email} already exist`
@@ -39,7 +40,7 @@ function Signup() {
         } else if (error.data.detail === `email ${email} already exists`) {
           setEmailExists(true);
         } else if (error.status === 422) {
-          console.log("invalid credentials");
+          setEmailIsInvalid(true);
         }
       });
   }
@@ -96,7 +97,7 @@ function Signup() {
             placeholder="Username"
             className={`${
               usernameExists ? "border-red-500" : "border-black"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300`}
+            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
@@ -105,7 +106,12 @@ function Signup() {
               User with this email already exists
             </p>
           ) : (
-            <div className="h-5"></div>
+            <React.Fragment></React.Fragment>
+          )}
+          {emailIsInvalid ? (
+            <p className="text-red-500 text-sm">Please enter a valid email</p>
+          ) : (
+            <React.Fragment></React.Fragment>
           )}
           <input
             value={email}
@@ -113,8 +119,10 @@ function Signup() {
             name="email"
             placeholder="Email"
             className={`${
-              emailExists ? "border-red-500" : "border-black"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300`}
+              emailExists || emailIsInvalid
+                ? "border-red-500"
+                : "border-black mt-5"
+            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
@@ -131,7 +139,7 @@ function Signup() {
             type="password"
             className={`${
               passwordsDontMatch ? "border-red-500" : "border-black"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300`}
+            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-4 flex flex-col w-3/4">
@@ -148,7 +156,7 @@ function Signup() {
             type="password"
             className={`${
               passwordsDontMatch ? "border-red-500" : "border-black"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300`}
+            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="flex flex-col items-center gap-6">
@@ -156,7 +164,7 @@ function Signup() {
             Sign Up
           </button>
           <p>
-            Already Have an Account?{" "}
+            Already Have an Account?
             <Link
               className="text-primary hover:text-red-500"
               to="/account/login"
