@@ -8,8 +8,15 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [usernameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
   const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
   const [passwordIsNotAcceptable, setPasswordIsNotAcceptable] = useState(false);
+
   const [emailExists, setEmailExists] = useState(false);
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
   const [usernameExists, setUsernameExists] = useState(false);
@@ -17,7 +24,6 @@ function Signup() {
 
   function formSubmitHandler(e) {
     e.preventDefault();
-    checkIfPasswordsMatch();
     const data = {
       username: username,
       email: email,
@@ -27,50 +33,70 @@ function Signup() {
       .unwrap()
       .then((payload) => {})
       .catch((error) => {
+        console.log(error);
         if (
           error.data.detail ===
           `username ${username} and email ${email} already exist`
         ) {
-          setUsernameExists(true);
-          setEmailExists(true);
+          setUsernameError("This username already exists");
+          setEmailError("This email already exists");
         } else if (
           error.data.detail === `username ${username} already exists`
         ) {
-          setUsernameExists(true);
+          setUsernameError("This username already exists");
         } else if (error.data.detail === `email ${email} already exists`) {
-          setEmailExists(true);
+          setEmailError("This email already exists");
         } else if (error.status === 422) {
-          setEmailIsInvalid(true);
+          setEmailError("Invalid Email");
         }
+        checkIfPasswordsMatch();
+        checkForEmptyFields();
       });
+  }
+
+  function checkForEmptyFields() {
+    if (username.length === 0) {
+      setUsernameError("Required Field");
+    }
+    if (email.length === 0) {
+      setEmailError("Required Field");
+    }
+    if (password.length === 0) {
+      setPasswordError("Required Field");
+    }
+    if (confirmPassword.length === 0) {
+      setConfirmPasswordError("Required Field");
+    }
   }
 
   function checkIfPasswordsMatch() {
     if (password === confirmPassword) {
-      setPasswordsDontMatch(false);
       return;
     }
-    setPasswordsDontMatch(true);
+    setPasswordError("Passwords must match");
+    setConfirmPasswordError("Passwords must match");
   }
 
   function usernameChangeHandler(e) {
+    setUsernameError("");
     setUsername(e.target.value);
-    setUsernameExists(false);
   }
 
   function emailChangeHandler(e) {
+    setEmailError("");
     setEmail(e.target.value);
-    setEmailExists(false);
   }
 
   function passwordChangeHandler(e) {
+    setPasswordError("");
+    if (confirmPassword.length !== 0) setConfirmPasswordError("");
     setPassword(e.target.value);
-    setPasswordsDontMatch(false);
   }
 
   function confirmPasswordChangeHandler(e) {
+    setConfirmPasswordError("");
+    if (password.length !== 0) setPasswordError("");
     setConfirmPassword(e.target.value);
-    setPasswordsDontMatch(false);
   }
 
   return (
@@ -83,12 +109,10 @@ function Signup() {
           <h2>Create Account</h2>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
-          {usernameExists ? (
-            <p className="text-red-500 text-sm">
-              User with this username already exists
-            </p>
+          {usernameError !== "" ? (
+            <p className="text-red-500 text-sm">{usernameError}</p>
           ) : (
-            <div className="h-5"></div>
+            <React.Fragment />
           )}
           <input
             value={username}
@@ -96,22 +120,15 @@ function Signup() {
             name="username"
             placeholder="Username"
             className={`${
-              usernameExists ? "border-red-500" : "border-black"
+              usernameError ? "border-red-500" : "border-black mt-5"
             } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
-          {emailExists ? (
-            <p className="text-red-500 text-sm">
-              User with this email already exists
-            </p>
+          {emailError !== "" ? (
+            <p className="text-red-500 text-sm">{emailError}</p>
           ) : (
-            <React.Fragment></React.Fragment>
-          )}
-          {emailIsInvalid ? (
-            <p className="text-red-500 text-sm">Please enter a valid email</p>
-          ) : (
-            <React.Fragment></React.Fragment>
+            <React.Fragment />
           )}
           <input
             value={email}
@@ -119,17 +136,15 @@ function Signup() {
             name="email"
             placeholder="Email"
             className={`${
-              emailExists || emailIsInvalid
-                ? "border-red-500"
-                : "border-black mt-5"
+              emailError ? "border-red-500" : "border-black mt-5"
             } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
-          {passwordsDontMatch ? (
-            <p className="text-red-500 text-sm">Passwords must match</p>
+          {passwordError !== "" ? (
+            <p className="text-red-500 text-sm">{passwordError}</p>
           ) : (
-            <div className="h-5"></div>
+            <React.Fragment />
           )}
           <input
             value={password}
@@ -138,15 +153,15 @@ function Signup() {
             placeholder="Password"
             type="password"
             className={`${
-              passwordsDontMatch ? "border-red-500" : "border-black"
+              passwordError ? "border-red-500" : "border-black mt-5"
             } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-4 flex flex-col w-3/4">
-          {passwordsDontMatch ? (
-            <p className="text-red-500 text-sm">Passwords must match</p>
+          {confirmPasswordError !== "" ? (
+            <p className="text-red-500 text-sm">{confirmPasswordError}</p>
           ) : (
-            <div className="h-5"></div>
+            <React.Fragment />
           )}
           <input
             value={confirmPassword}
@@ -155,7 +170,7 @@ function Signup() {
             placeholder="Confirm Password"
             type="password"
             className={`${
-              passwordsDontMatch ? "border-red-500" : "border-black"
+              confirmPasswordError ? "border-red-500" : "border-black mt-5"
             } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
