@@ -31,7 +31,7 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
     if email_already_exists:
       detail += "emailExists "
     if email_invalid:
-      detail += "emailInvalid"
+      detail += "emailInvalid "
     if passwords_dont_match:
       detail += "passwordsDontMatch "
     if username_empty:
