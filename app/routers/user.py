@@ -51,13 +51,19 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
   hashed_password = utils.hash(user.password)
   user.password = hashed_password
 
-  new_user = models.User(**user.dict())
+  new_user = models.User(
+    username=user.username,
+    email=user.email,
+    password=user.password
+  )
 
   db.add(new_user)
   db.commit()
   db.refresh(new_user)
 
   access_token = oauth2.create_access_token(data={"user_id": new_user.id})
+
+  print('hello')
 
   response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, expires=3600, secure=True, samesite="none")
   response.set_cookie(key="auth", value="auth", expires=3600, secure=True, samesite="none")
