@@ -105,6 +105,7 @@ export const mainApi = createApi({
 
     signup: builder.mutation({
       query: (data) => {
+        console.log(data);
         return {
           url: "/users",
           method: "POST",

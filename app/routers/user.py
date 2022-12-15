@@ -2,6 +2,7 @@ from fastapi import status, HTTPException, Depends, APIRouter, Response
 from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
 from ..database import get_db
+import re
 
 
 router = APIRouter(
@@ -12,25 +13,39 @@ router = APIRouter(
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Token)
 def create_user(response: Response, user: schemas.UserCreate, db: Session = Depends(get_db)):
 
+  regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+
   username_already_exists = db.query(models.User).filter(models.User.username == user.username).first()
   email_already_exists = db.query(models.User).filter(models.User.email == user.email).first()
+  email_invalid = not re.fullmatch(regex, user.email)
+  passwords_dont_match = user.password != user.confirm_password
+  username_empty = len(user.username) == 0
+  email_empty = len(user.email) == 0
+  password_empty = len(user.password) == 0
+  confirm_password_empty = len(user.confirm_password) == 0
 
-  if username_already_exists and email_already_exists:
-    raise HTTPException(
-      status_code=status.HTTP_409_CONFLICT,
-      detail=f"username {user.username} and email {user.email} already exist"
-    )
+  if username_already_exists or email_already_exists or passwords_dont_match or username_empty or email_empty or password_empty or confirm_password_empty or email_invalid:
+    detail = ''
+    if username_already_exists:
+      detail += "usernameExists "
+    if email_already_exists:
+      detail += "emailExists "
+    if email_invalid:
+      detail += "emailInvalid"
+    if passwords_dont_match:
+      detail += "passwordsDontMatch "
+    if username_empty:
+      detail += "usernameEmpty "
+    if email_empty:
+      detail += "emailEmpty "
+    if password_empty:
+      detail += "passwordEmpty "
+    if confirm_password_empty:
+      detail += "confirmPasswordEmpty "
 
-  if username_already_exists:
     raise HTTPException(
       status_code=status.HTTP_409_CONFLICT,
-      detail=f"username {user.username} already exists"
-    )
-  
-  if email_already_exists:
-    raise HTTPException(
-      status_code=status.HTTP_409_CONFLICT,
-      detail=f"email {user.email} already exists"
+      detail=detail[:-1]
     )
 
   hashed_password = utils.hash(user.password)

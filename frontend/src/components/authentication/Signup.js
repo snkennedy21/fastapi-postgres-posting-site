@@ -33,33 +33,44 @@ function Signup() {
       username: username,
       email: email,
       password: password,
+      confirm_password: confirmPassword,
     };
     signup(data)
       .unwrap()
       .then((payload) => {
+        console.log(payload);
         dispatch(validateToken());
         navigate("/home");
       })
       .catch((error) => {
-        console.log("hello");
         console.log(error);
-        if (
-          error.data.detail ===
-          `username ${username} and email ${email} already exist`
-        ) {
+        if (error.data.detail.includes("usernameExists")) {
           setUsernameError("This username already exists");
+        }
+        if (error.data.detail.includes("emailExists")) {
           setEmailError("This email already exists");
-        } else if (
-          error.data.detail === `username ${username} already exists`
-        ) {
-          setUsernameError("This username already exists");
-        } else if (error.data.detail === `email ${email} already exists`) {
-          setEmailError("This email already exists");
-        } else if (error.status === 422) {
+        }
+        if (error.data.detail.includes("emailInvalid")) {
           setEmailError("Invalid Email");
         }
-        checkIfPasswordsMatch();
-        checkForEmptyFields();
+        if (error.data.detail.includes("passwordsDontMatch")) {
+          setPasswordError("Passwords must match");
+          setConfirmPasswordError("Passwords must match");
+        }
+        if (error.data.detail.includes("usernameEmpty")) {
+          setUsernameError("Required Field");
+        }
+        if (error.data.detail.includes("emailEmpty")) {
+          setEmailError("Required Field");
+        }
+        if (error.data.detail.includes("passwordEmpty")) {
+          setPasswordError("Required Field");
+        }
+        if (error.data.detail.includes("confirmPasswordEmpty")) {
+          setConfirmPasswordError("Required Field");
+        }
+        // checkIfPasswordsMatch();
+        // checkForEmptyFields();
       });
   }
 
@@ -188,7 +199,7 @@ function Signup() {
             Sign Up
           </button>
           <p>
-            Already Have an Account?
+            Already Have an Account?{" "}
             <Link
               className="text-primary hover:text-red-500"
               to="/account/login"

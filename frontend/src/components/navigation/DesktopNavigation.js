@@ -63,7 +63,7 @@ function DesktopNavigation() {
         ) : (
           <li
             onClick={navigateHandler}
-            data-value="/login"
+            data-value="/account/login"
             className="nav-button"
           >
             Login
