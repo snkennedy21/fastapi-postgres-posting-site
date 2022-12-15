@@ -17,7 +17,7 @@ function PostsList() {
     return <div>Loading...</div>;
   }
 
-  console.log(posts)
+  console.log(posts);
 
   if (token) {
     return (
@@ -38,7 +38,11 @@ function PostsList() {
       </div>
     );
   } else {
-    return <div>Not Authenticated</div>;
+    return (
+      <div className="flex justify-center items-center h-32 text-3xl">
+        Not Authenticated to View Posts
+      </div>
+    );
   }
 }
 

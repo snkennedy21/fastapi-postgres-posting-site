@@ -24,7 +24,7 @@ function DesktopNavigation() {
   function logoutUser() {
     logout();
     dispatch(invalidateToken());
-    navigate("/");
+    navigate("/home");
   }
 
   function navigateHandler(e) {

@@ -52,7 +52,7 @@ function LoginPage() {
             name="email"
             value={email}
             onChange={emailChangeHandler}
-            placeholder="Email"
+            placeholder="Username"
             className="w-3/4 p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
           ></input>
         </div>

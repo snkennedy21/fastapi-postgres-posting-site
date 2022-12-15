@@ -58,7 +58,11 @@ function CreatePost() {
       </div>
     );
   } else {
-    return <div>You are trying to access an unauthenticated route</div>;
+    return (
+      <div className="flex justify-center items-center h-32 text-3xl">
+        Not Authenticated to Create Posts
+      </div>
+    );
   }
 }
 
