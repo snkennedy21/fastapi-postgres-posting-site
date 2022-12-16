@@ -23,7 +23,7 @@ function PostsListPage() {
     return (
       <Container>
         {posts.map((post) => {
-          return <Post key={post.id} post={post} />;
+          return <Post key={post.post_id} post={post} />;
         })}
       </Container>
     );
