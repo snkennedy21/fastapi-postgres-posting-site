@@ -7,6 +7,8 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import PostVoting from "../PostVoting";
 import Postcontent from "./PostContent";
+import CommentVoting from "./CommentVoting";
+import Container from "../ui/Container";
 
 import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
 
@@ -26,32 +28,36 @@ function PostDetail() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="p-10 flex flex-col gap-4 w-[900px]">
-        <div className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative">
-          <PostVoting post={post} />
-          <Postcontent post={post} />
-        </div>
-        <div className="flex justify-end">
-          <button
-            onClick={() => setCommentFormDisplayed(true)}
-            className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
-          >
-            Comment
-          </button>
-        </div>
-        {commentFormDisplayed ? (
-          <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
-        ) : (
-          <></>
-        )}
-        {comments.map((commentObj) => {
-          return (
-            <Comment key={commentObj.Comment.id} commentObj={commentObj} />
-          );
-        })}
+    <Container>
+      <div className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative">
+        <PostVoting post={post} />
+        <Postcontent post={post} />
       </div>
-    </div>
+      <div className="flex justify-end">
+        <button
+          onClick={() => setCommentFormDisplayed(true)}
+          className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
+        >
+          Comment
+        </button>
+      </div>
+      {commentFormDisplayed ? (
+        <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
+      ) : (
+        <></>
+      )}
+      {comments.map((commentObj) => {
+        return (
+          <div
+            className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white"
+            key={commentObj.Comment.id}
+          >
+            <CommentVoting />
+            <Comment key={commentObj.Comment.id} commentObj={commentObj} />
+          </div>
+        );
+      })}
+    </Container>
   );
 }
 

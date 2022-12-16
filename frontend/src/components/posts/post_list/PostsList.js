@@ -2,6 +2,7 @@
 import React from "react";
 import PostListItem from "./PostListItem";
 import PostVoting from "../PostVoting";
+import Container from "../ui/Container";
 
 // Redux Imports
 import { useSelector } from "react-redux";
@@ -21,21 +22,19 @@ function PostsList() {
 
   if (token) {
     return (
-      <div className="flex justify-center">
-        <div className="p-10 flex flex-col gap-4 w-[900px] bg-orange-200">
-          {posts.map((post) => {
-            return (
-              <div
-                className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white"
-                key={post.post_id}
-              >
-                <PostVoting post={post}></PostVoting>
-                <PostListItem post={post} />
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <Container>
+        {posts.map((post) => {
+          return (
+            <div
+              className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white"
+              key={post.post_id}
+            >
+              <PostVoting post={post}></PostVoting>
+              <PostListItem post={post} />
+            </div>
+          );
+        })}
+      </Container>
     );
   } else {
     return (
