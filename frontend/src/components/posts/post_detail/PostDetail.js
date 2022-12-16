@@ -4,10 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import { useGetCommentsQuery } from "../../../store/rtk-query-apis/mainApi";
 
 import CommentForm from "./CommentForm";
-import Comment from "./Comment";
 import PostVoting from "../PostVoting";
 import PostContent from "./PostContent";
-import CommentVoting from "./CommentVoting";
+import Comment from "./Comment";
 import Container from "../ui/Container";
 
 import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
@@ -47,15 +46,7 @@ function PostDetail() {
         <></>
       )}
       {comments.map((commentObj) => {
-        return (
-          <div
-            className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white"
-            key={commentObj.Comment.id}
-          >
-            <CommentVoting />
-            <Comment key={commentObj.Comment.id} commentObj={commentObj} />
-          </div>
-        );
+        return <Comment key={commentObj.Comment.id} commentObj={commentObj} />;
       })}
     </Container>
   );
