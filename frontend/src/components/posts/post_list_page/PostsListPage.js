@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 // RTK Query Imports
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
-function PostsList() {
+function PostsListPage() {
   const token = useSelector((state) => state.token).token;
   const { data: posts, isLoading } = useGetAllPostsQuery();
 
@@ -36,4 +36,4 @@ function PostsList() {
   }
 }
 
-export default PostsList;
+export default PostsListPage;

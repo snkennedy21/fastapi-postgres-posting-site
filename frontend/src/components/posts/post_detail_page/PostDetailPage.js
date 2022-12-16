@@ -3,15 +3,15 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetCommentsQuery } from "../../../store/rtk-query-apis/mainApi";
 
-import CommentForm from "./CommentForm";
+import CommentForm from "./comments/CommentForm";
 import PostVoting from "../PostVoting";
 import PostContent from "./PostContent";
-import Comment from "./Comment";
+import Comment from "./comments/Comment";
 import Container from "../ui/Container";
 
 import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
 
-function PostDetail() {
+function PostDetailPage() {
   const { postId } = useParams();
   const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
   const { data: comments, isLoading: commentsLoading } =
@@ -43,7 +43,7 @@ function PostDetail() {
       {commentFormDisplayed ? (
         <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
       ) : (
-        <></>
+        <React.Fragment></React.Fragment>
       )}
       {comments.map((commentObj) => {
         return <Comment key={commentObj.Comment.id} commentObj={commentObj} />;
@@ -52,4 +52,4 @@ function PostDetail() {
   );
 }
 
-export default PostDetail;
+export default PostDetailPage;

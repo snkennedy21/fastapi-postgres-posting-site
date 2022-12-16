@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import {
   useCreateCommentMutation,
   useGetPostQuery,
-} from "../../../store/rtk-query-apis/mainApi";
+} from "../../../../store/rtk-query-apis/mainApi";
 
 function CommentForm(props) {
   const { postId } = useParams();
