@@ -6,7 +6,7 @@ import { useGetCommentsQuery } from "../../../store/rtk-query-apis/mainApi";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import PostVoting from "../PostVoting";
-import Postcontent from "./PostContent";
+import PostContent from "./PostContent";
 import CommentVoting from "./CommentVoting";
 import Container from "../ui/Container";
 
@@ -31,7 +31,7 @@ function PostDetail() {
     <Container>
       <div className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative">
         <PostVoting post={post} />
-        <Postcontent post={post} />
+        <PostContent post={post} />
       </div>
       <div className="flex justify-end">
         <button

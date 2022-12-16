@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FaCommentAlt } from "react-icons/fa";
 
-function PostListItem(props) {
+function PostInfo(props) {
   const navigate = useNavigate();
 
   function viewPostDetailHandler(e) {
@@ -31,4 +31,4 @@ function PostListItem(props) {
   );
 }
 
-export default PostListItem;
+export default PostInfo;

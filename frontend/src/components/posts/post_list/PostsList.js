@@ -1,8 +1,9 @@
 // React Imports
 import React from "react";
-import PostListItem from "./PostListItem";
+import PostListItem from "./PostInfo";
 import PostVoting from "../PostVoting";
 import Container from "../ui/Container";
+import Post from "./Post";
 
 // Redux Imports
 import { useSelector } from "react-redux";
@@ -22,15 +23,7 @@ function PostsList() {
     return (
       <Container>
         {posts.map((post) => {
-          return (
-            <div
-              className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white"
-              key={post.post_id}
-            >
-              <PostVoting post={post}></PostVoting>
-              <PostListItem post={post} />
-            </div>
-          );
+          return <Post key={post.id} post={post} />;
         })}
       </Container>
     );
