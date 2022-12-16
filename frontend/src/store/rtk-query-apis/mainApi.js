@@ -165,7 +165,7 @@ export const mainApi = createApi({
         credentials: "include",
         contentType: "application/json",
       }),
-      invalidatesTags: ["Comment"],
+      invalidatesTags: ["Comment", "Post"],
     }),
   }),
 });
