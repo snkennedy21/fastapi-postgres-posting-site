@@ -1,6 +1,5 @@
 import LoginPage from "./components/authentication/LoginPage";
 import Signup from "./components/authentication/Signup";
-import Account from "./components/authentication/Account";
 import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
 import PostsList from "./components/posts/post_list/PostsList";

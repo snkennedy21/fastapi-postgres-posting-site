@@ -2,30 +2,25 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSignupMutation } from "../../store/rtk-query-apis/mainApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { validateToken } from "../../store/rtk-slices/tokenSlice";
 
 function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [signup, { error }] = useSignupMutation();
 
+  // Form State
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Error State
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-
-  const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
-  const [passwordIsNotAcceptable, setPasswordIsNotAcceptable] = useState(false);
-
-  const [emailExists, setEmailExists] = useState(false);
-  const [emailIsInvalid, setEmailIsInvalid] = useState(false);
-  const [usernameExists, setUsernameExists] = useState(false);
-  const [signup, { error }] = useSignupMutation();
 
   function formSubmitHandler(e) {
     e.preventDefault();
@@ -38,12 +33,10 @@ function Signup() {
     signup(data)
       .unwrap()
       .then((payload) => {
-        console.log(payload);
         dispatch(validateToken());
         navigate("/home");
       })
       .catch((error) => {
-        console.log(error);
         if (error.data.detail.includes("usernameExists")) {
           setUsernameError("This username already exists");
         }
@@ -69,32 +62,7 @@ function Signup() {
         if (error.data.detail.includes("confirmPasswordEmpty")) {
           setConfirmPasswordError("Required Field");
         }
-        // checkIfPasswordsMatch();
-        // checkForEmptyFields();
       });
-  }
-
-  function checkForEmptyFields() {
-    if (username.length === 0) {
-      setUsernameError("Required Field");
-    }
-    if (email.length === 0) {
-      setEmailError("Required Field");
-    }
-    if (password.length === 0) {
-      setPasswordError("Required Field");
-    }
-    if (confirmPassword.length === 0) {
-      setConfirmPasswordError("Required Field");
-    }
-  }
-
-  function checkIfPasswordsMatch() {
-    if (password === confirmPassword) {
-      return;
-    }
-    setPasswordError("Passwords must match");
-    setConfirmPasswordError("Passwords must match");
   }
 
   function usernameChangeHandler(e) {
