@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 
+import adjustTextareaHeight from "../../../functions/adjustTextareaHeight";
+
 import { useUpdatePostMutation } from "../../../store/rtk-query-apis/mainApi";
 
 function UpdatePostForm(props) {
@@ -19,15 +21,7 @@ function UpdatePostForm(props) {
 
   function contentChangeHandler(e) {
     setContent(e.target.value);
-    adjustContentHeight(e, "100px");
-  }
-
-  function adjustContentHeight(element, defaultHeight) {
-    if (element) {
-      const target = element.target ? element.target : element;
-      target.style.height = defaultHeight;
-      target.style.height = `${target.scrollHeight}px`;
-    }
+    adjustTextareaHeight(e, "100px");
   }
 
   function updatePostSubmitHandler(e) {
@@ -56,7 +50,7 @@ function UpdatePostForm(props) {
         onChange={contentChangeHandler}
         ref={contentRef}
         value={content}
-        className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+        className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300 h-[100px]"
         placeholder="Content"
       ></textarea>
       <button>Submit</button>

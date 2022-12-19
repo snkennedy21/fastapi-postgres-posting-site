@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useParams } from "react-router-dom";
 
+import adjustTextareaHeight from "../../../../functions/adjustTextareaHeight";
+
 import {
   useCreateCommentMutation,
   useGetPostQuery,
@@ -17,6 +19,7 @@ function CommentForm(props) {
 
   function commentChangeHandler(e) {
     setComment(e.target.value);
+    adjustTextareaHeight(e, "104px");
   }
 
   function commentSubmitHandler(e) {
@@ -37,7 +40,7 @@ function CommentForm(props) {
           value={comment}
           name="comment"
           placeholder="Comment"
-          className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+          className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300 h-[100px]"
         ></textarea>
 
         <div className="flex justify-end">

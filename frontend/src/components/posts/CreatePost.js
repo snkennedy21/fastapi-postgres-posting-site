@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useCreatePostMutation } from "../../store/rtk-query-apis/mainApi";
 import { useSelector } from "react-redux";
+import adjustTextareaHeight from "../../functions/adjustTextareaHeight";
 
 function CreatePost() {
   const token = useSelector((state) => state.token).token;
@@ -24,6 +25,7 @@ function CreatePost() {
 
   function contentChangeHandler(e) {
     setContent(e.target.value);
+    adjustTextareaHeight(e, "204px");
   }
 
   if (token) {
@@ -44,8 +46,7 @@ function CreatePost() {
           <div className="flex flex-col mb-3">
             <textarea
               onChange={contentChangeHandler}
-              className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
-              rows="10"
+              className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300 h-[200px]"
               placeholder="Content"
             ></textarea>
           </div>
