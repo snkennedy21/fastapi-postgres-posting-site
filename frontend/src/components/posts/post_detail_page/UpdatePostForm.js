@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { useUpdatePostMutation } from "../../../store/rtk-query-apis/mainApi";
 
@@ -7,6 +7,11 @@ function UpdatePostForm(props) {
   const [title, setTitle] = useState(props.title);
   const [content, setContent] = useState(props.content);
   const [updatePost] = useUpdatePostMutation();
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
+  }, []);
 
   function titleChangeHandler(e) {
     setTitle(e.target.value);
@@ -49,6 +54,7 @@ function UpdatePostForm(props) {
       ></input>
       <textarea
         onChange={contentChangeHandler}
+        ref={contentRef}
         value={content}
         className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
         placeholder="Content"
