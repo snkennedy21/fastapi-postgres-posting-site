@@ -54,6 +54,23 @@ export const mainApi = createApi({
       invalidatesTags: ["Post"],
     }),
 
+    updatePost: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: `/posts/${data.id}`,
+          method: "PUT",
+          body: {
+            title: data.title,
+            content: data.content,
+          },
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Post"],
+    }),
+
     // ************** //
     // VOTE ENDPOINTS //
     // ************** //
@@ -175,6 +192,7 @@ export const {
   useGetPostQuery,
   useCreatePostMutation,
   useDeletePostMutation,
+  useUpdatePostMutation,
   useVoteMutation,
   useDeleteVoteMutation,
   useLoginMutation,
