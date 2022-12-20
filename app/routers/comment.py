@@ -2,6 +2,7 @@ from fastapi import Response, status, HTTPException, Depends, APIRouter
 from .. import models, schemas, oauth2
 from typing import List, Optional
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func
 from ..database import get_db
 
 
@@ -23,28 +24,73 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
     def get_replies(parent):
       replies = []
       for reply in parent.replies:
+
+        upvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == reply.id, models.CommentVote.upvote == True).scalar()
+
+        downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == reply.id, models.CommentVote.upvote == False).scalar()
+
+        net_vote_count = upvote_count - downvote_count
+
+        user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == reply.id).first()
+
+        if user_vote:
+          user_vote = user_vote.upvote
+        else:
+          user_vote = None
+
         replies.append({
           "id": reply.id,
           "content": reply.content,
           "owner": reply.owner.username,
+          "owner_is_user": reply.owner.id == current_user.id,
+          "net_vote_count": net_vote_count,
+          "user_vote": user_vote,
           "replies": get_replies(reply)
         })
       return replies
     
     if root_id:
+      upvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == root.id, models.CommentVote == True).scalar()
+      downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == root.id, models.CommentVote.upvote == False).scalar()
+      net_vote_count = upvote_count - downvote_count
+
+      user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == root.id).first()
+        
+      if user_vote:
+        user_vote = user_vote.upvote
+      else:
+        user_vote = None
+
       return {
         "id": root.id,
         "content": root.content,
         "owner": root.owner.username,
+        "owner_is_user": root.owner.id == current_user.id,
+        "net_vote_count": net_vote_count,
+        "user_vote": user_vote,
         "replies": get_replies(root)
       }
     else:
       comments = []
       for comment in root:
+        upvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == comment.id, models.CommentVote.upvote == True).scalar()
+        downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == comment.id, models.CommentVote.upvote == False).scalar()
+        net_vote_count = upvote_count - downvote_count
+
+        user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == comment.id).first()
+        
+        if user_vote:
+          user_vote = user_vote.upvote
+        else:
+          user_vote = None
+
         comments.append({
           "id": comment.id,
           "content": comment.content,
           "owner": comment.owner.username,
+          "owner_is_user": comment.owner.id == current_user.id,
+          "net_vote_count": net_vote_count,
+          "user_vote": user_vote,
           "replies": get_replies(comment)
         })
       return comments

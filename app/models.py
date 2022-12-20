@@ -47,3 +47,13 @@ class Comment(Base):
   content = Column(String, nullable=False)
   created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
   replies = relationship("Comment", lazy="joined", join_depth=1)
+
+
+class CommentVote(Base):
+  __tablename__ = "comment_votes"
+
+  user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+  user = relationship("User", backref="comment_votes")
+  comment_id = Column(Integer, ForeignKey("comments.id", ondelete="CASCADE"), primary_key=True)
+  comment = relationship("Comment", backref="comment_votes")
+  upvote = Column(Boolean, nullable=False)
