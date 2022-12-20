@@ -26,7 +26,7 @@ function PostDetailPage() {
     return <div>Loading...</div>;
   }
 
-  console.log(comments)
+  console.log(comments);
 
   return (
     <Container>
@@ -47,8 +47,8 @@ function PostDetailPage() {
       ) : (
         <React.Fragment></React.Fragment>
       )}
-      {comments.map((commentObj) => {
-        return <Comment key={commentObj.Comment.id} commentObj={commentObj} />;
+      {comments.map((comment) => {
+        return <Comment key={comment.id} comment={comment} />;
       })}
     </Container>
   );
