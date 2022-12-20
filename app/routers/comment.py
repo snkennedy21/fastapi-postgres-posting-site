@@ -15,13 +15,13 @@ router = APIRouter(
 @router.get("/post/{id}")
 def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-  def get_nested_comments(root_id=None):
+  def get_nested_comments(root_id=None, depth=0):
     if root_id:
       root = db.query(models.Comment).filter(models.Comment.id == root_id).one()
     else:
       root = db.query(models.Comment).filter(models.Comment.parent_id == None).filter(models.Comment.post_id == id).all()
 
-    def get_replies(parent):
+    def get_replies(parent, depth):
       replies = []
       for reply in parent.replies:
 
@@ -41,11 +41,13 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
         replies.append({
           "id": reply.id,
           "content": reply.content,
+          "created_at": reply.created_at,
           "owner": reply.owner.username,
           "owner_is_user": reply.owner.id == current_user.id,
           "net_vote_count": net_vote_count,
           "user_vote": user_vote,
-          "replies": get_replies(reply)
+          "depth": depth,
+          "replies": get_replies(reply, depth + 1)
         })
       return replies
     
@@ -64,11 +66,13 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
       return {
         "id": root.id,
         "content": root.content,
+        "created_at": root.created_at,
         "owner": root.owner.username,
         "owner_is_user": root.owner.id == current_user.id,
         "net_vote_count": net_vote_count,
         "user_vote": user_vote,
-        "replies": get_replies(root)
+        "depth": depth,
+        "replies": get_replies(root, depth + 1)
       }
     else:
       comments = []
@@ -87,11 +91,13 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
         comments.append({
           "id": comment.id,
           "content": comment.content,
+          "created_at": comment.created_at,
           "owner": comment.owner.username,
           "owner_is_user": comment.owner.id == current_user.id,
           "net_vote_count": net_vote_count,
           "user_vote": user_vote,
-          "replies": get_replies(comment)
+          "depth": depth,
+          "replies": get_replies(comment, depth + 1)
         })
       return comments
   

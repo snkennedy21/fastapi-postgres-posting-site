@@ -26,6 +26,8 @@ function PostDetailPage() {
     return <div>Loading...</div>;
   }
 
+  console.log(comments)
+
   return (
     <Container>
       <div className="flex border-primary border-2 border-solid rounded-md overflow-hidden relative">
