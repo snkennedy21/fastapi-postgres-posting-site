@@ -1,7 +1,7 @@
 from fastapi import Response, status, HTTPException, Depends, APIRouter
 from .. import models, schemas, oauth2
 from typing import List, Optional
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from ..database import get_db
 
 
@@ -10,25 +10,70 @@ router = APIRouter(
   tags=["Comments"]
 )
 
-
-@router.get("/post/{id}", response_model=List[schemas.CommentOut])
+# response_model=List[schemas.CommentOut]
+@router.get("/post/{id}")
 def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  comments_query = db.query(
-    models.Comment,
-    (models.Comment.owner_id == current_user.id).label("owned_by_current_user")
-  ).filter(
-    models.Comment.post_id == id
-  )
 
-  comments = comments_query.all()
+  def get_nested_comments(root_id=None):
+    if root_id:
+      root = db.query(models.Comment).filter(models.Comment.id == root_id).one()
+    else:
+      root = db.query(models.Comment).filter(models.Comment.parent_id == None).filter(models.Comment.post_id == id).all()
+
+    def get_replies(parent):
+      replies = []
+      for reply in parent.replies:
+        replies.append({
+          "id": reply.id,
+          "content": reply.content,
+          "owner": reply.owner.username,
+          "replies": get_replies(reply)
+        })
+      return replies
+    
+    if root_id:
+      return {
+        "id": root.id,
+        "content": root.content,
+        "owner": root.owner.username,
+        "replies": get_replies(root)
+      }
+    else:
+      comments = []
+      for comment in root:
+        comments.append({
+          "id": comment.id,
+          "content": comment.content,
+          "owner": comment.owner.username,
+          "replies": get_replies(comment)
+        })
+      return comments
+  
+  comments = get_nested_comments()
+
   print(comments)
 
   return comments
+  
+
+
+
+  # comments_query = db.query(
+  #   models.Comment,
+  #   (models.Comment.owner_id == current_user.id).label("owned_by_current_user")
+  # ).filter(
+  #   models.Comment.post_id == id
+  # )
+
+  # comments = comments_query.all()
+  # print(comments)
+
+  # return comments
 
 @router.post("/")
 def create_comment(comment: schemas.CommentIn, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  print(comment.dict())
   new_comment = models.Comment(owner_id=current_user.id, **comment.dict())
+  print(new_comment)
   db.add(new_comment)
   db.commit()
   db.refresh(new_comment)

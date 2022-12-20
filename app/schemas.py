@@ -67,6 +67,7 @@ class PostOut(BaseModel):
 
 class Comment(BaseModel):
   id: int
+  parent_id: Optional[int]
   post_id: int
   owner_id: int
   owner: UserOut
@@ -79,6 +80,7 @@ class Comment(BaseModel):
 class CommentIn(BaseModel):
   post_id: int
   content: str
+  parent_id: Optional[int]
   
 
 class CommentOut(BaseModel):
