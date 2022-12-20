@@ -9,7 +9,13 @@ function Comment({ comment }) {
 
   console.log(comment.depth);
   return (
-    <div className="ml-5">
+    <div
+      className={`${
+        comment.depth === 0
+          ? ""
+          : "border-solid border-l-2 border-green-500 ml-5 pl-5"
+      }`}
+    >
       <div
         className={`my-2 flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white`}
       >
