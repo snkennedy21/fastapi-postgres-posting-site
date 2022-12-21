@@ -5,11 +5,13 @@ module.exports = {
     extend: {
       colors: {
         primary: "#149DDE",
-        softPrimary: "#F5F8FD",
-        textColor: "#272829",
-        darkColor: "#1D1D1D",
-        darkColorTint: "#323232f6",
-        lightGrey: "#A8A9B4",
+        secondary: "#6A6A95",
+        lightBackground: "#3F4155",
+        border: "#48495D",
+        textPrimary: "#1D5569",
+        darkBackground: "#2C2C37",
+        textWhite: "#ECE9F6",
+        textGrey: "#8B8D9D",
       },
     },
   },

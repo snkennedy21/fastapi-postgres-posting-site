@@ -96,10 +96,17 @@ class TokenData(BaseModel):
   id: Optional[str] = None
 
 
+class CommentVote(BaseModel):
+  comment_id: int
+  direction: conint(le=1)
+
 
 class Vote(BaseModel):
   post_id: int
   direction: conint(le=1)
+
+class DeleteCommentVote(BaseModel):
+  comment_id: int
 
 class DeleteVote(BaseModel):
   post_id: int

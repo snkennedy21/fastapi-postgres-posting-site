@@ -30,7 +30,6 @@ function CommentForm(props) {
       parent_id: props.parent_id,
     };
 
-    console.log(commentData);
     createComment(commentData);
     props.setCommentFormDisplayed(false);
   }

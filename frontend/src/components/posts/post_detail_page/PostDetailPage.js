@@ -26,7 +26,6 @@ function PostDetailPage() {
     return <div>Loading...</div>;
   }
 
-  console.log(comments);
 
   return (
     <Container>

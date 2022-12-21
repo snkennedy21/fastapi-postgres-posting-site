@@ -33,7 +33,7 @@ function DesktopNavigation() {
   }
 
   return (
-    <nav className="bg-primary flex justify-between px-12">
+    <nav className="bg-lightBackground flex justify-between px-12">
       <ul className="flex text-xl font-normal gap-1 my-1">
         <li onClick={navigateHandler} data-value="/home" className="nav-button">
           Home

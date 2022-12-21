@@ -100,6 +100,34 @@ export const mainApi = createApi({
       invalidatesTags: ["Post"],
     }),
 
+    commentVote: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "/commentvote",
+          method: "POST",
+          body: data,
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Comment"],
+    }),
+
+    deleteCommentVote: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "/commentvote",
+          method: "DELETE",
+          body: data,
+          credentials: "include",
+          contentType: "application/json",
+        };
+      },
+      invalidatesTags: ["Comment"],
+    }),
+
     // ************** //
     // AUTH ENDPOINTS //
     // ************** //
@@ -117,7 +145,7 @@ export const mainApi = createApi({
           credentials: "include",
         };
       },
-      invalidatesTags: ["Post"],
+      invalidatesTags: ["Post", "Comment"],
     }),
 
     signup: builder.mutation({
@@ -195,6 +223,8 @@ export const {
   useUpdatePostMutation,
   useVoteMutation,
   useDeleteVoteMutation,
+  useCommentVoteMutation,
+  useDeleteCommentVoteMutation,
   useLoginMutation,
   useSignupMutation,
   useLogoutMutation,

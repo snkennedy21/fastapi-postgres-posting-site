@@ -24,7 +24,7 @@ function Comment({ comment }) {
         className={`my-2 flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white`}
       >
         {/* <div>{comment.content}</div> */}
-        <CommentVoting />
+        <CommentVoting comment={comment} />
         <CommentInfo comment={comment} />
         <button onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}>
           Reply
