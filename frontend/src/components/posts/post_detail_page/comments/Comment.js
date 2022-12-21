@@ -1,13 +1,17 @@
 import CommentVoting from "./CommentVoting";
 import CommentInfo from "./CommentInfo";
 import React from "react";
+import CommentForm from "./CommentForm";
+
+import { useState } from "react";
 
 function Comment({ comment }) {
+  const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
+
   const nestedComments = (comment.replies || []).map((comment) => {
     return <Comment key={comment.id} comment={comment} type="child" />;
   });
 
-  console.log(comment.depth);
   return (
     <div
       className={`${
@@ -22,7 +26,18 @@ function Comment({ comment }) {
         {/* <div>{comment.content}</div> */}
         <CommentVoting />
         <CommentInfo comment={comment} />
+        <button onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}>
+          Reply
+        </button>
       </div>
+      {commentFormDisplayed ? (
+        <CommentForm
+          setCommentFormDisplayed={setCommentFormDisplayed}
+          parent_id={comment.id}
+        />
+      ) : (
+        <></>
+      )}
       {nestedComments}
     </div>
   );

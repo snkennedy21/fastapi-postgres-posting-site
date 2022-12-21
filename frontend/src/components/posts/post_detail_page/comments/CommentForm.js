@@ -27,7 +27,10 @@ function CommentForm(props) {
     const commentData = {
       post_id: post.post_id,
       content: comment,
+      parent_id: props.parent_id,
     };
+
+    console.log(commentData);
     createComment(commentData);
     props.setCommentFormDisplayed(false);
   }

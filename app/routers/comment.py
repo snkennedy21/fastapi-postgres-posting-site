@@ -107,9 +107,6 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
 
   return comments
   
-
-
-
   # comments_query = db.query(
   #   models.Comment,
   #   (models.Comment.owner_id == current_user.id).label("owned_by_current_user")
