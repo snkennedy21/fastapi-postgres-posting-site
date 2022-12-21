@@ -45,12 +45,13 @@ function PostDetailPage() {
             Comment
           </button>
         </div>
-        {commentFormDisplayed ? (
-          <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
         <div className="m-5">
+          {commentFormDisplayed ? (
+            <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
+
           {comments.map((comment) => {
             return <Comment key={comment.id} comment={comment} />;
           })}

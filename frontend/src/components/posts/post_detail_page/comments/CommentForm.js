@@ -36,7 +36,7 @@ function CommentForm(props) {
 
   return (
     <div className="flex flex-col">
-      <form onSubmit={commentSubmitHandler} className="max-w-[900px]">
+      <form onSubmit={commentSubmitHandler} className="w-full my-2">
         <textarea
           onChange={commentChangeHandler}
           value={comment}

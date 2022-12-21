@@ -20,13 +20,18 @@ function Comment({ comment }) {
           : "border-solid border-l-2 border-l-border ml-5 pl-5"
       }`}
     >
-      <div className="flex rounded-md my-1 bg-darkBackground">
-        {/* <div>{comment.content}</div> */}
-        <CommentVoting comment={comment} />
-        <CommentInfo comment={comment} />
-        <button onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}>
-          Reply
-        </button>
+      <div className="bg-darkBackground rounded-md">
+        <div className="flex my-1">
+          <CommentVoting comment={comment} />
+          <CommentInfo comment={comment} />
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
+          >
+            Reply
+          </button>
+        </div>
       </div>
 
       {commentFormDisplayed ? (
