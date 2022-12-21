@@ -42,7 +42,7 @@ function CommentVoting(props) {
   console.log(props.comment);
 
   return (
-    <div className="flex flex-col items-center px-4 border-r-solid border-r-primary border-r-2">
+    <div className="flex flex-col items-center px-2">
       <button
         onClick={voteHandler}
         data-comment_owned_by_current_user={props.comment.owner_is_user}
@@ -54,10 +54,10 @@ function CommentVoting(props) {
         <FaAngleUp
           className={`${
             props.comment.user_vote === true ? "text-primary" : ""
-          } text-4xl hover:text-primary hover:cursor-pointer`}
+          } text-2xl hover:text-primary hover:cursor-pointer`}
         />
       </button>
-      <p className="text-2xl font-bold">{props.comment.net_vote_count}</p>
+      <p className="text-lg font-bold">{props.comment.net_vote_count}</p>
       <button
         onClick={voteHandler}
         data-comment_owned_by_current_user={props.comment.owner_is_user}
@@ -69,7 +69,7 @@ function CommentVoting(props) {
         <FaAngleDown
           className={`${
             props.comment.user_vote === false ? "text-primary" : ""
-          } text-4xl hover:text-primary hover:cursor-pointer`}
+          } text-2xl hover:text-primary hover:cursor-pointer`}
         />
       </button>
     </div>

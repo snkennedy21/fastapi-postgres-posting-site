@@ -10,9 +10,9 @@ function CommentInfo(props) {
 
   return (
     <React.Fragment>
-      <div className="flex flex-col px-2 justify-between">
-        <p className="text-sm mb-4">Posted by: {props.comment.owner}</p>
-        <p>Comment: {props.comment.content}</p>
+      <div className="px-2">
+        <p className="text-lg text-primary">{props.comment.owner}</p>
+        <p className="text-lg">{props.comment.content}</p>
       </div>
       {props.comment.owner_is_user ? (
         <button

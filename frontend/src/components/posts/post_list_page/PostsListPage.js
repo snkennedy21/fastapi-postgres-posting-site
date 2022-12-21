@@ -22,6 +22,9 @@ function PostsListPage() {
   if (token) {
     return (
       <Container>
+        <button className="bg-primary self-end py-2 px-4 rounded-md">
+          Create Post
+        </button>
         {posts.map((post) => {
           return <Post key={post.post_id} post={post} />;
         })}

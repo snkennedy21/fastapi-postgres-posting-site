@@ -17,12 +17,10 @@ function Comment({ comment }) {
       className={`${
         comment.depth === 0
           ? ""
-          : "border-solid border-l-2 border-green-500 ml-5 pl-5"
+          : "border-solid border-l-2 border-l-border ml-5 pl-5"
       }`}
     >
-      <div
-        className={`my-2 flex border-primary border-2 border-solid rounded-md overflow-hidden relative bg-white`}
-      >
+      <div className="flex rounded-md my-1 bg-darkBackground">
         {/* <div>{comment.content}</div> */}
         <CommentVoting comment={comment} />
         <CommentInfo comment={comment} />
@@ -30,6 +28,7 @@ function Comment({ comment }) {
           Reply
         </button>
       </div>
+
       {commentFormDisplayed ? (
         <CommentForm
           setCommentFormDisplayed={setCommentFormDisplayed}

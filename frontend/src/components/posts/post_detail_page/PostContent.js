@@ -20,22 +20,11 @@ function PostContent(props) {
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-col px-2">
-        <div className="flex">
-          <p className="text-sm">Posted by: {props.post.owner_username}</p>
-          {props.post.current_user_is_owner ? (
-            <div className="flex gap-2">
-              <DeletePost post={props.post} />
-              <button
-                onClick={openUpdateFormHandler}
-                data-post={props.post.post_id}
-                className="border border-2 border-solid border-purple-500 text-purple-500 hover:bg-purple-500 active:bg-purple-600 hover:text-white w-16 py-1 px-2 rounded-md transition"
-              >
-                Edit
-              </button>
-            </div>
-          ) : (
-            <div className="mb-4"></div>
-          )}
+        <div>
+          <div className="flex justify-between">
+            <p className="text-sm text-primary">{props.post.owner_username}</p>
+            <p className="text-textGrey">Time</p>
+          </div>
         </div>
         {updateFormOpen ? (
           <UpdatePostForm
@@ -51,6 +40,20 @@ function PostContent(props) {
             </h2>
             <p>{props.post.content}</p>
           </React.Fragment>
+        )}
+        {props.post.current_user_is_owner ? (
+          <div className="flex gap-2">
+            <DeletePost post={props.post} />
+            <button
+              onClick={openUpdateFormHandler}
+              data-post={props.post.post_id}
+              className="border border-2 border-solid border-purple-500 text-purple-500 hover:bg-purple-500 active:bg-purple-600 hover:text-white w-16 py-1 px-2 rounded-md transition"
+            >
+              Edit
+            </button>
+          </div>
+        ) : (
+          <div className="mb-4"></div>
         )}
       </div>
     </div>
