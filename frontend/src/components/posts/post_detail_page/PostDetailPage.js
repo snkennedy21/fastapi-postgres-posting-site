@@ -34,17 +34,14 @@ function PostDetailPage() {
       <div className="flex flex-col gap-4 w-[1000px] bg-lightBackground rounded-md mx-2">
         <div className="flex">
           <PostVoting post={post} />
-          <PostContent post={post} />
+          <PostContent
+            post={post}
+            setCommentFormDisplayed={setCommentFormDisplayed}
+            commentFormDisplayed={commentFormDisplayed}
+          />
         </div>
         <div className="flex border-b-2 border-b-solid border-b-border mx-3"></div>
-        <div className="flex justify-end">
-          <button
-            onClick={() => setCommentFormDisplayed(true)}
-            className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
-          >
-            Comment
-          </button>
-        </div>
+
         <div className="m-5">
           {commentFormDisplayed ? (
             <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />

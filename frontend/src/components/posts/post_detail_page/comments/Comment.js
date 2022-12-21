@@ -3,11 +3,17 @@ import CommentInfo from "./CommentInfo";
 import React from "react";
 import CommentForm from "./CommentForm";
 
+import { useDeleteCommentMutation } from "../../../../store/rtk-query-apis/mainApi";
+
 import { useState } from "react";
 
 function Comment({ comment }) {
+  const [deleteComment] = useDeleteCommentMutation();
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
 
+  function deleteCommentHandler() {
+    deleteComment(comment.id);
+  }
   const nestedComments = (comment.replies || []).map((comment) => {
     return <Comment key={comment.id} comment={comment} type="child" />;
   });
@@ -31,6 +37,16 @@ function Comment({ comment }) {
           >
             Reply
           </button>
+          {comment.owner_is_user ? (
+            <button
+              onClick={deleteCommentHandler}
+              className="bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
+            >
+              Delete
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 
