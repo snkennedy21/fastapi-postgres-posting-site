@@ -31,7 +31,7 @@ function PostDetailPage() {
   return (
     <div className="flex justify-center">
       <div className="p-10 flex flex-col gap-4 w-[1000px]">
-        <div className="mt-5 mb-5">
+        <div className="mb-1">
           <button className="bg-primary py-2 px-4 rounded-md">Posts</button>
         </div>
         <div className="flex flex-col gap-4 bg-lightBackground rounded-md mx-2">
@@ -43,7 +43,7 @@ function PostDetailPage() {
               setUpdateFormOpen={setUpdateFormOpen}
             />
           </div>
-          <div className="flex gap-4 border-b-2 border-b-solid border-b-border mx-3">
+          <div className="flex gap-4 border-b-2 border-b-solid border-b-border m-3 pl-14">
             <button
               onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
             >
@@ -62,11 +62,15 @@ function PostDetailPage() {
             ) : (
               <div className="mb-4"></div>
             )}
+            {/* </div> */}
           </div>
 
           <div className="m-5">
             {commentFormDisplayed ? (
-              <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
+              <CommentForm
+                setCommentFormDisplayed={setCommentFormDisplayed}
+                marginLeft="0"
+              />
             ) : (
               <React.Fragment></React.Fragment>
             )}

@@ -31,7 +31,7 @@ function Comment({ comment }) {
           <CommentVoting comment={comment} />
           <CommentInfo comment={comment} />
         </div>
-        <div className="flex gap-2">
+        <div className="ml-12 flex gap-2">
           <button
             onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
           >
@@ -49,6 +49,7 @@ function Comment({ comment }) {
         <CommentForm
           setCommentFormDisplayed={setCommentFormDisplayed}
           parent_id={comment.id}
+          marginLeft="10"
         />
       ) : (
         <></>

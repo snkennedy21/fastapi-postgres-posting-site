@@ -35,14 +35,14 @@ function CommentForm(props) {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className={`ml-${props.marginLeft} flex flex-col`}>
       <form onSubmit={commentSubmitHandler} className="w-full my-2">
         <textarea
           onChange={commentChangeHandler}
           value={comment}
           name="comment"
           placeholder="Comment"
-          className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300 h-[100px]"
+          className="w-full p-2 text-2xl bg-darkBackground text-textGrey rounded-md border-border border-2 focus:border-primary outline-none transition duration-300 h-[100px]"
         ></textarea>
 
         <div className="flex justify-end">
