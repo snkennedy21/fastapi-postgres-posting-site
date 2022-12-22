@@ -42,10 +42,10 @@ function LoginPage() {
     <div className="flex flex-col items-center my-40 mx-10">
       <form
         onSubmit={loginHandler}
-        className="px-0 py-7 w-full max-w-[500px] bg-white rounded-md"
+        className="px-0 py-7 w-full max-w-[500px] bg-lightBackground rounded-md"
       >
         <div className="mb-10 flex justify-center text-4xl">
-          <h2>Login</h2>
+          <h2 className="text-textWhite">Login</h2>
         </div>
         <div className="mb-10 flex flex-col items-center">
           <input
@@ -53,7 +53,7 @@ function LoginPage() {
             value={email}
             onChange={emailChangeHandler}
             placeholder="Username"
-            className="w-3/4 p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+            className="w-3/4 p-2 text-2xl text-textGrey bg-darkBackground rounded-md border-border border-2 focus:border-primary outline-none transition"
           ></input>
         </div>
         <div className="mb-10 flex flex-col mb-3 items-center">
@@ -63,14 +63,14 @@ function LoginPage() {
             value={password}
             placeholder="Password"
             type="password"
-            className="w-3/4 p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+            className="w-3/4 p-2 text-2xl text-textGrey bg-darkBackground rounded-md border-border border-2 focus:border-primary outline-none transition"
           ></input>
         </div>
         <div className="flex flex-col items-center gap-6">
           <button className="bg-primary px-12 py-2 rounded-md text-lg">
             Login
           </button>
-          <p>
+          <p className="text-textGrey">
             Sign Up{" "}
             <Link
               className="text-primary hover:text-red-500"

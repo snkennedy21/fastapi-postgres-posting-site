@@ -91,14 +91,14 @@ function Signup() {
     <div className="flex flex-col items-center my-40 mx-10">
       <form
         onSubmit={formSubmitHandler}
-        className="px-0 py-7 w-full max-w-[500px] bg-white rounded-md flex flex-col items-center"
+        className="px-0 py-7 w-full max-w-[500px] bg-lightBackground rounded-md flex flex-col items-center"
       >
         <div className="mb-10 flex justify-center text-4xl">
-          <h2>Create Account</h2>
+          <h2 className="text-textWhite">Create Account</h2>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
           {usernameError !== "" ? (
-            <p className="text-red-500 text-sm">{usernameError}</p>
+            <p className="text-red-600 text-sm">{usernameError}</p>
           ) : (
             <React.Fragment />
           )}
@@ -108,13 +108,13 @@ function Signup() {
             name="username"
             placeholder="Username"
             className={`${
-              usernameError ? "border-red-500" : "border-black mt-5"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
+              usernameError ? "border-red-800" : "border-border mt-5"
+            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
           {emailError !== "" ? (
-            <p className="text-red-500 text-sm">{emailError}</p>
+            <p className="text-red-600 text-sm">{emailError}</p>
           ) : (
             <React.Fragment />
           )}
@@ -124,13 +124,13 @@ function Signup() {
             name="email"
             placeholder="Email"
             className={`${
-              emailError ? "border-red-500" : "border-black mt-5"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
+              emailError ? "border-red-800" : "border-border mt-5"
+            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
           {passwordError !== "" ? (
-            <p className="text-red-500 text-sm">{passwordError}</p>
+            <p className="text-red-600 text-sm">{passwordError}</p>
           ) : (
             <React.Fragment />
           )}
@@ -141,13 +141,13 @@ function Signup() {
             placeholder="Password"
             type="password"
             className={`${
-              passwordError ? "border-red-500" : "border-black mt-5"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
+              passwordError ? "border-red-800" : "border-border mt-5"
+            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-4 flex flex-col w-3/4">
           {confirmPasswordError !== "" ? (
-            <p className="text-red-500 text-sm">{confirmPasswordError}</p>
+            <p className="text-red-600 text-sm">{confirmPasswordError}</p>
           ) : (
             <React.Fragment />
           )}
@@ -158,8 +158,8 @@ function Signup() {
             placeholder="Confirm Password"
             type="password"
             className={`${
-              confirmPasswordError ? "border-red-500" : "border-black mt-5"
-            } p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition`}
+              confirmPasswordError ? "border-red-800" : "border-border mt-5"
+            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="flex flex-col items-center gap-6">
