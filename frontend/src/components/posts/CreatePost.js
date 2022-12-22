@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useCreatePostMutation } from "../../store/rtk-query-apis/mainApi";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import adjustTextareaHeight from "../../functions/adjustTextareaHeight";
 
 function CreatePost() {
@@ -9,6 +10,7 @@ function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [createPost] = useCreatePostMutation();
+  const navigate = useNavigate();
 
   function submitPostHandler(e) {
     e.preventDefault();
@@ -17,6 +19,7 @@ function CreatePost() {
       content: content,
     };
     createPost(data);
+    navigate("/posts");
   }
 
   function titleChangeHandler(e) {
@@ -33,12 +36,12 @@ function CreatePost() {
       <div className="flex flex-col items-center m-10">
         <form
           onSubmit={submitPostHandler}
-          className="px-0 md:px-10 py-7 w-full max-w-[900px]"
+          className="bg-lightBackground rounded-md px-0 md:px-10 py-7 w-full max-w-[900px]"
         >
           <div className="mb-3 flex flex-col md:flex-row md:justify-between md:gap-2">
             <input
               onChange={titleChangeHandler}
-              className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+              className="w-full p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-border border-2 focus:border-primary outline-none transition"
               type="text"
               placeholder="Title"
             ></input>
@@ -46,7 +49,7 @@ function CreatePost() {
           <div className="flex flex-col mb-3">
             <textarea
               onChange={contentChangeHandler}
-              className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300 h-[200px]"
+              className="w-full p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-border border-2 focus:border-primary outline-none transition h-[200px]"
               placeholder="Content"
             ></textarea>
           </div>
