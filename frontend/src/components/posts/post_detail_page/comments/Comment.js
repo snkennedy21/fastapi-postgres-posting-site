@@ -38,12 +38,7 @@ function Comment({ comment }) {
             Reply
           </button>
           {comment.owner_is_user ? (
-            <button
-              onClick={deleteCommentHandler}
-              className="bg-red-400 text-2xl hover:bg-red-500 active:bg-red-600"
-            >
-              Delete
-            </button>
+            <button onClick={deleteCommentHandler}>Delete</button>
           ) : (
             <></>
           )}

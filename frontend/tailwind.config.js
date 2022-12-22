@@ -12,6 +12,7 @@ module.exports = {
         darkBackground: "#2C2C37",
         textWhite: "#ECE9F6",
         textGrey: "#8B8D9D",
+        textGrey: "#9798a7",
       },
     },
   },

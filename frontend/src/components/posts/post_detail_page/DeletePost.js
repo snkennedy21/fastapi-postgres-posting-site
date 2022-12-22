@@ -14,11 +14,7 @@ function DeletePost(props) {
   }
 
   return (
-    <button
-      onClick={deletePostHandler}
-      data-post={props.post.post_id}
-      className="border border-2 border-solid border-red-500 text-red-500 hover:bg-red-500 active:bg-red-600 hover:text-white w-16 py-1 px-2 rounded-md transition"
-    >
+    <button onClick={deletePostHandler} data-post={props.post.post_id}>
       Delete
     </button>
   );

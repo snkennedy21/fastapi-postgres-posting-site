@@ -27,31 +27,37 @@ function PostDetailPage() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-[1000px] mt-10 mb-5">
-        <button className="bg-primary py-2 px-4 rounded-md">Posts</button>
-      </div>
-      <div className="flex flex-col gap-4 w-[1000px] bg-lightBackground rounded-md mx-2">
-        <div className="flex">
-          <PostVoting post={post} />
-          <PostContent
-            post={post}
-            setCommentFormDisplayed={setCommentFormDisplayed}
-            commentFormDisplayed={commentFormDisplayed}
-          />
+    <div className="flex justify-center">
+      <div className="p-10 flex flex-col gap-4 w-[1000px]">
+        <div className="mt-5 mb-5">
+          <button className="bg-primary py-2 px-4 rounded-md">Posts</button>
         </div>
-        <div className="flex border-b-2 border-b-solid border-b-border mx-3"></div>
+        <div className="flex flex-col gap-4 bg-lightBackground rounded-md mx-2">
+          <div className="flex">
+            <PostVoting post={post} />
+            <PostContent post={post} />
+          </div>
+          <div className="flex gap-4 border-b-2 border-b-solid border-b-border mx-3">
+            <button
+              onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
+            >
+              Comment
+            </button>
+            <p>Edit</p>
+            <p>Delete</p>
+          </div>
 
-        <div className="m-5">
-          {commentFormDisplayed ? (
-            <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
-          ) : (
-            <React.Fragment></React.Fragment>
-          )}
+          <div className="m-5">
+            {commentFormDisplayed ? (
+              <CommentForm setCommentFormDisplayed={setCommentFormDisplayed} />
+            ) : (
+              <React.Fragment></React.Fragment>
+            )}
 
-          {comments.map((comment) => {
-            return <Comment key={comment.id} comment={comment} />;
-          })}
+            {comments.map((comment) => {
+              return <Comment key={comment.id} comment={comment} />;
+            })}
+          </div>
         </div>
       </div>
     </div>

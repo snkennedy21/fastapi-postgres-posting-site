@@ -22,7 +22,7 @@ function PostContent(props) {
       <div className="flex flex-col px-2">
         <div>
           <div className="flex justify-between">
-            <p className="text-sm text-primary">{props.post.owner_username}</p>
+            <p className="text-lg text-primary">{props.post.owner_username}</p>
             <p className="text-textGrey">Time</p>
           </div>
         </div>
@@ -35,28 +35,22 @@ function PostContent(props) {
           />
         ) : (
           <React.Fragment>
-            <h2 data-post={props.post.post_id} className="text-3xl font-medium">
+            <h2
+              data-post={props.post.post_id}
+              className="text-3xl text-textWhite font-medium mb-4"
+            >
               {props.post.title}
             </h2>
-            <p>{props.post.content}</p>
+            <p className="text-2xl text-textGrey">{props.post.content}</p>
           </React.Fragment>
         )}
         <div className="flex gap-2">
-          <button
-            onClick={() =>
-              props.setCommentFormDisplayed(!props.commentFormDisplayed)
-            }
-            className="border border-2 border-solid border-purple-500 text-purple-500 hover:bg-purple-500 active:bg-purple-600 hover:text-white py-1 px-2 rounded-md transition"
-          >
-            Comment
-          </button>
           {props.post.current_user_is_owner ? (
             <React.Fragment>
               <DeletePost post={props.post} />
               <button
                 onClick={openUpdateFormHandler}
                 data-post={props.post.post_id}
-                className="border border-2 border-solid border-purple-500 text-purple-500 hover:bg-purple-500 active:bg-purple-600 hover:text-white py-1 px-2 rounded-md transition"
               >
                 Edit
               </button>
