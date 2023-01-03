@@ -5,6 +5,7 @@ import DesktopNavigation from "./components/navigation/DesktopNavigation";
 import PostsListPage from "./components/posts/post_list_page/PostsListPage";
 import CreatePost from "./components/posts/CreatePost";
 import PostDetailPage from "./components/posts/post_detail_page/PostDetailPage";
+import ProfilePage from "./components/profile/ProfilePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,6 +37,7 @@ function App() {
             <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<Signup />} />
           </Route>
+          <Route path="profile" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </div>

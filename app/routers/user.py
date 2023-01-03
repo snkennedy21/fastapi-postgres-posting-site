@@ -69,14 +69,25 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
   response.set_cookie(key="auth", value="auth", expires=3600, secure=True, samesite="none")
   return {"access_token": access_token, "token_type": "bearer"}
 
-@router.get('/{id}', response_model=schemas.UserOut)
-def get_user(id: int, db: Session = Depends(get_db)):
-  user = db.query(models.User).filter(models.User.id == id).first()
+#  response_model=schemas.UserOut
+@router.get('/')
+def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
+  user = db.query(models.User).filter(models.User.id == current_user.id).first()
 
   if not user:
     raise HTTPException(
       status_code=status.HTTP_404_NOT_FOUND,
       detail=f"User with id: {id} does not exist"
     )
+
   
-  return user
+  return {
+    "username": user.username,
+    "email": user.email,
+  }
+
+
+@router.put("/{id}")
+def update_user(id: int, user: schemas.UserCreate, db: Session = Depends(get_db)):
+  user = db.query(models.User).filter(models.User.id == id).first()
+

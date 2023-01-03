@@ -168,10 +168,20 @@ export const mainApi = createApi({
       }),
     }),
 
+    // ************** //
+    // USER ENDPOINTS //
+    // ************** //
+    getUserProfile: builder.query({
+      query: () => ({
+        url: `/users`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+
     // ***************** //
     // COMMENT ENDPOINTS //
     // ***************** //
-
     getComments: builder.query({
       query: (postId) => ({
         url: `/comments/post/${postId}`,
@@ -228,6 +238,7 @@ export const {
   useLoginMutation,
   useSignupMutation,
   useLogoutMutation,
+  useGetUserProfileQuery,
   useGetCommentsQuery,
   useCreateCommentMutation,
   useUpdateCommentMutation,

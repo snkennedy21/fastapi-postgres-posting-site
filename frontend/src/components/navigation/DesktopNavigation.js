@@ -55,11 +55,20 @@ function DesktopNavigation() {
       </ul>
       <ul className="flex gap-6 text-xl font-normal my-1">
         {token ? (
-          <li>
-            <button className="nav-button" onClick={logoutUser}>
-              Logout
-            </button>
-          </li>
+          <React.Fragment>
+            <li
+              onClick={navigateHandler}
+              data-value="/profile"
+              className="nav-button"
+            >
+              Profile
+            </li>
+            <li>
+              <button className="nav-button" onClick={logoutUser}>
+                Logout
+              </button>
+            </li>
+          </React.Fragment>
         ) : (
           <li
             onClick={navigateHandler}
