@@ -14,6 +14,11 @@ module.exports = {
         textGrey: "#8B8D9D",
         textGrey: "#9798a7",
       },
+      screens: {
+        small: {
+          min: "600px",
+        },
+      },
     },
   },
   plugins: [],
