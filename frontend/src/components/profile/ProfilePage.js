@@ -4,16 +4,18 @@ import { useGetUserProfileQuery } from "../../store/rtk-query-apis/mainApi";
 import profile from "../../images/profile.jpg";
 import EditProfileModal from "./EditProfileModal";
 import { useState } from "react";
+import Post from "../posts/post_list_page/Post";
 
 function ProfilePage(props) {
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const { data: user, isLoading: userLoading } = useGetUserProfileQuery();
+  const { data: userData, isLoading: userDataLoading } =
+    useGetUserProfileQuery();
 
-  console.log(props.pathname);
-
-  if (userLoading) {
+  if (userDataLoading) {
     return <div>Loading...</div>;
   }
+
+  console.log(userData);
 
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
@@ -24,7 +26,7 @@ function ProfilePage(props) {
       <EditProfileModal
         editModalOpen={editModalOpen}
         toggleModal={modalHandler}
-        username={user.username}
+        username={userData.username}
       />
       <div className="flex justify-center">
         <div className="p-10 flex flex-col gap-4 w-[1100px] items-center">
@@ -44,10 +46,10 @@ function ProfilePage(props) {
             </div>
             <div className="w-11/12">
               <p className="text-2xl">
-                <span className="font-bold">Username:</span> {user.username}
+                <span className="font-bold">Username:</span> {userData.username}
               </p>
               <p className="text-2xl">
-                <span className="font-bold">Email:</span> {user.email}
+                <span className="font-bold">Email:</span> {userData.email}
               </p>
               <p className="text-2xl">
                 <span className="font-bold">About:</span> My name is sean kenedy
@@ -68,6 +70,11 @@ function ProfilePage(props) {
               Oldest
             </button>
           </div>
+          <Container>
+            {userData.posts.map((post) => {
+              return <Post key={post.id} post={post} />;
+            })}
+          </Container>
         </div>
       </div>
     </React.Fragment>

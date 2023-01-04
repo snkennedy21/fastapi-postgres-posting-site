@@ -39,8 +39,6 @@ function PostVoting(props) {
     }
   }
 
-  console.log(props.post);
-
   return (
     <div className="flex flex-col items-center px-3">
       <button

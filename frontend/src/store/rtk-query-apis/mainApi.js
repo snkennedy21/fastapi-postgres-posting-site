@@ -56,7 +56,6 @@ export const mainApi = createApi({
 
     updatePost: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: `/posts/${data.id}`,
           method: "PUT",
@@ -102,7 +101,6 @@ export const mainApi = createApi({
 
     commentVote: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/commentvote",
           method: "POST",
@@ -116,7 +114,6 @@ export const mainApi = createApi({
 
     deleteCommentVote: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/commentvote",
           method: "DELETE",
@@ -150,7 +147,6 @@ export const mainApi = createApi({
 
     signup: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/users",
           method: "POST",

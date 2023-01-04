@@ -39,8 +39,6 @@ function CommentVoting(props) {
     }
   }
 
-  console.log(props.comment);
-
   return (
     <div className="flex flex-col items-center px-2">
       <button

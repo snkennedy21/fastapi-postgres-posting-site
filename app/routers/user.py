@@ -1,6 +1,7 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from ..database import get_db
 import re
 
@@ -71,6 +72,29 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 @router.get('/')
 def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
   user = db.query(models.User).filter(models.User.id == current_user.id).first()
+  posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
+
+  users_posts = []
+  for post in posts:
+    upvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == True).scalar()
+    downvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == False).scalar()
+
+    net_vote_count = upvote_count - downvote_count
+    user_vote = db.query(models.Vote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
+
+    num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
+
+    print(num_comments)
+
+
+    post_dict = post.__dict__
+
+    post_dict["net_vote_count"] = net_vote_count
+    post_dict["user_vote"] = user_vote
+    post_dict["num_comments"] = num_comments
+
+    users_posts.append(post_dict)
+
 
   if not user:
     raise HTTPException(
@@ -81,6 +105,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
   return {
     "username": user.username,
     "email": user.email,
+    "posts": users_posts
   }
 
 @router.get("/{id}")
