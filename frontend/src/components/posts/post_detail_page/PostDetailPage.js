@@ -28,6 +28,8 @@ function PostDetailPage() {
     return <div>Loading...</div>;
   }
 
+  console.log(post);
+
   return (
     <div className="flex justify-center">
       <div className="p-10 flex flex-col gap-4 w-[1000px]">
@@ -49,7 +51,7 @@ function PostDetailPage() {
             >
               Comment
             </button>
-            {post.current_user_is_owner ? (
+            {post.owner_is_user ? (
               <React.Fragment>
                 <DeletePost post={post} />
                 <button

@@ -13,112 +13,60 @@ router = APIRouter(
 # current_user: int = Depends(oauth2.get_current_user)
 
 # response_model=List[schemas.PostOut]
-
-@router.get("/", response_model=List[schemas.PostOut])
+@router.get("/",)
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', current_user: int = Depends(oauth2.get_current_user)):
+  posts = db.query(models.Post).all()
+  
+  list_of_posts = []
+  for post in posts:
+    upvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == True).scalar()
+    downvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == False).scalar()
+    net_vote_count = upvote_count - downvote_count
+    num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
+    owner = db.query(models.User.username, models.User.email, models.User.id).filter(models.User.id == post.owner_id).first()
 
-  sql = text(
-    '''
-    SELECT 
-      p.id AS post_id,
-      p.title AS title,
-      p.content AS content,
-      p.published AS is_published,
-      p.created_at AS time_created,
-      p.owner_id AS owner_id,
-      COALESCE(v.cnt_up, 0) AS num_upvotes,
-      COALESCE(v.cnt_down, 0) AS num_downvotes,
-      COALESCE(c.cnt, 0) AS num_comments,
-      p.owner_id = :user_id AS current_user_is_owner,
-	  users.username AS owner_username,
-	  (
-		SELECT DISTINCT
-		  votes.upvote
-		  FROM votes
-		  WHERE votes.user_id = :user_id
-      AND votes.post_id = p.id
-	  ) AS vote_is_upvote
-    FROM posts p
-    LEFT OUTER JOIN
-    (
-      SELECT
-        post_id,
-        COUNT(*) FILTER (WHERE upvote = true) AS cnt_up,
-        COUNT(*) FILTER (WHERE upvote = false) AS cnt_down
-      FROM votes
-      GROUP BY post_id
-    ) v ON v.post_id = p.id
-    LEFT OUTER JOIN
-    (
-      SELECT
-        post_id,
-        COUNT(*) AS cnt
-        FROM comments
-        GROUP BY post_id
-    ) c ON c.post_id = p.id
-	  LEFT OUTER JOIN users ON users.id = p.owner_id
-    ORDER BY p.id;
-    '''
-  )
+    vote_is_upvote = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
 
-  results = engine.execute(sql, user_id=current_user.id)
-  stuff = results.all()
-  print(stuff)
-  return stuff
+    post_dict = post.__dict__
+
+    post_dict["net_vote_count"] = net_vote_count
+    post_dict["num_comments"] = num_comments
+    post_dict["owner"] = owner
+    post_dict["vote_is_upvote"] = vote_is_upvote
+
+    list_of_posts.append(post_dict)
+
+  return list_of_posts
 
 
 #  response_model=schemas.PostOut
 @router.get('/{id}')
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-  sql = text(
-    '''
-    SELECT 
-      p.id AS post_id,
-      p.title AS title,
-      p.content AS content,
-      p.published AS is_published,
-      p.created_at AS time_created,
-      p.owner_id AS owner_id,
-      COALESCE(v.cnt_up, 0) AS num_upvotes,
-      COALESCE(v.cnt_down, 0) AS num_downvotes,
-      COALESCE(c.cnt, 0) AS num_comments,
-      p.owner_id = :user_id AS current_user_is_owner,
-	  users.username AS owner_username,
-	  (
-		SELECT DISTINCT
-		  votes.upvote
-		  FROM votes
-		  WHERE votes.user_id = :user_id
-      AND votes.post_id = p.id
-	  ) AS vote_is_upvote
-    FROM posts p
-    LEFT OUTER JOIN
-    (
-      SELECT
-        post_id,
-        COUNT(*) FILTER (WHERE upvote = true) AS cnt_up,
-        COUNT(*) FILTER (WHERE upvote = false) AS cnt_down
-      FROM votes
-      GROUP BY post_id
-    ) v ON v.post_id = p.id
-    LEFT OUTER JOIN
-    (
-      SELECT
-        post_id,
-        COUNT(*) AS cnt
-        FROM comments
-        GROUP BY post_id
-    ) c ON c.post_id = p.id
-	  LEFT OUTER JOIN users ON users.id = p.owner_id
-    WHERE p.id = :post_id
-    ORDER BY p.id;
-    '''
-  )
+  post = db.query(models.Post).filter(models.Post.id == id).first()
 
-  results = engine.execute(sql, user_id=current_user.id, post_id=id)
-  stuff = results.first()
-  return stuff
+  upvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == True).scalar()
+  downvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == False).scalar()
+
+  net_vote_count = upvote_count - downvote_count
+  num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
+  owner = db.query(models.User.username, models.User.email, models.User.id).filter(models.User.id == post.owner_id).first()
+  user_vote = db.query(models.Vote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
+
+  if user_vote:
+    user_vote = user_vote.upvote
+  else:
+    user_vote = None
+
+  post_dict = post.__dict__
+  
+  post_dict["net_vote_count"] = net_vote_count
+  post_dict["num_comments"] = num_comments
+  post_dict["owner"] = owner
+  post_dict["user_vote"] = user_vote
+  post_dict["owner_is_user"] = current_user.id == post.owner_id
+
+  return post_dict
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)

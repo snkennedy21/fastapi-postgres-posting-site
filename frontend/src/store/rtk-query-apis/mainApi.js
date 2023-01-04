@@ -6,7 +6,7 @@ export const mainApi = createApi({
     baseUrl: `${process.env.REACT_APP_BASE_URL}`,
   }),
 
-  tagTypes: ["Post", "Comment"],
+  tagTypes: ["Post", "Comment", "User"],
   endpoints: (builder) => ({
     // ************** //
     // POST ENDPOINTS //
@@ -39,7 +39,7 @@ export const mainApi = createApi({
           contentType: "application/json",
         };
       },
-      invalidatesTags: ["Post"],
+      invalidatesTags: ["Post", "User"],
     }),
 
     deletePost: builder.mutation({
@@ -173,6 +173,7 @@ export const mainApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
 
     // ***************** //

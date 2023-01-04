@@ -25,7 +25,7 @@ function CommentForm(props) {
   function commentSubmitHandler(e) {
     e.preventDefault();
     const commentData = {
-      post_id: post.post_id,
+      post_id: post.id,
       content: comment,
       parent_id: props.parent_id,
     };

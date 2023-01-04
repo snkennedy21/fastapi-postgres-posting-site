@@ -19,12 +19,12 @@ function PostInfo(props) {
       <div className="border-b-solid border-b-2 border-b-border">
         {/* <div className="flex flex-col px-2 justify-between"> */}
         <div className="flex justify-between">
-          <p className="text-sm text-primary">{props.post.owner_username}</p>
+          <p className="text-sm text-primary">{props.post.owner.username}</p>
           <p className="text-textGrey">Time</p>
         </div>
         <h2
           onClick={viewPostDetailHandler}
-          data-post={props.post.post_id}
+          data-post={props.post.id}
           className="text-3xl text-textWhite font-medium mb-10 hover:text-primary transition hover:cursor-pointer"
         >
           {props.post.title}
@@ -32,8 +32,7 @@ function PostInfo(props) {
       </div>
       <div className="flex flex-col gap-1 text-sm text-textGrey pt-3">
         <div className="flex items-center gap-1 text-sm">
-          <FaThumbsUp /> {props.post.num_upvotes - props.post.num_downvotes}{" "}
-          votes
+          <FaThumbsUp /> {props.post.net_vote_count} votes
         </div>
         <div className="flex items-center gap-1 text-sm">
           <FaCommentAlt /> {props.post.num_comments} Comments

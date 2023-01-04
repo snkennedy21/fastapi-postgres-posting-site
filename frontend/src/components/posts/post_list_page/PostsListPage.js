@@ -15,6 +15,8 @@ function PostsListPage() {
   const token = useSelector((state) => state.token).token;
   const { data: posts, isLoading } = useGetAllPostsQuery();
 
+  console.log(posts);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -26,7 +28,7 @@ function PostsListPage() {
           Create Post
         </button>
         {posts.map((post) => {
-          return <Post key={post.post_id} post={post} />;
+          return <Post key={post.id} post={post} />;
         })}
       </Container>
     );

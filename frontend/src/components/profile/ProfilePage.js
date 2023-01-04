@@ -15,7 +15,7 @@ function ProfilePage(props) {
     return <div>Loading...</div>;
   }
 
-  console.log(userData);
+  console.log(userData.username);
 
   function modalHandler() {
     setEditModalOpen(!editModalOpen);

@@ -103,21 +103,8 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
   
   comments = get_nested_comments()
 
-  print(comments)
-
   return comments
   
-  # comments_query = db.query(
-  #   models.Comment,
-  #   (models.Comment.owner_id == current_user.id).label("owned_by_current_user")
-  # ).filter(
-  #   models.Comment.post_id == id
-  # )
-
-  # comments = comments_query.all()
-  # print(comments)
-
-  # return comments
 
 @router.post("/")
 def create_comment(comment: schemas.CommentIn, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):

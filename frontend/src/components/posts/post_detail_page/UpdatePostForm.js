@@ -31,6 +31,7 @@ function UpdatePostForm(props) {
       content: content,
       id: props.id,
     };
+    console.log(data);
     updatePost(data);
     props.setUpdateFormOpen(false);
   }

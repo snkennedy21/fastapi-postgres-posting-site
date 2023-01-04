@@ -22,7 +22,7 @@ function PostContent(props) {
           <UpdatePostForm
             title={props.post.title}
             content={props.post.content}
-            id={props.post.post_id}
+            id={props.post.id}
             setUpdateFormOpen={props.setUpdateFormOpen}
           />
         ) : (

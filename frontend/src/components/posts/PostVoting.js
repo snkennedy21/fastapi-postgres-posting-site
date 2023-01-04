@@ -15,8 +15,7 @@ function PostVoting(props) {
     const postId = parseInt(e.currentTarget.dataset.post);
     const voteDirection = parseInt(e.currentTarget.dataset.direction);
     const upvote = e.currentTarget.dataset.upvote;
-    const postOwnedByCurrentUser =
-      e.currentTarget.dataset.post_owned_by_current_user;
+    const postOwnedByCurrentUser = e.currentTarget.dataset.post_owner_is_user;
     const addVoteData = {
       post_id: postId,
       direction: voteDirection,
@@ -24,6 +23,8 @@ function PostVoting(props) {
     const deleteVoteData = {
       post_id: postId,
     };
+
+    console.log(upvote);
 
     if (postOwnedByCurrentUser === "true") {
       alert("Cannot Vote on Your Own Post");
@@ -33,8 +34,10 @@ function PostVoting(props) {
     if (upvote === undefined) {
       addVote(addVoteData);
     } else if (upvote === "true" && voteDirection === 0) {
+      console.log("upvote");
       deleteVote(deleteVoteData);
     } else if (upvote === "false" && voteDirection === 1) {
+      console.log("downvote");
       deleteVote(deleteVoteData);
     }
   }
@@ -43,31 +46,29 @@ function PostVoting(props) {
     <div className="flex flex-col items-center px-3">
       <button
         onClick={voteHandler}
-        data-post_owned_by_current_user={props.post.current_user_is_owner}
-        data-post={props.post.post_id}
-        data-upvote={props.post.vote_is_upvote}
+        data-post_owner_is_user={props.post.owner_is_user}
+        data-post={props.post.id}
+        data-upvote={props.post.user_vote}
         data-direction={1}
         className="button"
       >
         <FaAngleUp
           className={`${
-            props.post.vote_is_upvote === true ? "text-primary" : ""
+            props.post.user_vote === true ? "text-primary" : ""
           } text-4xl hover:text-primary hover:cursor-pointer`}
         />
       </button>
-      <p className="text-2xl font-bold">
-        {props.post.num_upvotes - props.post.num_downvotes}
-      </p>
+      <p className="text-2xl font-bold">{props.post.net_vote_count}</p>
       <button
         onClick={voteHandler}
-        data-post_owned_by_current_user={props.post.current_user_is_owner}
-        data-post={props.post.post_id}
-        data-upvote={props.post.vote_is_upvote}
+        data-post_owner_is_user={props.post.owner_is_user}
+        data-post={props.post.id}
+        data-upvote={props.post.user_vote}
         data-direction={0}
       >
         <FaAngleDown
           className={`${
-            props.post.vote_is_upvote === false ? "text-primary" : ""
+            props.post.user_vote === false ? "text-primary" : ""
           } text-4xl hover:text-primary hover:cursor-pointer`}
         />
       </button>

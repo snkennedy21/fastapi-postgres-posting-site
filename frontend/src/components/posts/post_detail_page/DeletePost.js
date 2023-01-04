@@ -14,7 +14,7 @@ function DeletePost(props) {
   }
 
   return (
-    <button onClick={deletePostHandler} data-post={props.post.post_id}>
+    <button onClick={deletePostHandler} data-post={props.post.id}>
       Delete
     </button>
   );
