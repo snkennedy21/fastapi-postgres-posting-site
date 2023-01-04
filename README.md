@@ -124,6 +124,7 @@ To get a local copy up and running follow these steps
    python -m venv .venv
    ```
 3. Activate virtual environment
+<br/>
    MacOS
    ```sh
    source .venv/bin/activate
@@ -132,19 +133,15 @@ To get a local copy up and running follow these steps
    ```sh
    .venv/Scripts/Activate.ps1
    ```
-4. Install NPM packages
-   ```sh
-   npm install
-   ```
-5. Install requirements.txt
+4. Install requirements.txt
    ```sh
    pip install -r requirements.txt
    ```
-6. Run the development server
+5. Run the development server
    ```sh
    uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
    ```
-7. Run the frontend
+6. Run the frontend
    ```sh
    npm start
    ```
