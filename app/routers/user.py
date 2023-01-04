@@ -63,8 +63,6 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 
   access_token = oauth2.create_access_token(data={"user_id": new_user.id})
 
-  print('hello')
-
   response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, expires=3600, secure=True, samesite="none")
   response.set_cookie(key="auth", value="auth", expires=3600, secure=True, samesite="none")
   return {"access_token": access_token, "token_type": "bearer"}
@@ -80,14 +78,17 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
       detail=f"User with id: {id} does not exist"
     )
 
-  
   return {
     "username": user.username,
     "email": user.email,
   }
 
+@router.get("/{id}")
+def get_user_by_id(id: int, db: Session = Depends(get_db)):
+  pass
 
-@router.put("/{id}")
+
+@router.put("/")
 def update_user(id: int, user: schemas.UserCreate, db: Session = Depends(get_db)):
   user = db.query(models.User).filter(models.User.id == id).first()
 

@@ -5,9 +5,11 @@ import profile from "../../images/profile.jpg";
 import EditProfileModal from "./EditProfileModal";
 import { useState } from "react";
 
-function ProfilePage() {
+function ProfilePage(props) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const { data: user, isLoading: userLoading } = useGetUserProfileQuery();
+
+  console.log(props.pathname);
 
   if (userLoading) {
     return <div>Loading...</div>;
