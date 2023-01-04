@@ -36,8 +36,9 @@
 
 <h3 align="center">Fullstack Overflow</h3>
 
-  <p align="center">
+  <p>
     Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.
+    <br />
     <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
     ·
