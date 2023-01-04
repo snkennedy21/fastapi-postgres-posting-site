@@ -123,8 +123,7 @@ To get a local copy up and running follow these steps
    cd fastapi-postgres
    python -m venv .venv
    ```
-3. Activate virtual environment
-<br/>
+3. Activate virtual environment <br/>
    MacOS
    ```sh
    source .venv/bin/activate
