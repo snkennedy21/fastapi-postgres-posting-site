@@ -1,12 +1,3 @@
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div>
@@ -19,10 +10,11 @@
   <p>
     Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.
     <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <div align="center">
+      <a href="https://github.com/github_username/repo_name">View Demo</a>
+      ·
+      <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    </div>
   </p>
 </div>
 
@@ -41,7 +33,6 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -137,10 +128,14 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [x] Account Creation/Signup
+- [x] User Posts
+- [x] User Comments
+    - [x] User Replies
+- [x] User Votes
+- [ ] View User Accounts
+- [ ] Friend Requests
+- [ ] User Messaging
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
 
@@ -160,9 +155,13 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+### 1. Free Code Camp Python API Development
+&nbsp;&nbsp;&nbsp; This course gave me a great starting point for understanding backend development and deployment <br/>
+&nbsp;&nbsp;&nbsp; https://www.youtube.com/watch?v=0sOvCWFmrtA&t=39293s
+
+### 2. React 16: The Complete Guide
+&nbsp;&nbsp;&nbsp; This course gave me invaluable insight into Best practices for React
+&nbsp;&nbsp;&nbsp; https://www.udemy.com/course/react-the-complete-guide-incl-redux/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
