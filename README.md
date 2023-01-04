@@ -104,16 +104,9 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 To get a local copy up and running follow these steps
 
-### Prerequisites
-
-
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
+#### PIP and NPM Installation
 1. Clone the repo
    ```sh
    git clone https://github.com/github_username/repo_name.git
@@ -144,6 +137,8 @@ To get a local copy up and running follow these steps
    ```sh
    npm start
    ```
+
+#### Docker Installation
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
