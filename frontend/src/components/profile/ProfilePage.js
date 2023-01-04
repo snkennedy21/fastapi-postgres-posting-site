@@ -31,7 +31,7 @@ function ProfilePage(props) {
           <div className="bg-lightBackground p-7 flex rounded-md relative">
             <button
               onClick={() => setEditModalOpen(true)}
-              className="absolute top-1 right-2 text-lg z-40"
+              className="absolute top-1 right-2 text-lg z-30"
             >
               Edit
             </button>

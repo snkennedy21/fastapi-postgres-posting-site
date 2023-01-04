@@ -13,6 +13,7 @@ module.exports = {
         textWhite: "#ECE9F6",
         textGrey: "#8B8D9D",
         textGrey: "#9798a7",
+        textBlack: "#0f0f0f",
       },
       screens: {
         small: {
