@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 
 import Container from "../../ui/Container";
 
+import PrimaryButton from "../../ui/PrimaryButton";
+
 function PostDetailPage() {
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
@@ -37,16 +39,15 @@ function PostDetailPage() {
   return (
     <Container>
       <div className="mb-1">
-        <button
-          onClick={() => {
+        <PrimaryButton
+          clickHandler={() => {
             navigate("/posts");
           }}
-          className="bg-primary py-2 px-4 rounded-md"
         >
-          Back
-        </button>
+          {"Back"}
+        </PrimaryButton>
       </div>
-      <div className="flex flex-col gap-4 bg-lightBackground rounded-md mx-2">
+      <div className="flex flex-col gap-4 bg-lightBackground rounded-md">
         <div className="flex">
           <PostVoting post={post} />
           <PostContent

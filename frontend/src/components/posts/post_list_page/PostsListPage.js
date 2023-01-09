@@ -4,6 +4,7 @@ import PostListItem from "./PostInfo";
 import PostVoting from "../PostVoting";
 import Container from "../../ui/Container";
 import Post from "./Post";
+import PrimaryButton from "../../ui/PrimaryButton";
 
 // Redux Imports
 import { useSelector } from "react-redux";
@@ -25,14 +26,15 @@ function PostsListPage() {
   if (token) {
     return (
       <Container>
-        <button
-          onClick={() => {
-            navigate("/posts/create");
-          }}
-          className="bg-primary self-end py-2 px-4 rounded-md"
-        >
-          New Post
-        </button>
+        <div>
+          <PrimaryButton
+            clickHandler={() => {
+              navigate("/posts/create");
+            }}
+          >
+            {"New Post"}
+          </PrimaryButton>
+        </div>
         {posts.map((post) => {
           return <Post key={post.id} post={post} />;
         })}

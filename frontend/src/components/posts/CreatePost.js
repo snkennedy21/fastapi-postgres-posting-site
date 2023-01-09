@@ -4,6 +4,8 @@ import { useCreatePostMutation } from "../../store/rtk-query-apis/mainApi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import adjustTextareaHeight from "../../functions/adjustTextareaHeight";
+import Container from "../ui/Container";
+import PrimaryButton from "../ui/PrimaryButton";
 
 function CreatePost() {
   const token = useSelector((state) => state.token).token;
@@ -28,7 +30,7 @@ function CreatePost() {
 
   function contentChangeHandler(e) {
     setContent(e.target.value);
-    adjustTextareaHeight(e, "204px");
+    adjustTextareaHeight(e, "304px");
   }
 
   function cancelForm(e) {
@@ -38,10 +40,22 @@ function CreatePost() {
 
   if (token) {
     return (
-      <div className="flex flex-col items-center m-10">
+      <Container>
+        <h2 className="text-4xl text-textWhite">Rules</h2>
+        <p className="text-textGrey text-xl">
+          Full Stack Overflow is a great place to share ideas, ask questions,
+          and connect with others who have similar interests. However, it's
+          important to remember that the internet is a public space and that
+          what you post can be seen by many people. To ensure that interactions
+          on this forum are positive and productive, it's important to be
+          respectful and considerate of others. This means avoiding personal
+          attacks, being open to differing viewpoints, and being mindful of the
+          language you use. By following these guidelines, you can help create a
+          welcoming and inclusive online community for all members.
+        </p>
         <form
           onSubmit={submitPostHandler}
-          className="bg-lightBackground rounded-md px-0 md:px-10 py-7 w-full max-w-[900px]"
+          className="bg-lightBackground rounded-md px-10 py-7 w-full"
         >
           <div className="mb-3 flex flex-col md:flex-row md:justify-between md:gap-2">
             <input
@@ -54,26 +68,16 @@ function CreatePost() {
           <div className="flex flex-col mb-3">
             <textarea
               onChange={contentChangeHandler}
-              className="w-full p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-border border-2 focus:border-primary outline-none transition h-[200px]"
+              className="w-full p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-border border-2 focus:border-primary outline-none transition h-[300px]"
               placeholder="Content"
             ></textarea>
           </div>
           <div className="flex justify-end gap-2">
-            <button
-              onClick={cancelForm}
-              className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
-            >
-              Submit
-            </button>
+            <PrimaryButton clickHandler={cancelForm}>{"Cancel"}</PrimaryButton>
+            <PrimaryButton type="submit">{"Submit"}</PrimaryButton>
           </div>
         </form>
-      </div>
+      </Container>
     );
   } else {
     return (
