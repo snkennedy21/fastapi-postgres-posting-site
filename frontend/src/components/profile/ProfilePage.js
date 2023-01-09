@@ -1,5 +1,5 @@
 import React from "react";
-import Container from "../posts/ui/Container";
+import Container from "../ui/Container";
 import { useGetUserProfileQuery } from "../../store/rtk-query-apis/mainApi";
 import profile from "../../images/profile.jpg";
 import EditProfileModal from "./EditProfileModal";

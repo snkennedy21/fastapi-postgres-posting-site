@@ -13,6 +13,8 @@ import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
 
 import { useNavigate } from "react-router-dom";
 
+import Container from "../../ui/Container";
+
 function PostDetailPage() {
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
@@ -33,66 +35,64 @@ function PostDetailPage() {
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="p-10 flex flex-col gap-4 w-[1000px]">
-        <div className="mb-1">
-          <button
-            onClick={() => {
-              navigate("/posts");
-            }}
-            className="bg-primary py-2 px-4 rounded-md"
-          >
-            Back
-          </button>
+    <Container>
+      <div className="mb-1">
+        <button
+          onClick={() => {
+            navigate("/posts");
+          }}
+          className="bg-primary py-2 px-4 rounded-md"
+        >
+          Back
+        </button>
+      </div>
+      <div className="flex flex-col gap-4 bg-lightBackground rounded-md mx-2">
+        <div className="flex">
+          <PostVoting post={post} />
+          <PostContent
+            post={post}
+            updateFormOpen={updateFormOpen}
+            setUpdateFormOpen={setUpdateFormOpen}
+          />
         </div>
-        <div className="flex flex-col gap-4 bg-lightBackground rounded-md mx-2">
-          <div className="flex">
-            <PostVoting post={post} />
-            <PostContent
-              post={post}
-              updateFormOpen={updateFormOpen}
-              setUpdateFormOpen={setUpdateFormOpen}
+        <div className="flex gap-4 border-b-2 border-b-solid border-b-border m-3 pl-14">
+          <button
+            onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
+          >
+            Comment
+          </button>
+          {post.owner_is_user ? (
+            <React.Fragment>
+              <DeletePost post={post} />
+              <button
+                onClick={() => setUpdateFormOpen(!updateFormOpen)}
+                data-post={post.post_id}
+              >
+                Edit
+              </button>
+            </React.Fragment>
+          ) : (
+            <div className="mb-4"></div>
+          )}
+          {/* </div> */}
+        </div>
+
+        <div className="m-5">
+          {commentFormDisplayed ? (
+            <CommentForm
+              setCommentFormDisplayed={setCommentFormDisplayed}
+              marginLeft="0"
             />
-          </div>
-          <div className="flex gap-4 border-b-2 border-b-solid border-b-border m-3 pl-14">
-            <button
-              onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
-            >
-              Comment
-            </button>
-            {post.owner_is_user ? (
-              <React.Fragment>
-                <DeletePost post={post} />
-                <button
-                  onClick={() => setUpdateFormOpen(!updateFormOpen)}
-                  data-post={post.post_id}
-                >
-                  Edit
-                </button>
-              </React.Fragment>
-            ) : (
-              <div className="mb-4"></div>
-            )}
-            {/* </div> */}
-          </div>
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
 
-          <div className="m-5">
-            {commentFormDisplayed ? (
-              <CommentForm
-                setCommentFormDisplayed={setCommentFormDisplayed}
-                marginLeft="0"
-              />
-            ) : (
-              <React.Fragment></React.Fragment>
-            )}
-
-            {comments.map((comment) => {
-              return <Comment key={comment.id} comment={comment} />;
-            })}
-          </div>
+          {comments.map((comment) => {
+            return <Comment key={comment.id} comment={comment} />;
+          })}
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

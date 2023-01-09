@@ -2,7 +2,7 @@
 import React from "react";
 import PostListItem from "./PostInfo";
 import PostVoting from "../PostVoting";
-import Container from "../ui/Container";
+import Container from "../../ui/Container";
 import Post from "./Post";
 
 // Redux Imports
