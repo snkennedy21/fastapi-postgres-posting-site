@@ -11,10 +11,12 @@ import { useSelector } from "react-redux";
 // RTK Query Imports
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
+import { useNavigate } from "react-router-dom";
+
 function PostsListPage() {
   const token = useSelector((state) => state.token).token;
+  const navigate = useNavigate();
   const { data: posts, isLoading } = useGetAllPostsQuery();
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -23,8 +25,13 @@ function PostsListPage() {
   if (token) {
     return (
       <Container>
-        <button className="bg-primary self-end py-2 px-4 rounded-md">
-          Create Post
+        <button
+          onClick={() => {
+            navigate("/posts/create");
+          }}
+          className="bg-primary self-end py-2 px-4 rounded-md"
+        >
+          New Post
         </button>
         {posts.map((post) => {
           return <Post key={post.id} post={post} />;
