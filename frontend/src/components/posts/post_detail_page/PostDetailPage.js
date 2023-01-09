@@ -58,19 +58,21 @@ function PostDetailPage() {
         </div>
         <div className="flex gap-4 border-b-2 border-b-solid border-b-border m-3 pl-14">
           <button
+            className="rounded-md px-1 hover:bg-primary hover:text-textWhite transition"
             onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
           >
             Comment
           </button>
           {post.owner_is_user ? (
             <React.Fragment>
-              <DeletePost post={post} />
               <button
+                className="rounded-md px-1 hover:bg-primary hover:text-textWhite transition"
                 onClick={() => setUpdateFormOpen(!updateFormOpen)}
                 data-post={post.post_id}
               >
                 Edit
               </button>
+              <DeletePost post={post} />
             </React.Fragment>
           ) : (
             <div className="mb-4"></div>

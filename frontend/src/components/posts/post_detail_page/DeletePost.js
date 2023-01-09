@@ -14,7 +14,11 @@ function DeletePost(props) {
   }
 
   return (
-    <button onClick={deletePostHandler} data-post={props.post.id}>
+    <button
+      className="rounded-md px-1 hover:bg-red-500 hover:text-textWhite transition"
+      onClick={deletePostHandler}
+      data-post={props.post.id}
+    >
       Delete
     </button>
   );
