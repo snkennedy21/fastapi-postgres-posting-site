@@ -11,6 +11,8 @@ import DeletePost from "./DeletePost";
 
 import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
 
+import { useNavigate } from "react-router-dom";
+
 function PostDetailPage() {
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
@@ -19,6 +21,8 @@ function PostDetailPage() {
   const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
   const { data: comments, isLoading: commentsLoading } =
     useGetCommentsQuery(postId);
+
+  const navigate = useNavigate();
 
   if (commentsLoading) {
     return <div>Loading...</div>;
@@ -32,7 +36,14 @@ function PostDetailPage() {
     <div className="flex justify-center">
       <div className="p-10 flex flex-col gap-4 w-[1000px]">
         <div className="mb-1">
-          <button className="bg-primary py-2 px-4 rounded-md">Posts</button>
+          <button
+            onClick={() => {
+              navigate("/posts");
+            }}
+            className="bg-primary py-2 px-4 rounded-md"
+          >
+            Back
+          </button>
         </div>
         <div className="flex flex-col gap-4 bg-lightBackground rounded-md mx-2">
           <div className="flex">

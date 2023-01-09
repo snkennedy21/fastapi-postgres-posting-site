@@ -31,6 +31,11 @@ function CreatePost() {
     adjustTextareaHeight(e, "204px");
   }
 
+  function cancelForm(e) {
+    e.preventDefault();
+    navigate("/posts");
+  }
+
   if (token) {
     return (
       <div className="flex flex-col items-center m-10">
@@ -53,8 +58,17 @@ function CreatePost() {
               placeholder="Content"
             ></textarea>
           </div>
-          <div className="flex justify-end">
-            <button className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color">
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={cancelForm}
+              className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="py-2 px-4 text-xl bg-primary rounded-md text-white hover:bg-blue-400 active:scale-105 transition-color"
+            >
               Submit
             </button>
           </div>
