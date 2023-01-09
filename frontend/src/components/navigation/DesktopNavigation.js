@@ -15,13 +15,12 @@ import { useLogoutMutation } from "../../store/rtk-query-apis/mainApi";
 // RTK Slice Imports
 import { invalidateToken } from "../../store/rtk-slices/tokenSlice";
 
-import logo from "../../images/logo.png";
-
 function DesktopNavigation() {
   const token = useSelector((state) => state.token).token;
   const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [logoHovered, setLogoHovered] = useState(false);
 
   function logoutUser() {
     logout();
@@ -36,16 +35,40 @@ function DesktopNavigation() {
 
   return (
     <nav className="bg-lightBackground flex justify-between px-12">
-      <ul className="flex text-xl font-normal gap-1 my-1 items-center">
+      <ul className="flex text-xl font-normal gap-1 items-center mt-4 mb-1">
         <div
           onClick={navigateHandler}
           data-value="/home"
-          className="flex items-center gap-8 mt-5 mb-2 hover:cursor-pointer"
+          onMouseEnter={() => {
+            setLogoHovered(true);
+          }}
+          onMouseLeave={() => {
+            setLogoHovered(false);
+          }}
+          className="flex items-center gap-5 pt-2 pb-2 px-4 rounded-md hover:cursor-pointer hover:bg-darkBackground transition"
         >
           <div className="relative">
-            <div className="w-3 h-3 bg-primary absolute right-2.5 -top-2.5 -rotate-45"></div>
-            <div className="w-3 h-3 bg-primary absolute -right-1.5 top-3 -rotate-25"></div>
-            <div className="w-3 h-3 bg-primary absolute -right-4 -top-3 -rotate-15"></div>
+            <div
+              className={`${
+                logoHovered
+                  ? "-translate-x-2 translate-y-3 rotate-0"
+                  : "rotate-45"
+              } w-3 h-3 bg-primary absolute right-2.5 -top-2.5 transition duration-500`}
+            ></div>
+            <div
+              className={`${
+                logoHovered
+                  ? "-translate-x-2 translate-y-1.5 rotate-0"
+                  : "rotate-75"
+              } w-3 h-3 bg-primary absolute -right-1.5 top-3 transition duration-500`}
+            ></div>
+            <div
+              className={` ${
+                logoHovered
+                  ? "-translate-x-[18px] translate-y-3.5 rotate-0"
+                  : "rotate-85"
+              } w-3 h-3 bg-primary absolute -right-4 -top-3 transition duration-500`}
+            ></div>
             <div className="w-3 h-3 bg-textWhite m-0.5"></div>
             <div className="flex">
               <div className="w-3 h-3 bg-textWhite m-0.5"></div>
@@ -66,15 +89,8 @@ function DesktopNavigation() {
         >
           Posts
         </li>
-        <li
-          onClick={navigateHandler}
-          data-value="/posts/create"
-          className="nav-button"
-        >
-          Create Post
-        </li>
       </ul>
-      <ul className="flex gap-6 text-xl font-normal my-1">
+      <ul className="flex gap-6 text-xl font-normal mt-4 mb-1 items-center">
         {token ? (
           <React.Fragment>
             <li
