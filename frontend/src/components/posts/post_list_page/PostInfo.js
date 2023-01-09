@@ -12,7 +12,6 @@ function PostInfo(props) {
     navigate(`/posts/${postId}`);
   }
 
-  console.log(props.post);
 
   return (
     <div className="flex flex-col w-full">

@@ -24,8 +24,6 @@ function PostVoting(props) {
       post_id: postId,
     };
 
-    console.log(upvote);
-
     if (postOwnedByCurrentUser === "true") {
       alert("Cannot Vote on Your Own Post");
       return;
@@ -34,10 +32,8 @@ function PostVoting(props) {
     if (upvote === undefined) {
       addVote(addVoteData);
     } else if (upvote === "true" && voteDirection === 0) {
-      console.log("upvote");
       deleteVote(deleteVoteData);
     } else if (upvote === "false" && voteDirection === 1) {
-      console.log("downvote");
       deleteVote(deleteVoteData);
     }
   }

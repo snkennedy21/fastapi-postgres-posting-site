@@ -36,7 +36,7 @@ function EditProfileModal(props) {
       <div
         className={`${
           props.editModalOpen
-            ? "-translate-y-3/4 opacity-1 pointer-events-auto"
+            ? "-translate-y-1/2 opacity-1 pointer-events-auto"
             : "-translate-y-full opacity-0 pointer-events-none"
         } absolute top-1/2 left-1/2 -translate-x-1/2 w-full small:w-[600px] flex justify-center transition duration-500 z-40`}
       >

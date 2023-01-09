@@ -142,7 +142,7 @@ export const mainApi = createApi({
           credentials: "include",
         };
       },
-      invalidatesTags: ["Post", "Comment"],
+      invalidatesTags: ["Post", "Comment", "User"],
     }),
 
     signup: builder.mutation({

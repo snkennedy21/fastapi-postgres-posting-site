@@ -20,6 +20,11 @@ module.exports = {
           min: "600px",
         },
       },
+      rotate: {
+        65: "65deg",
+        25: "25deg",
+        15: "15deg",
+      },
     },
   },
   plugins: [],

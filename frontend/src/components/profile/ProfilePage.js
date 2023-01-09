@@ -3,22 +3,41 @@ import Container from "../posts/ui/Container";
 import { useGetUserProfileQuery } from "../../store/rtk-query-apis/mainApi";
 import profile from "../../images/profile.jpg";
 import EditProfileModal from "./EditProfileModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
 
 function ProfilePage(props) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
+  const [posts, setPosts] = useState([]);
+  const [orderBy, setOrderBy] = useState("Recent");
+
+  useEffect(() => {
+    if (userDataLoading) {
+      return;
+    }
+    setPosts(userData.posts);
+  }, [userData]);
 
   if (userDataLoading) {
     return <div>Loading...</div>;
   }
 
-  console.log(userData.username);
+  console.log(posts);
 
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
+  }
+
+  function sortPosts(e) {
+    if (e.target.value === "Votes") {
+      console.log("sort");
+    } else if (e.target.value === "Time") {
+      console.log("sort");
+    } else if (e.target.value === "Comments") {
+      console.log("sort");
+    }
   }
 
   return (
@@ -60,21 +79,31 @@ function ProfilePage(props) {
             </div>
           </div>
           <div className="p-7 flex justify-around rounded-md w-1/2">
-            <button className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary">
-              Recent
+            <button
+              onClick={sortPosts}
+              value="Votes"
+              className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
+            >
+              Votes
             </button>
-            <button className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary">
-              Popular
+            <button
+              onClick={sortPosts}
+              value="Time"
+              className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
+            >
+              Time
             </button>
-            <button className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary">
-              Oldest
+            <button
+              onClick={sortPosts}
+              value="Comments"
+              className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
+            >
+              Comments
             </button>
           </div>
-          <Container>
-            {userData.posts.map((post) => {
-              return <Post key={post.id} post={post} />;
-            })}
-          </Container>
+          {posts.map((post) => {
+            return <Post key={post.id} post={post} />;
+          })}
         </div>
       </div>
     </React.Fragment>
