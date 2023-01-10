@@ -9,6 +9,7 @@ function EditProfileModal(props) {
   const [about, setAbout] = useState(props.about);
   const [updateUserInfo] = useUpdateUserMutation();
   const [usernameError, setUsernameError] = useState("");
+  const [file, setFile] = useState("");
   const aboutRef = useRef(null);
 
   useEffect(() => {
@@ -17,23 +18,25 @@ function EditProfileModal(props) {
 
   function submitHandler(e) {
     e.preventDefault();
-    const userData = {
-      username: username,
-      about: about,
-    };
-    updateUserInfo(userData)
-      .unwrap()
-      .then((payload) => {
-        props.toggleModal();
-      })
-      .catch((error) => {
-        if (error.data.detail === "usernameExists") {
-          setUsernameError("This username already exists");
-        }
-        if (error.data.detail === "usernameEmpty") {
-          setUsernameError("This field cannot be blank");
-        }
-      });
+    updateUserInfo(e.target);
+    // const userData = {
+    //   username: username,
+    //   about: about,
+    //   photo: photo,
+    // };
+    // updateUserInfo(userData)
+    //   .unwrap()
+    //   .then((payload) => {
+    //     props.toggleModal();
+    //   })
+    //   .catch((error) => {
+    //     if (error.data.detail === "usernameExists") {
+    //       setUsernameError("This username already exists");
+    //     }
+    //     if (error.data.detail === "usernameEmpty") {
+    //       setUsernameError("This field cannot be blank");
+    //     }
+    //   });
   }
 
   function aboutChangeHandler(e) {
@@ -44,6 +47,10 @@ function EditProfileModal(props) {
   function usernameChangeHandler(e) {
     setUsername(e.target.value);
     setUsernameError("");
+  }
+
+  function fileChangeHandler(e) {
+    setFile(e.target.value);
   }
 
   return (
@@ -68,7 +75,7 @@ function EditProfileModal(props) {
             onClick={props.toggleModal}
             className="absolute top-2 right-7 w-6 h-6 text-textBlack hover:cursor-pointer"
           />
-          <form className="flex flex-col gap-4">
+          <form onSubmit={submitHandler} className="flex flex-col gap-4">
             <div>
               {usernameError !== "" ? (
                 <label className="text-xl text-red-500">{usernameError}</label>
@@ -76,6 +83,7 @@ function EditProfileModal(props) {
                 <label className="text-xl text-textBlack">Username</label>
               )}
               <input
+                name="username"
                 value={username}
                 onChange={usernameChangeHandler}
                 className={`${
@@ -87,11 +95,22 @@ function EditProfileModal(props) {
             <div>
               <label className="text-xl text-textBlack">About</label>
               <textarea
+                name="about"
                 value={about}
                 onChange={aboutChangeHandler}
                 ref={aboutRef}
                 className="w-full p-2 text-2xl rounded-md border-border border-2 bg-darkBackground text-textGrey focus:border-primary outline-none transition h-[100px]"
                 placeholder="About"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-xl text-textBlack">Upload Photo</label>
+              <input
+                name="file"
+                type="file"
+                value={file}
+                onChange={fileChangeHandler}
+                className="bg-orange-49=00"
               />
             </div>
             <div className="flex justify-end gap-2 mt-5">
@@ -105,7 +124,7 @@ function EditProfileModal(props) {
                 Cancel
               </button>
               <button
-                onClick={submitHandler}
+                type="submit"
                 className="bg-primary px-4 py-2 rounded-md text-xl text-textBlack"
               >
                 Update

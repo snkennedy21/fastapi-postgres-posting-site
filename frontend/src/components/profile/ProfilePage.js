@@ -24,19 +24,15 @@ function ProfilePage(props) {
     return <div>Loading...</div>;
   }
 
-  console.log(userData);
-
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
   }
 
   function sortPosts(e) {
     if (e.target.value === "Votes") {
-      console.log("sort");
     } else if (e.target.value === "Time") {
-      console.log("sort");
     } else if (e.target.value === "Comments") {
-      console.log("sort");
+
     }
   }
 

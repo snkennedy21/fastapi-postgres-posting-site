@@ -178,12 +178,19 @@ export const mainApi = createApi({
 
     updateUser: builder.mutation({
       query: (data) => {
-        console.log(data);
+        let formData = null;
+        if (data instanceof HTMLElement) {
+          formData = new FormData(data);
+          for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+          }
+        }
         return {
           url: "/users",
           method: "PUT",
-          body: data,
+          body: formData,
           credentials: "include",
+          contentType: "multipart/form-data",
         };
       },
       invalidatesTags: ["User"],
