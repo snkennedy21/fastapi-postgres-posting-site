@@ -5,6 +5,7 @@ from sqlalchemy import func
 from ..database import get_db
 import re, io
 from PIL import Image
+import base64
 
 
 router = APIRouter(
@@ -100,20 +101,20 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
       status_code=status.HTTP_404_NOT_FOUND,
       detail=f"User with id: {id} does not exist"
     )
-  
-  print(user.__dict__["photo"])
 
   with io.BytesIO(user.__dict__["photo"]) as f:
     img = Image.open(f)
     f = io.BytesIO()
     img.save(f, format="JPEG")
     f.seek(0)
+    photo_bytes = f.read()
+    photo_base64 = base64.b64encode(photo_bytes).decode()
     return {
       "username": user.username,
       "email": user.email,
       "about": user.about,
       "posts": users_posts,
-      "photo": user.__dict__["photo"]
+      "photo": photo_base64
     }
 
   # return {

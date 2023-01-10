@@ -12,12 +12,16 @@ function ProfilePage(props) {
     useGetUserProfileQuery();
   const [posts, setPosts] = useState([]);
   const [orderBy, setOrderBy] = useState("Recent");
+  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     if (userDataLoading) {
       return;
     }
     setPosts(userData.posts);
+    const decodedImage = decodeImage(userData.photo);
+    const objectUrl = createObjectUrl(decodedImage);
+    setImageUrl(objectUrl);
   }, [userData]);
 
   if (userDataLoading) {
@@ -36,6 +40,22 @@ function ProfilePage(props) {
     } else if (e.target.value === "Comments") {
     }
   }
+
+  const decodeImage = (data) => {
+    const binaryString = window.atob(data);
+    const binaryData = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      binaryData[i] = binaryString.charCodeAt(i);
+    }
+    return binaryData;
+  };
+
+  // Create an ObjectURL for the image
+  const createObjectUrl = (data) => {
+    const blob = new Blob([data], { type: "image/jpeg" });
+    const url = window.URL.createObjectURL(blob);
+    return url;
+  };
 
   return (
     <React.Fragment>
@@ -56,7 +76,7 @@ function ProfilePage(props) {
           <div className="pr-7">
             <img
               className="rounded-full w-full"
-              src={profile}
+              src={imageUrl}
               alt="profile picture"
             />
           </div>
