@@ -2,12 +2,12 @@ import React from "react";
 import { FaTimes } from "react-icons/fa";
 import adjustTextareaHeight from "../../functions/adjustTextareaHeight";
 import { useState, useRef, useEffect } from "react";
+import { useUpdateUserMutation } from "../../store/rtk-query-apis/mainApi";
 
 function EditProfileModal(props) {
   const [username, setUsername] = useState(props.username);
-  const [about, setAbout] = useState(
-    "My name is sean kenedy and I love to design posts for online forums. I hope you take the time to read this and consider me My name is sean kenedy and I love to design posts for online forums"
-  );
+  const [about, setAbout] = useState(props.about);
+  const [updateUserInfo] = useUpdateUserMutation();
   const aboutRef = useRef(null);
 
   useEffect(() => {
@@ -16,6 +16,11 @@ function EditProfileModal(props) {
 
   function submitHandler(e) {
     e.preventDefault();
+    const userData = {
+      username: username,
+      about: about,
+    };
+    updateUserInfo(userData);
     props.toggleModal();
   }
 

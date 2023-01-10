@@ -176,6 +176,19 @@ export const mainApi = createApi({
       providesTags: ["User"],
     }),
 
+    updateUser: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: "/users",
+          method: "PUT",
+          body: data,
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["User"],
+    }),
+
     // ***************** //
     // COMMENT ENDPOINTS //
     // ***************** //
@@ -236,6 +249,7 @@ export const {
   useSignupMutation,
   useLogoutMutation,
   useGetUserProfileQuery,
+  useUpdateUserMutation,
   useGetCommentsQuery,
   useCreateCommentMutation,
   useUpdateCommentMutation,

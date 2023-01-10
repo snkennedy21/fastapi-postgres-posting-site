@@ -38,7 +38,7 @@ function Homepage() {
           </div>
         </div>
         <div className="flex items-center gap-4 mt-10">
-          <div class="flex">
+          <div className="flex">
             <img
               className="rounded-full w-12 h-12 -mr-3 border-2 border-solid border-darkBackground"
               src={customer1}

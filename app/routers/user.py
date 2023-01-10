@@ -102,6 +102,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
   return {
     "username": user.username,
     "email": user.email,
+    "about": user.about,
     "posts": users_posts
   }
 
@@ -111,6 +112,12 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/")
-def update_user(id: int, user: schemas.UserCreate, db: Session = Depends(get_db)):
-  user = db.query(models.User).filter(models.User.id == id).first()
+def update_user(user: schemas.UserUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+  current_user.username = user.username
+  current_user.about = user.about
+  db.commit()
+
+  print('hello')
+
+  return {"success": "yay"}
 

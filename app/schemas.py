@@ -11,6 +11,11 @@ class UserCreate(BaseModel):
   confirm_password: str
 
 
+class UserUpdate(BaseModel):
+  username: str
+  about: Optional[str]
+
+
 class UserOut(BaseModel):
   id: int
   username: str

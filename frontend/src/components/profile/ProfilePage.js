@@ -24,7 +24,7 @@ function ProfilePage(props) {
     return <div>Loading...</div>;
   }
 
-  console.log(posts);
+  console.log(userData);
 
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
@@ -46,6 +46,7 @@ function ProfilePage(props) {
         editModalOpen={editModalOpen}
         toggleModal={modalHandler}
         username={userData.username}
+        about={userData.about}
       />
       <Container>
         <div className="bg-lightBackground p-7 flex rounded-md relative">
@@ -70,10 +71,7 @@ function ProfilePage(props) {
               <span className="font-bold">Email:</span> {userData.email}
             </p>
             <p className="text-2xl">
-              <span className="font-bold">About:</span> My name is sean kenedy
-              and I love to design posts for online forums. I hope you take the
-              time to read this and consider me My name is sean kenedy and I
-              love to design posts for online forums.
+              <span className="font-bold">About:</span> {userData.about}
             </p>
           </div>
         </div>
