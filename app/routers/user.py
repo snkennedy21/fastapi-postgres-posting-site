@@ -3,7 +3,8 @@ from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from ..database import get_db
-import re
+import re, io
+from PIL import Image
 
 
 router = APIRouter(
@@ -72,6 +73,7 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 @router.get('/')
 def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
   user = db.query(models.User).filter(models.User.id == current_user.id).first()
+
   posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
 
   users_posts = []
@@ -98,13 +100,28 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
       status_code=status.HTTP_404_NOT_FOUND,
       detail=f"User with id: {id} does not exist"
     )
+  
+  print(user.__dict__["photo"])
 
-  return {
-    "username": user.username,
-    "email": user.email,
-    "about": user.about,
-    "posts": users_posts
-  }
+  with io.BytesIO(user.__dict__["photo"]) as f:
+    img = Image.open(f)
+    f = io.BytesIO()
+    img.save(f, format="JPEG")
+    f.seek(0)
+    return {
+      "username": user.username,
+      "email": user.email,
+      "about": user.about,
+      "posts": users_posts,
+      "photo": user.__dict__["photo"]
+    }
+
+  # return {
+  #   "username": user.username,
+  #   "email": user.email,
+  #   "about": user.about,
+  #   "posts": users_posts
+  # }
 
 @router.get("/{id}")
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
@@ -113,7 +130,11 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  print(file.__dict__)
+  file_data = io.BytesIO(file.file.read()).getvalue()
+  current_user.photo = file_data
+  current_user.username = username
+  current_user.about = about
+  db.commit()
 
   # username_already_exists = db.query(models.User).filter(models.User.username == user_input.username).first()
 

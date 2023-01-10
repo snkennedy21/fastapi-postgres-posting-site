@@ -24,6 +24,8 @@ function ProfilePage(props) {
     return <div>Loading...</div>;
   }
 
+  console.log(userData);
+
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
   }
@@ -32,7 +34,6 @@ function ProfilePage(props) {
     if (e.target.value === "Votes") {
     } else if (e.target.value === "Time") {
     } else if (e.target.value === "Comments") {
-
     }
   }
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, LargeBinary
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -25,6 +25,7 @@ class User(Base):
   password = Column(String, nullable=False)
   created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
   about = Column(String(length=500), nullable=True)
+  photo = Column(LargeBinary, nullable=True)
 
 
 class Vote(Base):
