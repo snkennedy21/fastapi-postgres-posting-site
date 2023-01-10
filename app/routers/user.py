@@ -112,9 +112,23 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/")
-def update_user(user: schemas.UserUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  current_user.username = user.username
-  current_user.about = user.about
+def update_user(user_input: schemas.UserUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+  username_already_exists = db.query(models.User).filter(models.User.username == user_input.username).first()
+
+  if username_already_exists and not user_input.username == current_user.username:
+    raise HTTPException(
+      status_code=status.HTTP_409_CONFLICT,
+      detail="usernameExists"
+    )
+  if user_input.username == '':
+    raise HTTPException(
+      status_code=status.HTTP_409_CONFLICT,
+      detail="usernameEmpty"
+    )
+
+
+  current_user.username = user_input.username
+  current_user.about = user_input.about
   db.commit()
 
   print('hello')

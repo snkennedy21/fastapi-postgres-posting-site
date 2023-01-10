@@ -8,6 +8,7 @@ function EditProfileModal(props) {
   const [username, setUsername] = useState(props.username);
   const [about, setAbout] = useState(props.about);
   const [updateUserInfo] = useUpdateUserMutation();
+  const [usernameError, setUsernameError] = useState("");
   const aboutRef = useRef(null);
 
   useEffect(() => {
@@ -20,13 +21,29 @@ function EditProfileModal(props) {
       username: username,
       about: about,
     };
-    updateUserInfo(userData);
-    props.toggleModal();
+    updateUserInfo(userData)
+      .unwrap()
+      .then((payload) => {
+        props.toggleModal();
+      })
+      .catch((error) => {
+        if (error.data.detail === "usernameExists") {
+          setUsernameError("This username already exists");
+        }
+        if (error.data.detail === "usernameEmpty") {
+          setUsernameError("This field cannot be blank");
+        }
+      });
   }
 
   function aboutChangeHandler(e) {
     setAbout(e.target.value);
     adjustTextareaHeight(e, "104px");
+  }
+
+  function usernameChangeHandler(e) {
+    setUsername(e.target.value);
+    setUsernameError("");
   }
 
   return (
@@ -53,11 +70,17 @@ function EditProfileModal(props) {
           />
           <form className="flex flex-col gap-4">
             <div>
-              <label className="text-xl text-textBlack">Username</label>
+              {usernameError !== "" ? (
+                <label className="text-xl text-red-500">{usernameError}</label>
+              ) : (
+                <label className="text-xl text-textBlack">Username</label>
+              )}
               <input
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-2 text-2xl rounded-md border-border border-2 bg-darkBackground text-textGrey focus:border-primary outline-none transition"
+                onChange={usernameChangeHandler}
+                className={`${
+                  usernameError ? "border-red-800" : "border-border"
+                } w-full p-2 text-2xl rounded-md border-border border-2 bg-darkBackground text-textGrey focus:border-primary outline-none transition`}
                 placeholder="Username"
               />
             </div>
