@@ -97,7 +97,6 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
     users_posts.append(post_dict)
 
-
   if not user:
     raise HTTPException(
       status_code=status.HTTP_404_NOT_FOUND,
@@ -108,12 +107,9 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
     "username": user.username,
     "email": user.email,
     "about": user.about,
-    "posts": users_posts
+    "posts": users_posts,
+    "photo_url": user.photo_url
   }
-
-@router.get("/{id}")
-def get_user_by_id(id: int, db: Session = Depends(get_db)):
-  pass
 
 
 @router.put("/")
@@ -143,7 +139,6 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
   s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
   url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
 
-  print(url)
   user = db.query(models.User).filter(models.User.username == username).first()
   user.photo_url = url
   user.username = username
