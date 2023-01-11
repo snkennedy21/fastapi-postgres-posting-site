@@ -11,7 +11,6 @@ function EditProfileModal(props) {
   const [usernameError, setUsernameError] = useState("");
   const [remainingChars, setRemainingChars] = useState(200);
   const [remainingCharsVisible, setRemainingCharsVisible] = useState(false);
-  const [keyPressed, setKeyPressed] = useState("");
   const [file, setFile] = useState("");
   const aboutRef = useRef(null);
 
@@ -19,8 +18,7 @@ function EditProfileModal(props) {
     aboutRef.current.style.height = `${aboutRef.current.scrollHeight}px`;
     setRemainingChars(200 - props.about.length);
     setRemainingChars(200 - about.length);
-    if (remainingChars < 0) setAbout(about.slice(0, 200));
-  }, [props.about, about, remainingChars]);
+  }, [props.about, about]);
 
   function submitHandler(e) {
     e.preventDefault();
@@ -40,9 +38,6 @@ function EditProfileModal(props) {
   }
 
   function aboutChangeHandler(e) {
-    if (remainingChars === 0 && keyPressed !== "Backspace") {
-      return;
-    }
     setRemainingCharsVisible(true);
     setAbout(e.target.value);
     adjustTextareaHeight(e, "104px");
@@ -101,9 +96,6 @@ function EditProfileModal(props) {
               <textarea
                 name="about"
                 value={about}
-                onKeyDown={(e) => {
-                  setKeyPressed(e.key);
-                }}
                 onChange={aboutChangeHandler}
                 maxLength={200}
                 ref={aboutRef}
