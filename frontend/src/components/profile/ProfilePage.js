@@ -19,7 +19,6 @@ function ProfilePage(props) {
     }
     const image = new Image();
     image.src = `data:image/jpeg;base64,${userData.photo}`;
-    console.log(image.src);
     setImage(image.src);
     setPosts(userData.posts);
   }, [userData]);
@@ -49,11 +48,11 @@ function ProfilePage(props) {
             Edit
           </button>
           <div className="pr-7">
-            <img
-              className="rounded-full w-full"
-              src={image}
-              alt="profile picture"
-            />
+            {image === null || image === "data:image/jpeg;base64," ? (
+              <img className="rounded-full w-full" src={profile} />
+            ) : (
+              <img className="rounded-full w-full" src={image} />
+            )}
           </div>
           <div className="w-11/12">
             <p className="text-2xl">

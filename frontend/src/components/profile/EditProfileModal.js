@@ -6,40 +6,44 @@ import { useUpdateUserMutation } from "../../store/rtk-query-apis/mainApi";
 
 function EditProfileModal(props) {
   const [username, setUsername] = useState(props.username);
-  const [about, setAbout] = useState(props.about);
+  const [about, setAbout] = useState(props.about ? props.about : "");
   const [updateUserInfo] = useUpdateUserMutation();
   const [usernameError, setUsernameError] = useState("");
+  const [remainingChars, setRemainingChars] = useState(200);
+  const [remainingCharsVisible, setRemainingCharsVisible] = useState(false);
+  const [keyPressed, setKeyPressed] = useState("");
   const [file, setFile] = useState("");
   const aboutRef = useRef(null);
 
   useEffect(() => {
     aboutRef.current.style.height = `${aboutRef.current.scrollHeight}px`;
-  }, []);
+    setRemainingChars(200 - props.about.length);
+    setRemainingChars(200 - about.length);
+    if (remainingChars < 0) setAbout(about.slice(0, 200));
+  }, [props.about, about, remainingChars]);
 
   function submitHandler(e) {
     e.preventDefault();
-    updateUserInfo(e.target);
-    // const userData = {
-    //   username: username,
-    //   about: about,
-    //   photo: photo,
-    // };
-    // updateUserInfo(userData)
-    //   .unwrap()
-    //   .then((payload) => {
-    //     props.toggleModal();
-    //   })
-    //   .catch((error) => {
-    //     if (error.data.detail === "usernameExists") {
-    //       setUsernameError("This username already exists");
-    //     }
-    //     if (error.data.detail === "usernameEmpty") {
-    //       setUsernameError("This field cannot be blank");
-    //     }
-    //   });
+    updateUserInfo(e.target)
+      .unwrap()
+      .then((payload) => {
+        props.toggleModal();
+      })
+      .catch((error) => {
+        if (error.data.detail === "usernameExists") {
+          setUsernameError("This username already exists");
+        }
+        if (error.data.detail === "usernameEmpty") {
+          setUsernameError("This field cannot be blank");
+        }
+      });
   }
 
   function aboutChangeHandler(e) {
+    if (remainingChars === 0 && keyPressed !== "Backspace") {
+      return;
+    }
+    setRemainingCharsVisible(true);
     setAbout(e.target.value);
     adjustTextareaHeight(e, "104px");
   }
@@ -92,16 +96,25 @@ function EditProfileModal(props) {
                 placeholder="Username"
               />
             </div>
-            <div>
+            <div className="flex flex-col">
               <label className="text-xl text-textBlack">About</label>
               <textarea
                 name="about"
                 value={about}
+                onKeyDown={(e) => {
+                  setKeyPressed(e.key);
+                }}
                 onChange={aboutChangeHandler}
+                maxLength={200}
                 ref={aboutRef}
                 className="w-full p-2 text-2xl rounded-md border-border border-2 bg-darkBackground text-textGrey focus:border-primary outline-none transition h-[100px]"
                 placeholder="About"
               />
+              {remainingCharsVisible ? (
+                <p className="self-end">{remainingChars} Remaining</p>
+              ) : (
+                <div className="h-6"></div>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="text-xl text-textBlack">Upload Photo</label>

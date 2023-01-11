@@ -103,27 +103,28 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
     aws_secret_access_key = AWS_SECRET_KEY
   )
 
+  user_photo = ''
   photo_url = user.photo_url
+  if photo_url is not None:
 
-  split_url = photo_url.split('/')
-  file_name = split_url[-1]
+    split_url = photo_url.split('/')
+    file_name = split_url[-1]
 
-
-  # try:
-  response = s3.get_object(
-    Bucket = S3_BUCKET_NAME,
-    Key = file_name
-  )
-  user_photo = base64.b64encode(response["Body"].read()).decode()
+    response = s3.get_object(
+      Bucket = S3_BUCKET_NAME,
+      Key = file_name
+    )
+    user_photo = base64.b64encode(response["Body"].read()).decode()
   # except Exception as e:
   #   raise HTTPException(status_code=404, detail="User's Photo not found")
 
-  print(user_photo)
   if not user:
     raise HTTPException(
       status_code=status.HTTP_404_NOT_FOUND,
       detail=f"User with id: {id} does not exist"
     )
+
+  print(user_photo)
 
   return {
     "username": user.username,
@@ -136,7 +137,6 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  
 
   username_already_exists = db.query(models.User).filter(models.User.username == username).first()
 
@@ -150,21 +150,21 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
       status_code=status.HTTP_409_CONFLICT,
       detail="usernameEmpty"
     )
-    
 
-  s3 = boto3.client(
-      "s3",
-      aws_access_key_id = AWS_ACCESS_KEY,
-      aws_secret_access_key = AWS_SECRET_KEY
-    )
-  file_name = f"{username}_{file.filename}"
-  s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
-  url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
+  url = current_user.photo_url 
+  if file.filename != '':    
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id = AWS_ACCESS_KEY,
+        aws_secret_access_key = AWS_SECRET_KEY
+      )
+    file_name = f"{username}_{file.filename}"
+    s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
+    url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
 
-  user = db.query(models.User).filter(models.User.username == username).first()
-  user.photo_url = url
-  user.username = username
-  user.about = about
+  current_user.photo_url = url
+  current_user.username = username
+  current_user.about = about
   db.commit()
 
 
