@@ -14,6 +14,7 @@ class UserCreate(BaseModel):
 class UserUpdate(BaseModel):
   username: str
   about: Optional[str]
+  photo: str
 
 
 class UserOut(BaseModel):

@@ -1,9 +1,14 @@
-from fastapi import status, HTTPException, Depends, APIRouter, Response
+from fastapi import status, HTTPException, Depends, APIRouter, Response, Form, File, UploadFile
 from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from ..database import get_db
-import re
+import re, io, boto3, base64
+
+
+S3_BUCKET_NAME = "fullstackoverflowphotos"
+AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
+AWS_SECRET_KEY = "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"
 
 
 router = APIRouter(
@@ -92,6 +97,26 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
     users_posts.append(post_dict)
 
+  s3 = boto3.client(
+    "s3",
+    aws_access_key_id = AWS_ACCESS_KEY,
+    aws_secret_access_key = AWS_SECRET_KEY
+  )
+
+  user_photo = ''
+  photo_url = user.photo_url
+  if photo_url is not None:
+
+    split_url = photo_url.split('/')
+    file_name = split_url[-1]
+
+    response = s3.get_object(
+      Bucket = S3_BUCKET_NAME,
+      Key = file_name
+    )
+    user_photo = base64.b64encode(response["Body"].read()).decode()
+  # except Exception as e:
+  #   raise HTTPException(status_code=404, detail="User's Photo not found")
 
   if not user:
     raise HTTPException(
@@ -99,39 +124,49 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
       detail=f"User with id: {id} does not exist"
     )
 
+  print(user_photo)
+
   return {
     "username": user.username,
     "email": user.email,
     "about": user.about,
-    "posts": users_posts
+    "posts": users_posts,
+    "photo": user_photo
   }
-
-@router.get("/{id}")
-def get_user_by_id(id: int, db: Session = Depends(get_db)):
-  pass
 
 
 @router.put("/")
-def update_user(user_input: schemas.UserUpdate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  username_already_exists = db.query(models.User).filter(models.User.username == user_input.username).first()
+def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-  if username_already_exists and not user_input.username == current_user.username:
+  username_already_exists = db.query(models.User).filter(models.User.username == username).first()
+
+  if username_already_exists and not username == current_user.username:
     raise HTTPException(
       status_code=status.HTTP_409_CONFLICT,
       detail="usernameExists"
     )
-  if user_input.username == '':
+  if username == '':
     raise HTTPException(
       status_code=status.HTTP_409_CONFLICT,
       detail="usernameEmpty"
     )
 
+  url = current_user.photo_url 
+  if file.filename != '':    
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id = AWS_ACCESS_KEY,
+        aws_secret_access_key = AWS_SECRET_KEY
+      )
+    file_name = f"{username}_{file.filename}"
+    s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
+    url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
 
-  current_user.username = user_input.username
-  current_user.about = user_input.about
+  current_user.photo_url = url
+  current_user.username = username
+  current_user.about = about
   db.commit()
 
-  print('hello')
 
   return {"success": "yay"}
 

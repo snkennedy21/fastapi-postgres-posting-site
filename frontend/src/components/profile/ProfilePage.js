@@ -11,12 +11,15 @@ function ProfilePage(props) {
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
   const [posts, setPosts] = useState([]);
-  const [orderBy, setOrderBy] = useState("Recent");
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (userDataLoading) {
       return;
     }
+    const image = new Image();
+    image.src = `data:image/jpeg;base64,${userData.photo}`;
+    setImage(image.src);
     setPosts(userData.posts);
   }, [userData]);
 
@@ -24,20 +27,8 @@ function ProfilePage(props) {
     return <div>Loading...</div>;
   }
 
-  console.log(userData);
-
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
-  }
-
-  function sortPosts(e) {
-    if (e.target.value === "Votes") {
-      console.log("sort");
-    } else if (e.target.value === "Time") {
-      console.log("sort");
-    } else if (e.target.value === "Comments") {
-      console.log("sort");
-    }
   }
 
   return (
@@ -57,11 +48,11 @@ function ProfilePage(props) {
             Edit
           </button>
           <div className="pr-7">
-            <img
-              className="rounded-full w-full"
-              src={profile}
-              alt="profile picture"
-            />
+            {image === null || image === "data:image/jpeg;base64," ? (
+              <img className="rounded-full w-full" src={profile} />
+            ) : (
+              <img className="rounded-full w-full" src={image} />
+            )}
           </div>
           <div className="w-11/12">
             <p className="text-2xl">
@@ -77,21 +68,18 @@ function ProfilePage(props) {
         </div>
         <div className="p-7 flex justify-around rounded-md w-1/2">
           <button
-            onClick={sortPosts}
             value="Votes"
             className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
           >
             Votes
           </button>
           <button
-            onClick={sortPosts}
             value="Time"
             className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
           >
             Time
           </button>
           <button
-            onClick={sortPosts}
             value="Comments"
             className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
           >
