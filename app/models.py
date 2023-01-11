@@ -25,7 +25,7 @@ class User(Base):
   password = Column(String, nullable=False)
   created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
   about = Column(String(length=500), nullable=True)
-  photo = Column(LargeBinary, nullable=True)
+  photo_url = Column(String, nullable=True)
 
 
 class Vote(Base):

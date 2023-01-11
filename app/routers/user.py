@@ -1,11 +1,14 @@
-from fastapi import status, HTTPException, Depends, APIRouter, Response, File, Form, UploadFile
+from fastapi import status, HTTPException, Depends, APIRouter, Response, Form, File, UploadFile
 from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from ..database import get_db
-import re, io
-from PIL import Image
-import base64
+import re, io, boto3
+
+
+S3_BUCKET_NAME = "fullstackoverflowphotos"
+AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
+AWS_SECRET_KEY = "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"
 
 
 router = APIRouter(
@@ -74,7 +77,6 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 @router.get('/')
 def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
   user = db.query(models.User).filter(models.User.id == current_user.id).first()
-
   posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
 
   users_posts = []
@@ -102,27 +104,12 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
       detail=f"User with id: {id} does not exist"
     )
 
-  with io.BytesIO(user.__dict__["photo"]) as f:
-    img = Image.open(f)
-    f = io.BytesIO()
-    img.save(f, format="JPEG")
-    f.seek(0)
-    photo_bytes = f.read()
-    photo_base64 = base64.b64encode(photo_bytes).decode()
-    return {
-      "username": user.username,
-      "email": user.email,
-      "about": user.about,
-      "posts": users_posts,
-      "photo": photo_base64
-    }
-
-  # return {
-  #   "username": user.username,
-  #   "email": user.email,
-  #   "about": user.about,
-  #   "posts": users_posts
-  # }
+  return {
+    "username": user.username,
+    "email": user.email,
+    "about": user.about,
+    "posts": users_posts
+  }
 
 @router.get("/{id}")
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
@@ -131,29 +118,37 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  file_data = io.BytesIO(file.file.read()).getvalue()
-  current_user.photo = file_data
-  current_user.username = username
-  current_user.about = about
+  
+
+  username_already_exists = db.query(models.User).filter(models.User.username == username).first()
+
+  if username_already_exists and not username == current_user.username:
+    raise HTTPException(
+      status_code=status.HTTP_409_CONFLICT,
+      detail="usernameExists"
+    )
+  if username == '':
+    raise HTTPException(
+      status_code=status.HTTP_409_CONFLICT,
+      detail="usernameEmpty"
+    )
+    
+
+  s3 = boto3.client(
+      "s3",
+      aws_access_key_id = AWS_ACCESS_KEY,
+      aws_secret_access_key = AWS_SECRET_KEY
+    )
+  file_name = f"{username}_{file.filename}"
+  s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
+  url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
+
+  print(url)
+  user = db.query(models.User).filter(models.User.username == username).first()
+  user.photo_url = url
+  user.username = username
+  user.about = about
   db.commit()
-
-  # username_already_exists = db.query(models.User).filter(models.User.username == user_input.username).first()
-
-  # if username_already_exists and not user_input.username == current_user.username:
-  #   raise HTTPException(
-  #     status_code=status.HTTP_409_CONFLICT,
-  #     detail="usernameExists"
-  #   )
-  # if user_input.username == '':
-  #   raise HTTPException(
-  #     status_code=status.HTTP_409_CONFLICT,
-  #     detail="usernameEmpty"
-  #   )
-
-
-  # current_user.username = user_input.username
-  # current_user.about = user_input.about
-  # db.commit()
 
 
   return {"success": "yay"}

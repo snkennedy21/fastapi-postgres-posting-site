@@ -19,43 +19,15 @@ function ProfilePage(props) {
       return;
     }
     setPosts(userData.posts);
-    const decodedImage = decodeImage(userData.photo);
-    const objectUrl = createObjectUrl(decodedImage);
-    setImageUrl(objectUrl);
   }, [userData]);
 
   if (userDataLoading) {
     return <div>Loading...</div>;
   }
 
-  console.log(userData);
-
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
   }
-
-  function sortPosts(e) {
-    if (e.target.value === "Votes") {
-    } else if (e.target.value === "Time") {
-    } else if (e.target.value === "Comments") {
-    }
-  }
-
-  const decodeImage = (data) => {
-    const binaryString = window.atob(data);
-    const binaryData = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      binaryData[i] = binaryString.charCodeAt(i);
-    }
-    return binaryData;
-  };
-
-  // Create an ObjectURL for the image
-  const createObjectUrl = (data) => {
-    const blob = new Blob([data], { type: "image/jpeg" });
-    const url = window.URL.createObjectURL(blob);
-    return url;
-  };
 
   return (
     <React.Fragment>
@@ -76,7 +48,7 @@ function ProfilePage(props) {
           <div className="pr-7">
             <img
               className="rounded-full w-full"
-              src={imageUrl}
+              src={profile}
               alt="profile picture"
             />
           </div>
@@ -94,21 +66,18 @@ function ProfilePage(props) {
         </div>
         <div className="p-7 flex justify-around rounded-md w-1/2">
           <button
-            onClick={sortPosts}
             value="Votes"
             className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
           >
             Votes
           </button>
           <button
-            onClick={sortPosts}
             value="Time"
             className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
           >
             Time
           </button>
           <button
-            onClick={sortPosts}
             value="Comments"
             className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
           >
