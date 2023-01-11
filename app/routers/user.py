@@ -3,7 +3,7 @@ from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from ..database import get_db
-import re, io, boto3
+import re, io, boto3, base64
 
 
 S3_BUCKET_NAME = "fullstackoverflowphotos"
@@ -97,6 +97,28 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
     users_posts.append(post_dict)
 
+  s3 = boto3.client(
+    "s3",
+    aws_access_key_id = AWS_ACCESS_KEY,
+    aws_secret_access_key = AWS_SECRET_KEY
+  )
+
+  photo_url = user.photo_url
+
+  split_url = photo_url.split('/')
+  file_name = split_url[-1]
+
+
+  # try:
+  response = s3.get_object(
+    Bucket = S3_BUCKET_NAME,
+    Key = file_name
+  )
+  user_photo = base64.b64encode(response["Body"].read()).decode()
+  # except Exception as e:
+  #   raise HTTPException(status_code=404, detail="User's Photo not found")
+
+  print(user_photo)
   if not user:
     raise HTTPException(
       status_code=status.HTTP_404_NOT_FOUND,
@@ -108,7 +130,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
     "email": user.email,
     "about": user.about,
     "posts": users_posts,
-    "photo_url": user.photo_url
+    "photo": user_photo
   }
 
 

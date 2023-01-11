@@ -11,21 +11,22 @@ function ProfilePage(props) {
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
   const [posts, setPosts] = useState([]);
-  const [orderBy, setOrderBy] = useState("Recent");
-  const [imageUrl, setImageUrl] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (userDataLoading) {
       return;
     }
+    const image = new Image();
+    image.src = `data:image/jpeg;base64,${userData.photo}`;
+    console.log(image.src);
+    setImage(image.src);
     setPosts(userData.posts);
   }, [userData]);
 
   if (userDataLoading) {
     return <div>Loading...</div>;
   }
-
-  console.log(userData);
 
   function modalHandler() {
     setEditModalOpen(!editModalOpen);
@@ -50,7 +51,7 @@ function ProfilePage(props) {
           <div className="pr-7">
             <img
               className="rounded-full w-full"
-              src={profile}
+              src={image}
               alt="profile picture"
             />
           </div>
