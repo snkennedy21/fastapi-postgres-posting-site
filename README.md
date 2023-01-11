@@ -2,11 +2,11 @@
 <br />
 <div>
   <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="400">
   </a>
-
-<h3 align="center">Fullstack Overflow</h3>
-
+  <br/>
+  <br/>
+  
   <p>
     Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.
     <br />
@@ -156,7 +156,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 ### 2. React 16: The Complete Guide
 
-&nbsp;&nbsp;&nbsp; This course gave me invaluable insight into Best practices for React
+&nbsp;&nbsp;&nbsp; This course gave me invaluable insight into Best practices for React <br/>
 &nbsp;&nbsp;&nbsp; https://www.udemy.com/course/react-the-complete-guide-incl-redux/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
