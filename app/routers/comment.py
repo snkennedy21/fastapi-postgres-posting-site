@@ -118,7 +118,6 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
         elif current_user is not None:
           owner_is_user = comment.owner.id == current_user.id
         
-        print(owner)
         comments.append({
           "id": comment.id,
           "content": comment.content,
@@ -141,7 +140,6 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
 @router.post("/")
 def create_comment(comment: schemas.CommentIn, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
   new_comment = models.Comment(owner_id=current_user.id, **comment.dict())
-  print(new_comment)
   db.add(new_comment)
   db.commit()
   db.refresh(new_comment)

@@ -11,7 +11,6 @@ router = APIRouter(
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def vote(vote: schemas.CommentVote, db: Session = Depends(database.get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-  print('hello')
 
   comment = db.query(models.Comment).filter(models.Comment.id == vote.comment_id).first()
 
