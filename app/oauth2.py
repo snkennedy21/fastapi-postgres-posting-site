@@ -56,7 +56,8 @@ def get_current_user(access_token: str = Cookie(), db: Session = Depends(databas
 
 
   token = verify_access_token(new_token, credentials_exception)
+  print(token)
   user = db.query(models.User).filter(models.User.id == token.id).first()
-
+  print(user)
 
   return user
