@@ -45,7 +45,10 @@ def verify_access_token(token: str, credentials_exception):
   return token_data
 
 
-def get_current_user(access_token: str = Cookie(), db: Session = Depends(database.get_db)):
+def get_current_user(access_token: str = Cookie(None), db: Session = Depends(database.get_db)):
+  if access_token == None:
+    return None
+
   credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail=f"Could not validate credentials",
@@ -53,8 +56,6 @@ def get_current_user(access_token: str = Cookie(), db: Session = Depends(databas
   )
 
   new_token = access_token[7:]
-
-
   token = verify_access_token(new_token, credentials_exception)
   print(token)
   user = db.query(models.User).filter(models.User.id == token.id).first()
