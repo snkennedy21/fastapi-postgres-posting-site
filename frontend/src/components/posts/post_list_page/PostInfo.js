@@ -1,24 +1,41 @@
 import React from "react";
 
+import { useState, useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import { FaCommentAlt, FaThumbsUp } from "react-icons/fa";
 
+import profile from "../../../images/profile.jpg";
+
 function PostInfo(props) {
   const navigate = useNavigate();
+  const [image, setImage] = useState(profile);
 
   function viewPostDetailHandler(e) {
     const postId = parseInt(e.target.dataset.post);
     navigate(`/posts/${postId}`);
   }
 
+  console.log(props.post.owner_photo);
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = `data:image/jpeg;base64,${props.post.owner_photo}`;
+    setImage(image.src);
+  }, []);
 
   return (
     <div className="flex flex-col w-full">
       <div className="border-b-solid border-b-2 border-b-border">
         {/* <div className="flex flex-col px-2 justify-between"> */}
         <div className="flex justify-between">
-          <p className="text-sm text-primary">{props.post.owner.username}</p>
+          <div className="flex gap-2 items-center mb-2">
+            <img className="rounded-full w-6 h-6" src={image} />
+
+            <p className="text-sm text-primary">{props.post.owner.username}</p>
+          </div>
+
           <p className="text-textGrey">Time</p>
         </div>
         <h2

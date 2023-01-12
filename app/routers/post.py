@@ -4,6 +4,11 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from ..database import get_db, engine
 from sqlalchemy import func, distinct, select, and_, text
+import boto3, base64
+
+S3_BUCKET_NAME = "fullstackoverflowphotos"
+AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
+AWS_SECRET_KEY = "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"
 
 router = APIRouter(
   prefix='/posts',
@@ -31,12 +36,32 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       vote_is_upvote = True
     elif current_user is not None:
       vote_is_upvote = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
+    
+    s3 = boto3.client(
+      "s3",
+      aws_access_key_id = AWS_ACCESS_KEY,
+      aws_secret_access_key = AWS_SECRET_KEY
+    )
+
+    user_photo = ''
+    photo_url = post.owner.photo_url
+    if photo_url is not None:
+
+      split_url = photo_url.split('/')
+      file_name = split_url[-1]
+
+      response = s3.get_object(
+        Bucket = S3_BUCKET_NAME,
+        Key = file_name
+      )
+      user_photo = base64.b64encode(response["Body"].read()).decode()
 
     post_dict = post.__dict__
 
     post_dict["net_vote_count"] = net_vote_count
     post_dict["num_comments"] = num_comments
     post_dict["owner"] = owner
+    post_dict["owner_photo"] = user_photo
     post_dict["vote_is_upvote"] = vote_is_upvote
 
     list_of_posts.append(post_dict)
@@ -69,7 +94,6 @@ def get_post(id: int, db: Session = Depends(get_db), access_token: str = Cookie(
     user_vote = None
 
   post_dict = post.__dict__
-  
   post_dict["net_vote_count"] = net_vote_count
   post_dict["num_comments"] = num_comments
   post_dict["owner"] = owner

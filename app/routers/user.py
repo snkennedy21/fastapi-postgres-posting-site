@@ -124,8 +124,6 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
       detail=f"User with id: {id} does not exist"
     )
 
-  print(user_photo)
-
   return {
     "username": user.username,
     "email": user.email,
