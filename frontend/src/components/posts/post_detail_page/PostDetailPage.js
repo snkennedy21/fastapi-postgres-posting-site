@@ -8,6 +8,7 @@ import PostVoting from "../PostVoting";
 import PostContent from "./PostContent";
 import Comment from "./comments/Comment";
 import DeletePost from "./DeletePost";
+import Loading from "../../ui/Loading";
 
 import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
 
@@ -31,11 +32,11 @@ function PostDetailPage() {
   console.log(post);
 
   if (commentsLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (postLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

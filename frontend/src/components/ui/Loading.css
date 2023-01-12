@@ -1,0 +1,77 @@
+@keyframes move1 {
+  0% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translate(12px, -15px) rotate(45deg);
+  }
+
+  50% {
+    transform: translate(12px, -15px) rotate(45deg);
+  }
+
+  75% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes move2 {
+  0% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translate(25px, -17px) rotate(85deg);
+  }
+
+  50% {
+    transform: translate(25px, -17px) rotate(85deg);
+  }
+
+  75% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes move3 {
+  0% {
+    transform: translateY(0px);
+  }
+
+  25% {
+    transform: translate(10px, -10px) rotate(75deg);
+  }
+
+  50% {
+    transform: translate(10px, -10px) rotate(75deg);
+  }
+
+  75% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.move1 {
+  animation: move1 1.5s linear infinite;
+}
+
+.move2 {
+  animation: move2 1.5s linear infinite;
+}
+
+.move3 {
+  animation: move3 1.5s linear infinite;
+}

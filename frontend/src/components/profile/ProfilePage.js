@@ -5,6 +5,7 @@ import profile from "../../images/profile.jpg";
 import EditProfileModal from "./EditProfileModal";
 import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
+import Loading from "../ui/Loading";
 
 function ProfilePage(props) {
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -24,7 +25,7 @@ function ProfilePage(props) {
   }, [userData]);
 
   if (userDataLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   function modalHandler() {

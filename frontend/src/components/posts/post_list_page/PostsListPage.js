@@ -5,6 +5,7 @@ import PostVoting from "../PostVoting";
 import Container from "../../ui/Container";
 import Post from "./Post";
 import PrimaryButton from "../../ui/PrimaryButton";
+import Loading from "../../ui/Loading";
 
 // Redux Imports
 import { useSelector } from "react-redux";
@@ -20,7 +21,7 @@ function PostsListPage() {
   const { data: posts, isLoading } = useGetAllPostsQuery();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
