@@ -86,7 +86,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
     net_vote_count = upvote_count - downvote_count
     user_vote = db.query(models.Vote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
     num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
-    owner = db.query(models.User.username, models.User.email, models.User.id).filter(models.User.id == current_user.id).first()
+    owner = db.query(models.User.username, models.User.email, models.User.id, models.User.photo_url).filter(models.User.id == current_user.id).first()
 
     post_dict = post.__dict__
 

@@ -26,10 +26,11 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
       for reply in parent.replies:
 
         upvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == reply.id, models.CommentVote.upvote == True).scalar()
-
         downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == reply.id, models.CommentVote.upvote == False).scalar()
-
         net_vote_count = upvote_count - downvote_count
+
+        owner = db.query(models.User.username, models.User.email, models.User.id, models.User.photo_url).filter(models.User.id == reply.owner_id).first()
+
 
         if current_user is None:
           user_vote = None
@@ -50,7 +51,7 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
           "id": reply.id,
           "content": reply.content,
           "created_at": reply.created_at,
-          "owner": reply.owner.username,
+          "owner": owner,
           "owner_is_user": owner_is_user,
           "net_vote_count": net_vote_count,
           "user_vote": user_vote,
@@ -63,6 +64,8 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
       upvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == root.id, models.CommentVote == True).scalar()
       downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == root.id, models.CommentVote.upvote == False).scalar()
       net_vote_count = upvote_count - downvote_count
+
+      owner = db.query(models.User.username, models.User.email, models.User.id, models.User.photo_url).filter(models.User.id == root.owner_id).first()
 
       if current_user is None:
         user_vote = None
@@ -83,7 +86,7 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
         "id": root.id,
         "content": root.content,
         "created_at": root.created_at,
-        "owner": root.owner.username,
+        "owner": owner,
         "owner_is_user": owner_is_user,
         "net_vote_count": net_vote_count,
         "user_vote": user_vote,
@@ -96,6 +99,7 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
         upvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == comment.id, models.CommentVote.upvote == True).scalar()
         downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == comment.id, models.CommentVote.upvote == False).scalar()
         net_vote_count = upvote_count - downvote_count
+        owner = db.query(models.User.username, models.User.email, models.User.id, models.User.photo_url).filter(models.User.id == comment.owner_id).first()
 
         if current_user is None:
           user_vote = None
@@ -113,11 +117,13 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
           owner_is_user = False
         elif current_user is not None:
           owner_is_user = comment.owner.id == current_user.id
+        
+        print(owner)
         comments.append({
           "id": comment.id,
           "content": comment.content,
           "created_at": comment.created_at,
-          "owner": comment.owner.username,
+          "owner": owner,
           "owner_is_user": owner_is_user,
           "net_vote_count": net_vote_count,
           "user_vote": user_vote,
@@ -127,6 +133,7 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: 
       return comments
   
   comments = get_nested_comments()
+
 
   return comments
   

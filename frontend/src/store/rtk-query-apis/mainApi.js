@@ -142,7 +142,6 @@ export const mainApi = createApi({
           credentials: "include",
         };
       },
-      invalidatesTags: ["Post", "Comment", "User"],
     }),
 
     signup: builder.mutation({
@@ -162,6 +161,7 @@ export const mainApi = createApi({
         method: "DELETE",
         credentials: "include",
       }),
+      invalidatesTags: ["Post", "Comment", "User"],
     }),
 
     // ************** //

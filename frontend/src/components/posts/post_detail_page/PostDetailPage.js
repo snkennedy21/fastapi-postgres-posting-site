@@ -28,6 +28,8 @@ function PostDetailPage() {
 
   const navigate = useNavigate();
 
+  console.log(post);
+
   if (commentsLoading) {
     return <div>Loading...</div>;
   }

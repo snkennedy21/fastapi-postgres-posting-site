@@ -14,7 +14,15 @@ function PostContent(props) {
       <div className="flex flex-col px-2">
         <div>
           <div className="flex justify-between">
-            <p className="text-lg text-primary">{props.post.owner_username}</p>
+            <div className="flex gap-2 items-center my-1">
+              <img
+                className="rounded-full w-6 h-6"
+                src={props.post.owner.photo_url}
+              />
+              <p className="text-lg text-primary">
+                {props.post.owner.username}
+              </p>
+            </div>
             <p className="text-textGrey">Time</p>
           </div>
         </div>
