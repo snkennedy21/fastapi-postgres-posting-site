@@ -23,30 +23,22 @@ function PostsListPage() {
     return <div>Loading...</div>;
   }
 
-  if (token) {
-    return (
-      <Container>
-        <div>
-          <PrimaryButton
-            clickHandler={() => {
-              navigate("/posts/create");
-            }}
-          >
-            {"New Post"}
-          </PrimaryButton>
-        </div>
-        {posts.map((post) => {
-          return <Post key={post.id} post={post} />;
-        })}
-      </Container>
-    );
-  } else {
-    return (
-      <div className="flex justify-center items-center h-32 text-3xl">
-        Not Authenticated to View Posts
+  return (
+    <Container>
+      <div>
+        <PrimaryButton
+          clickHandler={() => {
+            navigate("/posts/create");
+          }}
+        >
+          {"New Post"}
+        </PrimaryButton>
       </div>
-    );
-  }
+      {posts.map((post) => {
+        return <Post key={post.id} post={post} />;
+      })}
+    </Container>
+  );
 }
 
 export default PostsListPage;

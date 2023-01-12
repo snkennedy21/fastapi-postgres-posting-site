@@ -1,4 +1,4 @@
-from fastapi import Response, status, HTTPException, Depends, APIRouter
+from fastapi import Response, status, HTTPException, Depends, APIRouter, Cookie
 from .. import models, schemas, oauth2
 from typing import List, Optional
 from sqlalchemy.orm import Session, joinedload
@@ -13,8 +13,8 @@ router = APIRouter(
 
 # response_model=List[schemas.CommentOut]
 @router.get("/post/{id}")
-def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-
+def get_comments_for_post(id: int, db: Session = Depends(get_db), access_token: str = Cookie(None)):
+  current_user = oauth2.get_current_user(access_token, db)
   def get_nested_comments(root_id=None, depth=0):
     if root_id:
       root = db.query(models.Comment).filter(models.Comment.id == root_id).one()
@@ -31,19 +31,27 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
 
         net_vote_count = upvote_count - downvote_count
 
-        user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == reply.id).first()
+        if current_user is None:
+          user_vote = None
+        elif current_user is not None:
+          user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == reply.id).first()
 
         if user_vote:
           user_vote = user_vote.upvote
         else:
           user_vote = None
-
+        
+        owner_is_user = False
+        if current_user is None:
+          owner_is_user = False
+        elif current_user is not None:
+          owner_is_user = reply.owner.id == current_user.id
         replies.append({
           "id": reply.id,
           "content": reply.content,
           "created_at": reply.created_at,
           "owner": reply.owner.username,
-          "owner_is_user": reply.owner.id == current_user.id,
+          "owner_is_user": owner_is_user,
           "net_vote_count": net_vote_count,
           "user_vote": user_vote,
           "depth": depth,
@@ -56,19 +64,27 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
       downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == root.id, models.CommentVote.upvote == False).scalar()
       net_vote_count = upvote_count - downvote_count
 
-      user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == root.id).first()
+      if current_user is None:
+        user_vote = None
+      elif current_user is not None:
+        user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == root.id).first()
         
       if user_vote:
         user_vote = user_vote.upvote
       else:
         user_vote = None
 
+      owner_is_user = False
+      if current_user is None:
+        owner_is_user = False
+      elif current_user is not None:
+        owner_is_user = root.owner.id == current_user.id
       return {
         "id": root.id,
         "content": root.content,
         "created_at": root.created_at,
         "owner": root.owner.username,
-        "owner_is_user": root.owner.id == current_user.id,
+        "owner_is_user": owner_is_user,
         "net_vote_count": net_vote_count,
         "user_vote": user_vote,
         "depth": depth,
@@ -81,19 +97,28 @@ def get_comments_for_post(id: int, db: Session = Depends(get_db), current_user: 
         downvote_count = db.query(func.count(models.CommentVote.user_id)).filter(models.CommentVote.comment_id == comment.id, models.CommentVote.upvote == False).scalar()
         net_vote_count = upvote_count - downvote_count
 
-        user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == comment.id).first()
+        if current_user is None:
+          user_vote = None
+        elif current_user is not None:
+          user_vote = db.query(models.CommentVote).filter(models.CommentVote.user_id == current_user.id, models.CommentVote.comment_id == comment.id).first()
+    
         
         if user_vote:
           user_vote = user_vote.upvote
         else:
           user_vote = None
 
+        owner_is_user = False
+        if current_user is None:
+          owner_is_user = False
+        elif current_user is not None:
+          owner_is_user = comment.owner.id == current_user.id
         comments.append({
           "id": comment.id,
           "content": comment.content,
           "created_at": comment.created_at,
           "owner": comment.owner.username,
-          "owner_is_user": comment.owner.id == current_user.id,
+          "owner_is_user": owner_is_user,
           "net_vote_count": net_vote_count,
           "user_vote": user_vote,
           "depth": depth,

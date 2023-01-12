@@ -27,7 +27,10 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
     num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
     owner = db.query(models.User.username, models.User.email, models.User.id).filter(models.User.id == post.owner_id).first()
 
-    vote_is_upvote = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
+    if current_user is None:
+      vote_is_upvote = True
+    elif current_user is not None:
+      vote_is_upvote = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
 
     post_dict = post.__dict__
 
@@ -43,7 +46,9 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
 
 #  response_model=schemas.PostOut
 @router.get('/{id}')
-def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+def get_post(id: int, db: Session = Depends(get_db), access_token: str = Cookie(None)):
+  current_user = oauth2.get_current_user(access_token, db)
+
 
   post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -53,7 +58,10 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
   net_vote_count = upvote_count - downvote_count
   num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
   owner = db.query(models.User.username, models.User.email, models.User.id).filter(models.User.id == post.owner_id).first()
-  user_vote = db.query(models.Vote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
+  if current_user is None:
+    user_vote = None
+  elif current_user is not None:
+    user_vote = db.query(models.Vote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
 
   if user_vote:
     user_vote = user_vote.upvote
@@ -66,7 +74,10 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
   post_dict["num_comments"] = num_comments
   post_dict["owner"] = owner
   post_dict["user_vote"] = user_vote
-  post_dict["owner_is_user"] = current_user.id == post.owner_id
+  if current_user is None:
+    post_dict["owner_is_user"] = False
+  elif current_user is not None:
+    post_dict["owner_is_user"] = current_user.id == post.owner_id
 
   return post_dict
 
