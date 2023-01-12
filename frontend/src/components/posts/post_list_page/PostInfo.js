@@ -17,21 +17,15 @@ function PostInfo(props) {
     navigate(`/posts/${postId}`);
   }
 
-  console.log(props.post.owner_photo);
-
-  useEffect(() => {
-    const image = new Image();
-    image.src = `data:image/jpeg;base64,${props.post.owner_photo}`;
-    setImage(image.src);
-  }, []);
-
   return (
     <div className="flex flex-col w-full">
       <div className="border-b-solid border-b-2 border-b-border">
-        {/* <div className="flex flex-col px-2 justify-between"> */}
         <div className="flex justify-between">
           <div className="flex gap-2 items-center mb-2">
-            <img className="rounded-full w-6 h-6" src={image} />
+            <img
+              className="rounded-full w-6 h-6"
+              src={props.post.owner.photo_url}
+            />
 
             <p className="text-sm text-primary">{props.post.owner.username}</p>
           </div>

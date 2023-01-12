@@ -30,7 +30,7 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
     downvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == False).scalar()
     net_vote_count = upvote_count - downvote_count
     num_comments = db.query(func.count(models.Comment.id)).filter(models.Comment.post_id == post.id).scalar()
-    owner = db.query(models.User.username, models.User.email, models.User.id).filter(models.User.id == post.owner_id).first()
+    owner = db.query(models.User.username, models.User.email, models.User.id, models.User.photo_url).filter(models.User.id == post.owner_id).first()
 
     if current_user is None:
       vote_is_upvote = True
@@ -43,25 +43,24 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
       aws_secret_access_key = AWS_SECRET_KEY
     )
 
-    user_photo = ''
-    photo_url = post.owner.photo_url
-    if photo_url is not None:
+    # user_photo = ''
+    # photo_url = post.owner.photo_url
+    # if photo_url is not None:
 
-      split_url = photo_url.split('/')
-      file_name = split_url[-1]
+    #   split_url = photo_url.split('/')
+    #   file_name = split_url[-1]
 
-      response = s3.get_object(
-        Bucket = S3_BUCKET_NAME,
-        Key = file_name
-      )
-      user_photo = base64.b64encode(response["Body"].read()).decode()
+    #   response = s3.get_object(
+    #     Bucket = S3_BUCKET_NAME,
+    #     Key = file_name
+    #   )
+    #   user_photo = base64.b64encode(response["Body"].read()).decode()
 
     post_dict = post.__dict__
 
     post_dict["net_vote_count"] = net_vote_count
     post_dict["num_comments"] = num_comments
     post_dict["owner"] = owner
-    post_dict["owner_photo"] = user_photo
     post_dict["vote_is_upvote"] = vote_is_upvote
 
     list_of_posts.append(post_dict)
