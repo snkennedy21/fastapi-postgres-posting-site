@@ -15,11 +15,10 @@ router = APIRouter(
 # response_model=List[schemas.PostOut]
 @router.get("/",)
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', access_token: str = Cookie(None)):
-  current_user = oauth2.get_current_user(access_token)
+  current_user = oauth2.get_current_user(access_token, db)
 
-  print(current_user)
   posts = db.query(models.Post).all()
-  
+
   list_of_posts = []
   for post in posts:
     upvote_count = db.query(func.count(models.Vote.user_id)).filter(models.Vote.post_id == post.id, models.Vote.upvote == True).scalar()
