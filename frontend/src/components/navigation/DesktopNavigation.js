@@ -3,7 +3,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 // React Router Imports
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 // Redux Imports
@@ -107,13 +106,22 @@ function DesktopNavigation() {
             </li>
           </React.Fragment>
         ) : (
-          <li
-            onClick={navigateHandler}
-            data-value="/account/login"
-            className="nav-button"
-          >
-            Login
-          </li>
+          <React.Fragment>
+            <li
+              onClick={navigateHandler}
+              data-value="/posts"
+              className="nav-button"
+            >
+              Posts
+            </li>
+            <li
+              onClick={navigateHandler}
+              data-value="/account/login"
+              className="nav-button"
+            >
+              Login
+            </li>
+          </React.Fragment>
         )}
       </ul>
     </nav>

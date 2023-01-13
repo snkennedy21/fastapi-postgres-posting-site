@@ -67,26 +67,13 @@ function ProfilePage(props) {
             </p>
           </div>
         </div>
-        <div className="p-7 flex justify-around rounded-md w-1/2">
-          <button
-            value="Votes"
-            className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
-          >
-            Votes
-          </button>
-          <button
-            value="Time"
-            className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
-          >
-            Time
-          </button>
-          <button
-            value="Comments"
-            className="px-4 py-2 border-2 border-solid border-primary rounded-2xl text-2xl text-primary"
-          >
-            Comments
-          </button>
-        </div>
+        <h2 className="text-textWhite text-4xl">
+          {userData.username.slice(-1) === "s" ||
+          userData.username.slice(-1) === "S"
+            ? userData.username + "' "
+            : userData.username + "'s "}
+          Posts
+        </h2>
         {posts.map((post) => {
           return <Post key={post.id} post={post} />;
         })}
