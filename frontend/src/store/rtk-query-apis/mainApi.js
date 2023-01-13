@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const mainApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://fastapi-postgres-snkennedy21.herokuapp.com/",
+    baseUrl: `https://fastapi-postgres-snkennedy21.herokuapp.com/`,
   }),
 
   tagTypes: ["Post", "Comment", "User"],

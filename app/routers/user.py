@@ -19,13 +19,10 @@ router = APIRouter(
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Token)
 def create_user(response: Response, user: schemas.UserCreate, db: Session = Depends(get_db)):
 
-  print('hello')
-  print('stuff')
+  print(db)
 
   regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
-  print('I am here')
   username_already_exists = db.query(models.User).filter(models.User.username == user.username).first()
-  print("This line should not appear")
   email_already_exists = db.query(models.User).filter(models.User.email == user.email).first()
   email_invalid = not re.fullmatch(regex, user.email)
   passwords_dont_match = user.password != user.confirm_password
