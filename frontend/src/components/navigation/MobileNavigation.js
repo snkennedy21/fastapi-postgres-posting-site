@@ -16,7 +16,6 @@ function MobileNavigation() {
   const navigate = useNavigate();
   const [navOpen, setNavOpen] = useState(false);
   const [logoHovered, setLogoHovered] = useState(false);
-  console.log(token);
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   useEffect(() => {

@@ -146,6 +146,7 @@ export const mainApi = createApi({
 
     signup: builder.mutation({
       query: (data) => {
+        console.log(process.env.REACT_APP_BASE_URL);
         return {
           url: "/users",
           method: "POST",
