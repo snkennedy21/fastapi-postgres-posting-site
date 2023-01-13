@@ -65,13 +65,13 @@
 }
 
 .move1 {
-  animation: move1 1.5s linear infinite;
+  animation: move1 1s linear infinite;
 }
 
 .move2 {
-  animation: move2 1.5s linear infinite;
+  animation: move2 1s linear infinite;
 }
 
 .move3 {
-  animation: move3 1.5s linear infinite;
+  animation: move3 1s linear infinite;
 }
