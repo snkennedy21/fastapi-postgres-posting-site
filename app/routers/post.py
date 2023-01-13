@@ -21,9 +21,7 @@ router = APIRouter(
 @router.get("/",)
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', access_token: str = Cookie(None)):
 
-  print(db)
-  print('hello')
-  print(db.__dict__)
+  print(db.query(models.User))
   current_user = oauth2.get_current_user(access_token, db)
 
   posts = db.query(models.Post).all()
