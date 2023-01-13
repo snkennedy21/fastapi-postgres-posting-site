@@ -8,6 +8,7 @@ function CommentInfo(props) {
           <div className="flex gap-2 items-center my-1">
             <img
               className="rounded-full w-6 h-6"
+              alt={`${props.comment.owner.username}`}
               src={props.comment.owner.photo_url}
             />
             <p className="text-lg text-primary">

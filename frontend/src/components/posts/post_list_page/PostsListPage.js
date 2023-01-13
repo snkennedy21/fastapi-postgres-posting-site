@@ -1,7 +1,5 @@
 // React Imports
 import React from "react";
-import PostListItem from "./PostInfo";
-import PostVoting from "../PostVoting";
 import Container from "../../ui/Container";
 import Post from "./Post";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -16,7 +14,6 @@ import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 import { useNavigate } from "react-router-dom";
 
 function PostsListPage() {
-  const token = useSelector((state) => state.token).token;
   const navigate = useNavigate();
   const { data: posts, isLoading } = useGetAllPostsQuery();
 

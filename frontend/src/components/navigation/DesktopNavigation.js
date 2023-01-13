@@ -1,6 +1,6 @@
 // React Imports
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // React Router Imports
 import { useNavigate } from "react-router-dom";

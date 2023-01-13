@@ -14,8 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { invalidateToken, validateToken } from "./store/rtk-slices/tokenSlice";
 
 function App() {
-  const token = useSelector((state) => state.token).token;
-
   const dispatch = useDispatch();
   useEffect(() => {
     const authorizationCookie = document.cookie;
@@ -24,7 +22,7 @@ function App() {
     } else {
       dispatch(invalidateToken());
     }
-  }, []);
+  });
 
   return (
     <div className="App">

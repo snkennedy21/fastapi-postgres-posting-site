@@ -1,10 +1,4 @@
 import React from "react";
-import { useState } from "react";
-
-import { useNavigate } from "react-router-dom";
-
-import { useDeletePostMutation } from "../../../store/rtk-query-apis/mainApi";
-
 import DeletePost from "./DeletePost";
 import UpdatePostForm from "./UpdatePostForm";
 
@@ -17,6 +11,7 @@ function PostContent(props) {
             <div className="flex gap-2 items-center my-1">
               <img
                 className="rounded-full w-6 h-6"
+                alt={`image of ${props.post.owner.username}`}
                 src={props.post.owner.photo_url}
               />
               <p className="text-lg text-primary">

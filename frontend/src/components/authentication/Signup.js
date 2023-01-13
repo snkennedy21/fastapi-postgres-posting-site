@@ -8,7 +8,7 @@ import { validateToken } from "../../store/rtk-slices/tokenSlice";
 function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [signup, { error }] = useSignupMutation();
+  const [signup] = useSignupMutation();
 
   // Form State
   const [username, setUsername] = useState("");

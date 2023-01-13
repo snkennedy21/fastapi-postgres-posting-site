@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetCommentsQuery } from "../../../store/rtk-query-apis/mainApi";
 
 import CommentForm from "./comments/CommentForm";
@@ -28,7 +28,6 @@ function PostDetailPage() {
     useGetCommentsQuery(postId);
 
   const navigate = useNavigate();
-
 
   if (commentsLoading) {
     return <Loading />;

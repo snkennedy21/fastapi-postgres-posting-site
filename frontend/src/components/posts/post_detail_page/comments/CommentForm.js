@@ -1,4 +1,3 @@
-import { produceWithPatches } from "immer";
 import React from "react";
 import { useState } from "react";
 
@@ -13,7 +12,7 @@ import {
 
 function CommentForm(props) {
   const { postId } = useParams();
-  const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
+  const { data: post } = useGetPostQuery(postId);
   const [comment, setComment] = useState("");
   const [createComment] = useCreateCommentMutation();
 

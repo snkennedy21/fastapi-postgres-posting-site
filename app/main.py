@@ -11,7 +11,7 @@ from .config import settings
 
 app = FastAPI()
 
-origins = ['http://localhost:3000']
+origins = ['http://localhost:3000', 'full-stack-overflow.netlify.app']
 
 app.add_middleware(
     CORSMiddleware,

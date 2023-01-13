@@ -1,4 +1,3 @@
-import PostVoting from "../PostVoting";
 import PostInfo from "./PostInfo";
 
 function Post(props) {

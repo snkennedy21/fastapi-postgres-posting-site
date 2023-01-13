@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
 import Loading from "../ui/Loading";
 
-function ProfilePage(props) {
+function ProfilePage() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
@@ -50,9 +50,13 @@ function ProfilePage(props) {
           </button>
           <div className="pr-7">
             {image === null || image === "data:image/jpeg;base64," ? (
-              <img className="rounded-full w-full" src={profile} />
+              <img className="rounded-full w-full" src={profile} alt="emtpy" />
             ) : (
-              <img className="rounded-full w-full" src={image} />
+              <img
+                className="rounded-full w-full"
+                src={image}
+                alt={userData.username}
+              />
             )}
           </div>
           <div className="w-11/12">

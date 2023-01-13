@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,6 @@ import profile from "../../../images/profile.jpg";
 
 function PostInfo(props) {
   const navigate = useNavigate();
-  const [image, setImage] = useState(profile);
 
   function viewPostDetailHandler(e) {
     const postId = parseInt(e.target.dataset.post);
@@ -24,6 +23,7 @@ function PostInfo(props) {
           <div className="flex gap-2 items-center mb-2">
             <img
               className="rounded-full w-6 h-6"
+              alt={props.post.owner.username}
               src={props.post.owner.photo_url}
             />
 

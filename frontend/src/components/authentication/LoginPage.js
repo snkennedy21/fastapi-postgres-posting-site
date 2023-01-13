@@ -1,6 +1,6 @@
 // React Imports
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // React Router Imports
 import { useNavigate, Link } from "react-router-dom";
@@ -19,7 +19,6 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
-  const token = useSelector((state) => state.token).token;
   const navigate = useNavigate();
 
   async function loginHandler(e) {
