@@ -34,7 +34,7 @@ function DesktopNavigation() {
   }
 
   return (
-    <nav className="bg-lightBackground flex justify-between px-12">
+    <nav className="bg-lightBackground flex justify-between px-2 w-full">
       <ul className="flex text-xl font-normal gap-1 items-center mt-4 mb-1">
         <div
           onClick={navigateHandler}
@@ -82,15 +82,8 @@ function DesktopNavigation() {
           </div>
           <p className="text-textWhite">Full Stack Overflow</p>
         </div>
-        <li
-          onClick={navigateHandler}
-          data-value="/posts"
-          className="nav-button"
-        >
-          Posts
-        </li>
       </ul>
-      <ul className="flex gap-6 text-xl font-normal mt-4 mb-1 items-center">
+      <ul className="hidden md:flex gap-6 text-xl font-normal mt-4 mb-1 items-center">
         {token ? (
           <React.Fragment>
             <li
@@ -99,6 +92,13 @@ function DesktopNavigation() {
               className="nav-button"
             >
               Profile
+            </li>
+            <li
+              onClick={navigateHandler}
+              data-value="/posts"
+              className="nav-button"
+            >
+              Posts
             </li>
             <li>
               <button className="nav-button" onClick={logoutUser}>

@@ -2,6 +2,7 @@ import LoginPage from "./components/authentication/LoginPage";
 import Signup from "./components/authentication/Signup";
 import Homepage from "./components/home/Homepage";
 import DesktopNavigation from "./components/navigation/DesktopNavigation";
+import MobileNavigation from "./components/navigation/MobileNavigation";
 import PostsListPage from "./components/posts/post_list_page/PostsListPage";
 import CreatePost from "./components/posts/CreatePost";
 import PostDetailPage from "./components/posts/post_detail_page/PostDetailPage";
@@ -29,6 +30,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <DesktopNavigation />
+        <MobileNavigation />
         <Routes>
           <Route path="home" element={<Homepage />} />
           <Route path="posts" element={<PostsListPage />} />
