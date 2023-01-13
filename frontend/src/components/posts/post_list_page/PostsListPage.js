@@ -5,9 +5,6 @@ import Post from "./Post";
 import PrimaryButton from "../../ui/PrimaryButton";
 import Loading from "../../ui/Loading";
 
-// Redux Imports
-import { useSelector } from "react-redux";
-
 // RTK Query Imports
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 

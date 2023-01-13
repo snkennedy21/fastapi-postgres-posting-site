@@ -1,5 +1,4 @@
 import React from "react";
-import DeletePost from "./DeletePost";
 import UpdatePostForm from "./UpdatePostForm";
 
 function PostContent(props) {
@@ -11,7 +10,7 @@ function PostContent(props) {
             <div className="flex gap-2 items-center my-1">
               <img
                 className="rounded-full w-6 h-6"
-                alt={`image of ${props.post.owner.username}`}
+                alt={`${props.post.owner.username}`}
                 src={props.post.owner.photo_url}
               />
               <p className="text-lg text-primary">

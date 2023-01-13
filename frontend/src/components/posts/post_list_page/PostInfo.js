@@ -1,12 +1,8 @@
 import React from "react";
 
-import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 import { FaCommentAlt, FaThumbsUp } from "react-icons/fa";
-
-import profile from "../../../images/profile.jpg";
 
 function PostInfo(props) {
   const navigate = useNavigate();

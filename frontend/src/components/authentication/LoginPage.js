@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 // Redux Imports
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 // RTK Query Imports
 import { useLoginMutation } from "../../store/rtk-query-apis/mainApi";

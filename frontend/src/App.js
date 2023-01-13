@@ -10,7 +10,7 @@ import ProfilePage from "./components/profile/ProfilePage";
 import Loading from "./components/ui/Loading";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { invalidateToken, validateToken } from "./store/rtk-slices/tokenSlice";
 
 function App() {

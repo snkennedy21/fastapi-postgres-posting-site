@@ -22,7 +22,7 @@ function ProfilePage() {
     image.src = `data:image/jpeg;base64,${userData.photo}`;
     setImage(image.src);
     setPosts(userData.posts);
-  }, [userData]);
+  }, [userData, userDataLoading]);
 
   if (userDataLoading) {
     return <Loading />;
