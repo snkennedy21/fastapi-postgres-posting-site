@@ -4,7 +4,7 @@ function CommentInfo(props) {
   return (
     <React.Fragment>
       <div className="px-2 w-full">
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col sm:flex-row justify-between">
           <div className="flex gap-2 items-center my-1">
             <img
               className="rounded-full w-6 h-6"
