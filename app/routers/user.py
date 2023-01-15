@@ -59,6 +59,7 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
   new_user = models.User(
     username=user.username,
     email=user.email,
+    about='',
     password=user.password
   )
 
