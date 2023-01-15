@@ -135,6 +135,10 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+  print('hello')
+  print(username)
+  print(about)
+  print(file)
 
   username_already_exists = db.query(models.User).filter(models.User.username == username).first()
 
