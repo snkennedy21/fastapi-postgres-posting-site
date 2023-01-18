@@ -6,8 +6,10 @@ import EditProfileModal from "./EditProfileModal";
 import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
 import Loading from "../ui/Loading";
+import { useSelector } from "react-redux";
 
 function ProfilePage() {
+  const token = useSelector((state) => state.token).token;
   const [editModalOpen, setEditModalOpen] = useState(false);
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
@@ -41,6 +43,9 @@ function ProfilePage() {
         about={userData.about}
       />
       <Container>
+        <div className="text-textWhite">
+          {token ? "Authenticated" : "Not Authenticated"}
+        </div>
         <div className="bg-lightBackground p-7 flex rounded-md relative">
           <button
             onClick={() => setEditModalOpen(true)}

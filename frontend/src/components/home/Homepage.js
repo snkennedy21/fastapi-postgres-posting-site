@@ -8,12 +8,17 @@ import customer3 from "../../images/customer-3.jpg";
 import customer4 from "../../images/customer-4.jpg";
 import customer5 from "../../images/customer-5.jpg";
 import customer6 from "../../images/customer-6.jpg";
+import { useSelector } from "react-redux";
 
 function Homepage() {
   const navigate = useNavigate();
+  const token = useSelector((state) => state.token).token;
 
   return (
     <div className="flex flex-col items-center mt-10 md:flex-row md:mt-10 mx-10 md:mx-16">
+      <div className="text-textWhite">
+        {token ? "Authenticated" : "Not Authenticated"}
+      </div>
       <div className="flex flex-col items-center md:items-start">
         <div className="flex flex-col items-center">
           <h1 className="text-textWhite text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-8">

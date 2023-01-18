@@ -10,6 +10,8 @@ import Comment from "./comments/Comment";
 import DeletePost from "./DeletePost";
 import Loading from "../../ui/Loading";
 
+import { useSelector } from "react-redux";
+
 import { useGetPostQuery } from "../../../store/rtk-query-apis/mainApi";
 
 import { useNavigate } from "react-router-dom";
@@ -21,7 +23,7 @@ import PrimaryButton from "../../ui/PrimaryButton";
 function PostDetailPage() {
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
-
+  const token = useSelector((state) => state.token).token;
   const { postId } = useParams();
   const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
   const { data: comments, isLoading: commentsLoading } =
@@ -39,6 +41,9 @@ function PostDetailPage() {
 
   return (
     <Container>
+      <div className="text-textWhite">
+        {token ? "Authenticated" : "Not Authenticated"}
+      </div>
       <div className="mb-1">
         <PrimaryButton
           clickHandler={() => {

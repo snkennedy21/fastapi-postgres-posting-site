@@ -5,12 +5,15 @@ import Post from "./Post";
 import PrimaryButton from "../../ui/PrimaryButton";
 import Loading from "../../ui/Loading";
 
+import { useSelector } from "react-redux";
+
 // RTK Query Imports
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
 import { useNavigate } from "react-router-dom";
 
 function PostsListPage() {
+  const token = useSelector((state) => state.token).token;
   const navigate = useNavigate();
   const { data: posts, isLoading } = useGetAllPostsQuery();
 
@@ -20,6 +23,9 @@ function PostsListPage() {
 
   return (
     <Container>
+      <div className="text-textWhite">
+        {token ? "Authenticated" : "Not Authenticated"}
+      </div>
       <div>
         <PrimaryButton
           clickHandler={() => {
