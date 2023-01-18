@@ -16,13 +16,15 @@ import { invalidateToken, validateToken } from "./store/rtk-slices/tokenSlice";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("hello");
     const authorizationCookie = document.cookie;
+    console.log(authorizationCookie);
     if (authorizationCookie === "auth=auth") {
       dispatch(validateToken());
     } else {
       dispatch(invalidateToken());
     }
-  });
+  }, []);
 
   return (
     <div className="App">
