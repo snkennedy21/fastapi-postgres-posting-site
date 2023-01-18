@@ -24,7 +24,7 @@ function App() {
     } else {
       dispatch(invalidateToken());
     }
-  }, []);
+  });
 
   return (
     <div className="App">
