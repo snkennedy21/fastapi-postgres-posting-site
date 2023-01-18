@@ -24,7 +24,7 @@ function App() {
     } else {
       dispatch(invalidateToken());
     }
-  });
+  }, [document.cookie]);
 
   return (
     <div className="App">
