@@ -16,6 +16,7 @@ function EditProfileModal(props) {
 
   useEffect(() => {
     aboutRef.current.style.height = `${aboutRef.current.scrollHeight}px`;
+    if (!props.about) return;
     setRemainingChars(200 - props.about.length);
     setRemainingChars(200 - about.length);
   }, [props.about, about]);
