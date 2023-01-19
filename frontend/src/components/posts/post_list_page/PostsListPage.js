@@ -5,6 +5,8 @@ import Post from "./Post";
 import PrimaryButton from "../../ui/PrimaryButton";
 import Loading from "../../ui/Loading";
 
+import { useEffect } from "react";
+
 import { useSelector } from "react-redux";
 
 // RTK Query Imports
@@ -16,6 +18,11 @@ function PostsListPage() {
   const token = useSelector((state) => state.token).token;
   const navigate = useNavigate();
   const { data: posts, isLoading } = useGetAllPostsQuery();
+
+  useEffect(() => {
+    const authorizationCookie = document.cookie;
+    console.log("POST LIST", authorizationCookie);
+  });
 
   if (isLoading) {
     return <Loading />;

@@ -29,6 +29,7 @@ function EditProfileModal(props) {
         props.toggleModal();
       })
       .catch((error) => {
+        console.log(error);
         if (error.data.detail === "usernameExists") {
           setUsernameError("This username already exists");
         }

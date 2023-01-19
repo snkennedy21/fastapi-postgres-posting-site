@@ -16,7 +16,6 @@ import { invalidateToken, validateToken } from "./store/rtk-slices/tokenSlice";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("useEffect Run");
     const authorizationCookie = document.cookie;
     console.log(authorizationCookie);
     if (authorizationCookie === "session=true") {
