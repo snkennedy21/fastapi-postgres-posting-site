@@ -25,6 +25,7 @@ function LoginPage() {
     e.preventDefault();
     const payload = await login(e.target);
     if ("error" in payload) return;
+
     dispatch(validateToken());
     navigate("/home");
   }
