@@ -23,6 +23,7 @@ function DesktopNavigation() {
 
   function logoutUser() {
     logout();
+    document.cookie = `session=; max-age=-1; path=/`;
     dispatch(invalidateToken());
     navigate("/home");
   }

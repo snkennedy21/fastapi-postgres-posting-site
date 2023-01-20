@@ -36,7 +36,7 @@ def login(response: Response, user_credentials: OAuth2PasswordRequestForm = Depe
 @router.delete('/logout')
 def logout(response: Response):
   response.set_cookie(key="access_token", value="", expires=-1, httponly=True, secure=True, samesite="none")
-  response.set_cookie(key="session", value="", expires=-1, secure=True, samesite="none")
+  # response.set_cookie(key="session", value="", expires=-1, secure=True, samesite="none")
   response.status_code=status.HTTP_204_NO_CONTENT
   return response.status_code
   
