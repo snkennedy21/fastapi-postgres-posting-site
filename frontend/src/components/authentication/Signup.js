@@ -33,6 +33,9 @@ function Signup() {
     signup(data)
       .unwrap()
       .then((payload) => {
+        let expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + 60 * 60 * 1000);
+        document.cookie = `session=true; expires=${expirationTime.toUTCString()}; path=/`;
         dispatch(validateToken());
         navigate("/home");
       })
