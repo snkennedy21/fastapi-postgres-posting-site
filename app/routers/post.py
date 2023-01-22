@@ -4,11 +4,8 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from ..database import get_db, engine
 from sqlalchemy import func, distinct, select, and_, text
-import boto3, base64
-
-S3_BUCKET_NAME = "fullstackoverflowphotos"
-AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
-AWS_SECRET_KEY = "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"
+import boto3, os
+from app.config import settings
 
 router = APIRouter(
   prefix='/posts',
@@ -41,8 +38,8 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
     
     s3 = boto3.client(
       "s3",
-      aws_access_key_id = AWS_ACCESS_KEY,
-      aws_secret_access_key = AWS_SECRET_KEY
+      aws_access_key_id = settings.AWS_ACCESS_KEY,
+      aws_secret_access_key = settings.AWS_SECRET_KEY
     )
 
 

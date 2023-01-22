@@ -3,12 +3,8 @@ from .. import models, schemas, utils, oauth2
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from ..database import get_db
-import re, io, boto3, base64
-
-
-S3_BUCKET_NAME = "fullstackoverflowphotos"
-AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
-AWS_SECRET_KEY = "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"
+import re, io, boto3, base64, os
+from app.config import settings
 
 
 router = APIRouter(
@@ -99,8 +95,8 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
   s3 = boto3.client(
     "s3",
-    aws_access_key_id = AWS_ACCESS_KEY,
-    aws_secret_access_key = AWS_SECRET_KEY
+    aws_access_key_id = settings.AWS_ACCESS_KEY,
+    aws_secret_access_key = settings.AWS_SECRET_KEY
   )
 
   user_photo = ''
@@ -111,7 +107,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
     file_name = split_url[-1]
 
     response = s3.get_object(
-      Bucket = S3_BUCKET_NAME,
+      Bucket = settings.S3_BUCKET_NAME,
       Key = file_name
     )
     user_photo = base64.b64encode(response["Body"].read()).decode()
@@ -135,10 +131,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-  print('hello')
-  print(username)
-  print(about)
-  print(file)
+  print(settings.S3_BUCKET_NAME)
 
   username_already_exists = db.query(models.User).filter(models.User.username == username).first()
 
@@ -157,12 +150,12 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
   if file.filename != '':    
     s3 = boto3.client(
         "s3",
-        aws_access_key_id = AWS_ACCESS_KEY,
-        aws_secret_access_key = AWS_SECRET_KEY
+        aws_access_key_id = settings.AWS_ACCESS_KEY,
+        aws_secret_access_key = settings.AWS_SECRET_KEY
       )
     file_name = f"{username}_{file.filename}"
-    s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
-    url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
+    s3.upload_fileobj(file.file, settings.S3_BUCKET_NAME, file_name)
+    url = f"https://{settings.S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
 
   current_user.photo_url = url
   current_user.username = username
