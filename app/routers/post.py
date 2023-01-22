@@ -4,19 +4,16 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from ..database import get_db, engine
 from sqlalchemy import func, distinct, select, and_, text
-import boto3, os
-from dotenv import load_dotenv
 
-load_dotenv()
 
 router = APIRouter(
   prefix='/posts',
   tags=["Posts"]
 )
 
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
-S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+# AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+# AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
+# S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
 # current_user: int = Depends(oauth2.get_current_user)
 
@@ -41,11 +38,11 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
     elif current_user is not None:
       vote_is_upvote = db.query(models.Vote.upvote).filter(models.Vote.user_id == current_user.id, models.Vote.post_id == post.id).first()
     
-    s3 = boto3.client(
-      "s3",
-      aws_access_key_id = AWS_ACCESS_KEY,
-      aws_secret_access_key = AWS_SECRET_KEY
-    )
+    # s3 = boto3.client(
+    #   "s3",
+    #   aws_access_key_id = AWS_ACCESS_KEY,
+    #   aws_secret_access_key = AWS_SECRET_KEY
+    # )
 
 
     post_dict = post.__dict__
