@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const mainApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://fastapi-postgres-snkennedy21.herokuapp.com/`,
+    baseUrl: `${process.env.REACT_APP_BASE_URL}`,
   }),
 
   tagTypes: ["Post", "Comment", "User"],
@@ -146,7 +146,6 @@ export const mainApi = createApi({
 
     signup: builder.mutation({
       query: (data) => {
-        console.log(process.env.REACT_APP_BASE_URL);
         return {
           url: "/users",
           method: "POST",

@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
 import Loading from "../ui/Loading";
 import { useSelector } from "react-redux";
+import { useRouteLoaderData } from "react-router-dom";
 
 function ProfilePage() {
   const token = useSelector((state) => state.token).token;
@@ -14,15 +15,13 @@ function ProfilePage() {
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
   const [posts, setPosts] = useState([]);
-  const [image, setImage] = useState(null);
+
+  console.log(userData);
 
   useEffect(() => {
     if (userDataLoading) {
       return;
     }
-    const image = new Image();
-    image.src = `data:image/jpeg;base64,${userData.photo}`;
-    setImage(image.src);
     setPosts(userData.posts);
   }, [userData, userDataLoading]);
 
@@ -54,12 +53,12 @@ function ProfilePage() {
             Edit
           </button>
           <div className="pr-7">
-            {image === null || image === "data:image/jpeg;base64," ? (
-              <img className="rounded-full w-full" src={profile} alt="emtpy" />
+            {userData.photo_url === undefined ? (
+              <img className="rounded-full w-40" src={profile} alt="emtpy" />
             ) : (
               <img
-                className="rounded-full w-full"
-                src={image}
+                className="rounded-full w-40"
+                src={userData.photo_url}
                 alt={userData.username}
               />
             )}

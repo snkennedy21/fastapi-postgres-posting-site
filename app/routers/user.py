@@ -78,6 +78,7 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 @router.get('/')
 def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
   user = db.query(models.User).filter(models.User.id == current_user.id).first()
+  print(user.__dict__)
   posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
 
   users_posts = []
@@ -98,24 +99,24 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
     users_posts.append(post_dict)
 
-  s3 = boto3.client(
-    "s3",
-    aws_access_key_id = AWS_ACCESS_KEY,
-    aws_secret_access_key = AWS_SECRET_KEY
-  )
+  # s3 = boto3.client(
+  #   "s3",
+  #   aws_access_key_id = AWS_ACCESS_KEY,
+  #   aws_secret_access_key = AWS_SECRET_KEY
+  # )
 
-  user_photo = ''
-  photo_url = user.photo_url
-  if photo_url is not None:
+  # user_photo = ''
+  # photo_url = user.photo_url
+  # if photo_url is not None:
 
-    split_url = photo_url.split('/')
-    file_name = split_url[-1]
+  #   split_url = photo_url.split('/')
+  #   file_name = split_url[-1]
 
-    response = s3.get_object(
-      Bucket = S3_BUCKET_NAME,
-      Key = file_name
-    )
-    user_photo = base64.b64encode(response["Body"].read()).decode()
+  #   response = s3.get_object(
+  #     Bucket = S3_BUCKET_NAME,
+  #     Key = file_name
+  #   )
+  #   user_photo = base64.b64encode(response["Body"].read()).decode()
   # except Exception as e:
   #   raise HTTPException(status_code=404, detail="User's Photo not found")
 
@@ -130,7 +131,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
     "email": user.email,
     "about": user.about,
     "posts": users_posts,
-    "photo": user_photo
+    "photo_url": user.photo_url
   }
 
 

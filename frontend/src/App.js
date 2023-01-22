@@ -17,7 +17,6 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const authorizationCookie = document.cookie;
-    console.log(authorizationCookie);
     if (authorizationCookie === "session=true") {
       dispatch(validateToken());
     } else {
