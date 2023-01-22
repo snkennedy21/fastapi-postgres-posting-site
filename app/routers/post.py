@@ -5,19 +5,24 @@ from sqlalchemy.orm import Session
 from ..database import get_db, engine
 from sqlalchemy import func, distinct, select, and_, text
 import boto3, os
-from app.config import settings
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter(
   prefix='/posts',
   tags=["Posts"]
 )
 
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
+S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+
 # current_user: int = Depends(oauth2.get_current_user)
 
 # response_model=List[schemas.PostOut]
 @router.get("/",)
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: Optional[str] = '', access_token: str = Cookie(None)):
-  print('hello')
 
   current_user = oauth2.get_current_user(access_token, db)
 
@@ -38,8 +43,8 @@ def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, sea
     
     s3 = boto3.client(
       "s3",
-      aws_access_key_id = settings.AWS_ACCESS_KEY,
-      aws_secret_access_key = settings.AWS_SECRET_KEY
+      aws_access_key_id = AWS_ACCESS_KEY,
+      aws_secret_access_key = AWS_SECRET_KEY
     )
 
 
