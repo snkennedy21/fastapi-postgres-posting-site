@@ -136,7 +136,11 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-
+  print(AWS_ACCESS_KEY)
+  print(AWS_SECRET_KEY)
+  print(S3_BUCKET_NAME)
+  print(file)
+  print('top')
   username_already_exists = db.query(models.User).filter(models.User.username == username).first()
 
   if username_already_exists and not username == current_user.username:
@@ -150,6 +154,7 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
       detail="usernameEmpty"
     )
 
+  print("middle")
   url = current_user.photo_url 
   if file.filename != '':    
     s3 = boto3.client(
@@ -160,6 +165,8 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
     file_name = f"{username}_{file.filename}"
     s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
     url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
+  
+  print('bottom')
 
   current_user.photo_url = url
   current_user.username = username
