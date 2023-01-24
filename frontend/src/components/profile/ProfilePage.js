@@ -52,7 +52,7 @@ function ProfilePage() {
             Edit
           </button>
           <div className="pr-7">
-            {userData.photo_url === undefined ? (
+            {userData.photo_url === null ? (
               <img className="rounded-full w-40" src={profile} alt="emtpy" />
             ) : (
               <img

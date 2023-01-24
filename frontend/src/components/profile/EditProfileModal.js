@@ -110,7 +110,9 @@ function EditProfileModal(props) {
               )}
             </div>
             <div className="flex flex-col">
-              <label className="text-xl text-textBlack">Upload Photo</label>
+              <label className="text-xl text-textBlack">
+                Upload Photo (Max File Size 5kb)
+              </label>
               <input
                 name="file"
                 type="file"
