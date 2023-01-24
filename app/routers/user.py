@@ -8,9 +8,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-S3_BUCKET_NAME = "fullstackoverflowphotos"
-AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
-AWS_SECRET_KEY = "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"
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
+S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
 router = APIRouter(
   prefix="/users",
@@ -136,6 +136,7 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
 
 @router.put("/")
 def update_user(username: str = Form(), about: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+  print(file)
   print(AWS_ACCESS_KEY)
   print(AWS_SECRET_KEY)
   print(S3_BUCKET_NAME)
