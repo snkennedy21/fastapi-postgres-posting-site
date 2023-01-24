@@ -8,9 +8,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
-S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+S3_BUCKET_NAME = "fullstackoverflowphotos"
+AWS_ACCESS_KEY = "AKIASE4T3J7OPSLTLHQB"
+AWS_SECRET_KEY = "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"
 
 router = APIRouter(
   prefix="/users",
@@ -78,7 +78,6 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 @router.get('/')
 def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
   user = db.query(models.User).filter(models.User.id == current_user.id).first()
-  print(user.__dict__)
   posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
 
   users_posts = []
@@ -140,8 +139,6 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
   print(AWS_ACCESS_KEY)
   print(AWS_SECRET_KEY)
   print(S3_BUCKET_NAME)
-  print(file)
-  print('top')
   username_already_exists = db.query(models.User).filter(models.User.username == username).first()
 
   if username_already_exists and not username == current_user.username:
@@ -155,7 +152,6 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
       detail="usernameEmpty"
     )
 
-  print("middle")
   url = current_user.photo_url 
   if file.filename != '':    
     s3 = boto3.client(
@@ -167,7 +163,7 @@ def update_user(username: str = Form(), about: str = Form(), file: UploadFile = 
     s3.upload_fileobj(file.file, S3_BUCKET_NAME, file_name)
     url = f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{file_name}"
   
-  print('bottom')
+  print('hello')
 
   current_user.photo_url = url
   current_user.username = username

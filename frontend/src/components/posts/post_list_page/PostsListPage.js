@@ -21,8 +21,6 @@ function PostsListPage() {
     return <Loading />;
   }
 
-  console.log(posts);
-
   return (
     <Container>
       <div className="text-textWhite">
