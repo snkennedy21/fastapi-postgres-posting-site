@@ -5,12 +5,13 @@ from sqlalchemy import func
 from ..database import get_db
 import re, io, boto3, base64, os
 from dotenv import load_dotenv
+from app.config import settings
 
 load_dotenv()
 
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
-S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
+AWS_SECRET_KEY = settings.AWS_SECRET_KEY
+S3_BUCKET_NAME = settings.S3_BUCKET_NAME
 
 router = APIRouter(
   prefix="/users",
@@ -77,6 +78,8 @@ def create_user(response: Response, user: schemas.UserCreate, db: Session = Depe
 #  response_model=schemas.UserOut
 @router.get('/')
 def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
+  print(AWS_ACCESS_KEY)
+
   user = db.query(models.User).filter(models.User.id == current_user.id).first()
   posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
 
@@ -116,8 +119,6 @@ def get_current_user(current_user: int = Depends(oauth2.get_current_user), db: S
   #     Key = file_name
   #   )
   #   user_photo = base64.b64encode(response["Body"].read()).decode()
-  # except Exception as e:
-  #   raise HTTPException(status_code=404, detail="User's Photo not found")
 
   if not user:
     raise HTTPException(
