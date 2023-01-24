@@ -43,7 +43,7 @@ function MobileNavigation() {
   function logoutUser() {
     logout();
     dispatch(invalidateToken());
-    navigate("/home");
+    navigate("/");
   }
 
   function toggleNavHandler() {
@@ -101,7 +101,7 @@ function MobileNavigation() {
         <ul className="flex flex-col gap-6 items-center justify-around mt-5">
           <div
             onClick={navigateHandler}
-            data-value="/home"
+            data-value="/"
             onMouseEnter={() => {
               setLogoHovered(true);
             }}

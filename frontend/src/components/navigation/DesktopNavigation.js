@@ -25,7 +25,7 @@ function DesktopNavigation() {
     logout();
     document.cookie = `session=; max-age=-1; path=/`;
     dispatch(invalidateToken());
-    navigate("/home");
+    navigate("/");
   }
 
   function navigateHandler(e) {
@@ -38,7 +38,7 @@ function DesktopNavigation() {
       <ul className="flex text-xl font-normal gap-1 items-center mt-4 mb-1">
         <div
           onClick={navigateHandler}
-          data-value="/home"
+          data-value="/"
           onMouseEnter={() => {
             setLogoHovered(true);
           }}

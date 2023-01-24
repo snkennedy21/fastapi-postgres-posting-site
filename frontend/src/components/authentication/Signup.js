@@ -37,7 +37,7 @@ function Signup() {
         expirationTime.setTime(expirationTime.getTime() + 60 * 60 * 1000);
         document.cookie = `session=true; expires=${expirationTime.toUTCString()}; path=/`;
         dispatch(validateToken());
-        navigate("/home");
+        navigate("/");
       })
       .catch((error) => {
         if (error.data.detail.includes("usernameExists")) {

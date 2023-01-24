@@ -29,7 +29,7 @@ function LoginPage() {
     expirationTime.setTime(expirationTime.getTime() + 60 * 60 * 1000);
     document.cookie = `session=true; expires=${expirationTime.toUTCString()}; path=/`;
     dispatch(validateToken());
-    navigate("/home");
+    navigate("/");
   }
 
   function emailChangeHandler(e) {

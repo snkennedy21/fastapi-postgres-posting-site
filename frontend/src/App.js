@@ -30,7 +30,7 @@ function App() {
         <DesktopNavigation />
         <MobileNavigation />
         <Routes>
-          <Route path="home" element={<Homepage />} />
+          <Route path="/" element={<Homepage />} />
           <Route path="posts" element={<PostsListPage />} />
           <Route path="posts/create" element={<CreatePost />} />
           <Route path="/posts/:postId" element={<PostDetailPage />} />
