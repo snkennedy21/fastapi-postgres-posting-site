@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
 import Loading from "../ui/Loading";
 import { useSelector } from "react-redux";
-import { useRouteLoaderData } from "react-router-dom";
 
 function ProfilePage() {
   const token = useSelector((state) => state.token).token;
