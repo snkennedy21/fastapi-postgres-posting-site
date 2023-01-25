@@ -10,10 +10,16 @@ import { useState } from "react";
 function Comment({ comment }) {
   const [deleteComment] = useDeleteCommentMutation();
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
+  const [isRepliesVisible, setIsRepliesVisible] = useState(false);
 
   function deleteCommentHandler() {
     deleteComment(comment.id);
   }
+
+  function toggleReplies() {
+    setIsRepliesVisible(!isRepliesVisible);
+  }
+
   const nestedComments = (comment.replies || []).map((comment) => {
     return <Comment key={comment.id} comment={comment} type="child" />;
   });
@@ -32,6 +38,7 @@ function Comment({ comment }) {
           <CommentInfo comment={comment} />
         </div>
         <div className="ml-12 flex gap-2">
+          <button onClick={toggleReplies}>Replies</button>
           <button
             onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
           >
@@ -54,7 +61,7 @@ function Comment({ comment }) {
       ) : (
         <></>
       )}
-      {nestedComments}
+      {isRepliesVisible ? <div>{nestedComments}</div> : null}
     </div>
   );
 }

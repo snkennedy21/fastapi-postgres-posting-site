@@ -1,6 +1,6 @@
 // React Imports
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // React Router Imports
 import { useNavigate, Link } from "react-router-dom";
@@ -20,11 +20,17 @@ function LoginPage() {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+  const [isFormLoaded, setIsFormLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsFormLoaded(true);
+  });
 
   async function loginHandler(e) {
     e.preventDefault();
     const payload = await login(e.target);
     if ("error" in payload) return;
+    console.log(payload);
     let expirationTime = new Date();
     expirationTime.setTime(expirationTime.getTime() + 60 * 60 * 1000);
     document.cookie = `session=true; expires=${expirationTime.toUTCString()}; path=/`;
@@ -41,7 +47,11 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center my-40 mx-10">
+    <div
+      className={`${
+        isFormLoaded ? "opacity-1" : "translate-y-20 opacity-0"
+      } flex flex-col items-center mt-20 transition duration-500`}
+    >
       <form
         onSubmit={loginHandler}
         className="px-0 py-7 w-full max-w-[500px] bg-lightBackground rounded-md"

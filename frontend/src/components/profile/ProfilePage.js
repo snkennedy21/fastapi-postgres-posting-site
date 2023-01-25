@@ -15,8 +15,6 @@ function ProfilePage() {
     useGetUserProfileQuery();
   const [posts, setPosts] = useState([]);
 
-  console.log(userData);
-
   useEffect(() => {
     if (userDataLoading) {
       return;
@@ -41,9 +39,6 @@ function ProfilePage() {
         about={userData.about}
       />
       <Container>
-        <div className="text-textWhite">
-          {token ? "Authenticated" : "Not Authenticated"}
-        </div>
         <div className="bg-lightBackground p-7 flex rounded-md relative">
           <button
             onClick={() => setEditModalOpen(true)}
@@ -81,8 +76,8 @@ function ProfilePage() {
             : userData.username + "'s "}
           Posts
         </h2>
-        {posts.map((post) => {
-          return <Post key={post.id} post={post} />;
+        {posts.map((post, index) => {
+          return <Post key={post.id} post={post} index={index} />;
         })}
       </Container>
     </React.Fragment>

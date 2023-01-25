@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useGetCommentsQuery } from "../../../store/rtk-query-apis/mainApi";
 
@@ -28,8 +28,13 @@ function PostDetailPage() {
   const { data: post, isLoading: postLoading } = useGetPostQuery(postId);
   const { data: comments, isLoading: commentsLoading } =
     useGetCommentsQuery(postId);
+  const [postLoaded, setPostLoaded] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setPostLoaded(true);
+  }, []);
 
   if (commentsLoading) {
     return <Loading />;
@@ -41,19 +46,20 @@ function PostDetailPage() {
 
   return (
     <Container>
-      <div className="text-textWhite">
-        {token ? "Authenticated" : "Not Authenticated"}
-      </div>
       <div className="mb-1">
         <PrimaryButton
           clickHandler={() => {
             navigate("/posts");
           }}
         >
-          {"Back"}
+          {"View Posts"}
         </PrimaryButton>
       </div>
-      <div className="flex flex-col gap-4 bg-lightBackground rounded-md">
+      <div
+        className={`${
+          postLoaded ? "opacity-1" : "translate-y-20 opacity-0"
+        } flex flex-col gap-4 bg-lightBackground rounded-md transition duration-500`}
+      >
         <div className="flex">
           <PostVoting post={post} />
           <PostContent

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSignupMutation } from "../../store/rtk-query-apis/mainApi";
 import { useDispatch } from "react-redux";
 import { validateToken } from "../../store/rtk-slices/tokenSlice";
@@ -9,6 +9,7 @@ function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signup] = useSignupMutation();
+  const [isFormLoaded, setIsFormLoaded] = useState(false);
 
   // Form State
   const [username, setUsername] = useState("");
@@ -21,6 +22,10 @@ function Signup() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  useEffect(() => {
+    setIsFormLoaded(true);
+  });
 
   function formSubmitHandler(e) {
     e.preventDefault();
@@ -91,13 +96,17 @@ function Signup() {
   }
 
   return (
-    <div className="flex flex-col items-center my-40 mx-10">
+    <div
+      className={`${
+        isFormLoaded ? "opacity-1" : "translate-y-20 opacity-0"
+      } flex flex-col items-center my-5 mx-4 transition duration-500`}
+    >
       <form
         onSubmit={formSubmitHandler}
         className="px-0 py-7 w-full max-w-[500px] bg-lightBackground rounded-md flex flex-col items-center"
       >
-        <div className="mb-10 flex justify-center text-4xl">
-          <h2 className="text-textWhite">Create Account</h2>
+        <div className="mb-5 flex justify-center text-4xl">
+          <h2 className="text-textWhite text-4xl">Create Account</h2>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
           {usernameError !== "" ? (
@@ -112,7 +121,7 @@ function Signup() {
             placeholder="Username"
             className={`${
               usernameError ? "border-red-800" : "border-border mt-5"
-            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
+            } p-2 text-xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
@@ -128,7 +137,7 @@ function Signup() {
             placeholder="Email"
             className={`${
               emailError ? "border-red-800" : "border-border mt-5"
-            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
+            } p-2 text-xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-2 flex flex-col w-3/4">
@@ -145,7 +154,7 @@ function Signup() {
             type="password"
             className={`${
               passwordError ? "border-red-800" : "border-border mt-5"
-            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
+            } p-2 text-xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="mb-10 mb-4 flex flex-col w-3/4">
@@ -162,7 +171,7 @@ function Signup() {
             type="password"
             className={`${
               confirmPasswordError ? "border-red-800" : "border-border mt-5"
-            } p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
+            } p-2 text-xl text-textGrey rounded-md bg-darkBackground border-2 focus:border-primary outline-none transition`}
           ></input>
         </div>
         <div className="flex flex-col items-center gap-6">

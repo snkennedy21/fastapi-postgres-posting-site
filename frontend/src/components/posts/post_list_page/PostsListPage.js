@@ -23,9 +23,6 @@ function PostsListPage() {
 
   return (
     <Container>
-      <div className="text-textWhite">
-        {token ? "Authenticated" : "Not Authenticated"}
-      </div>
       <div>
         <PrimaryButton
           clickHandler={() => {
@@ -35,8 +32,8 @@ function PostsListPage() {
           {"New Post"}
         </PrimaryButton>
       </div>
-      {posts.map((post) => {
-        return <Post key={post.id} post={post} />;
+      {posts.map((post, index) => {
+        return <Post key={post.id} post={post} index={index} />;
       })}
     </Container>
   );
