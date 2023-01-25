@@ -25,7 +25,7 @@ function Signup() {
 
   useEffect(() => {
     setIsFormLoaded(true);
-  });
+  }, []);
 
   function formSubmitHandler(e) {
     e.preventDefault();

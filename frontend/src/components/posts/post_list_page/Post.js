@@ -9,7 +9,7 @@ function Post(props) {
     setTimeout(() => {
       setPostLoaded(true);
     }, delay);
-  }, []);
+  }, [delay]);
 
   return (
     <div

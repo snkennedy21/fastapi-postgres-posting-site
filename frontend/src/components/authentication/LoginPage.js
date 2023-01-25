@@ -24,7 +24,7 @@ function LoginPage() {
 
   useEffect(() => {
     setIsFormLoaded(true);
-  });
+  }, []);
 
   async function loginHandler(e) {
     e.preventDefault();

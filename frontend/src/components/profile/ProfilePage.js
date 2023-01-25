@@ -6,10 +6,8 @@ import EditProfileModal from "./EditProfileModal";
 import { useState, useEffect } from "react";
 import Post from "../posts/post_list_page/Post";
 import Loading from "../ui/Loading";
-import { useSelector } from "react-redux";
 
 function ProfilePage() {
-  const token = useSelector((state) => state.token).token;
   const [editModalOpen, setEditModalOpen] = useState(false);
   const { data: userData, isLoading: userDataLoading } =
     useGetUserProfileQuery();
