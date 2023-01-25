@@ -20,6 +20,10 @@ function Comment({ comment }) {
     setIsRepliesVisible(!isRepliesVisible);
   }
 
+  function openRepliesHandler() {
+    setIsRepliesVisible(true);
+  }
+
   const nestedComments = (comment.replies || []).map((comment) => {
     return <Comment key={comment.id} comment={comment} type="child" />;
   });
@@ -56,6 +60,7 @@ function Comment({ comment }) {
         <CommentForm
           setCommentFormDisplayed={setCommentFormDisplayed}
           parent_id={comment.id}
+          openReplies={openRepliesHandler}
           marginLeft="10"
         />
       ) : (
