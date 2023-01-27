@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCreatePostMutation } from "../../store/rtk-query-apis/mainApi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,15 @@ import PrimaryButton from "../ui/PrimaryButton";
 function CreatePost() {
   const token = useSelector((state) => state.token).token;
   const [title, setTitle] = useState("");
+  const [formLoaded, setFormLoaded] = useState(false);
   const [content, setContent] = useState("");
   const [createPost] = useCreatePostMutation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("intendedDestination", "/");
+    setFormLoaded(true);
+  });
 
   function submitPostHandler(e) {
     e.preventDefault();
@@ -30,7 +36,7 @@ function CreatePost() {
 
   function contentChangeHandler(e) {
     setContent(e.target.value);
-    adjustTextareaHeight(e, "304px");
+    adjustTextareaHeight(e, "204px");
   }
 
   function cancelForm(e) {
@@ -41,7 +47,7 @@ function CreatePost() {
   if (token) {
     return (
       <Container>
-        <h2 className="text-4xl text-textWhite">Rules</h2>
+        {/* <h2 className="text-4xl text-textWhite">Rules</h2>
         <p className="text-textGrey text-xl">
           Full Stack Overflow is a great place to share ideas, ask questions,
           and connect with others who have similar interests. However, it's
@@ -52,10 +58,15 @@ function CreatePost() {
           attacks, being open to differing viewpoints, and being mindful of the
           language you use. By following these guidelines, you can help create a
           welcoming and inclusive online community for all members.
-        </p>
+        </p> */}
+        <button className="text-xl text-primary self-end border-2 border-solid border-primary px-2 py-1 rounded-md hover:bg-primary hover:text-textWhite">
+          Rules
+        </button>
         <form
           onSubmit={submitPostHandler}
-          className="bg-lightBackground rounded-md px-10 py-7 w-full"
+          className={`${
+            formLoaded ? "opacity-1" : "translate-y-20 opacity-0"
+          } bg-lightBackground rounded-md px-10 py-7 w-full transition duration-500`}
         >
           <div className="mb-3 flex flex-col md:flex-row md:justify-between md:gap-2">
             <input
@@ -68,7 +79,7 @@ function CreatePost() {
           <div className="flex flex-col mb-3">
             <textarea
               onChange={contentChangeHandler}
-              className="w-full p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-border border-2 focus:border-primary outline-none transition h-[300px]"
+              className="w-full p-2 text-2xl text-textGrey rounded-md bg-darkBackground border-border border-2 focus:border-primary outline-none transition h-[200px]"
               placeholder="Content"
             ></textarea>
           </div>

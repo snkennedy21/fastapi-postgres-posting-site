@@ -26,6 +26,11 @@ function PostsListPage() {
       <div>
         <PrimaryButton
           clickHandler={() => {
+            if (!token) {
+              localStorage.setItem("intendedDestination", "/posts/create");
+              navigate("/account/login");
+              return;
+            }
             navigate("/posts/create");
           }}
         >

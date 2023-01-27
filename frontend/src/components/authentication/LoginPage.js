@@ -28,6 +28,8 @@ function LoginPage() {
 
   async function loginHandler(e) {
     e.preventDefault();
+    const intendedDestination = localStorage.getItem("intendedDestination");
+    console.log(intendedDestination);
     const payload = await login(e.target);
     if ("error" in payload) return;
     console.log(payload);
@@ -35,7 +37,7 @@ function LoginPage() {
     expirationTime.setTime(expirationTime.getTime() + 60 * 60 * 1000);
     document.cookie = `session=true; expires=${expirationTime.toUTCString()}; path=/`;
     dispatch(validateToken());
-    navigate("/");
+    navigate(intendedDestination);
   }
 
   function emailChangeHandler(e) {

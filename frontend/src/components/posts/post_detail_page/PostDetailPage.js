@@ -32,7 +32,17 @@ function PostDetailPage() {
 
   const navigate = useNavigate();
 
+  function commentFormHandler() {
+    if (!token) {
+      localStorage.setItem("intendedDestination", `/posts/${postId}`);
+      navigate("/account/login");
+      return;
+    }
+    setCommentFormDisplayed(!commentFormDisplayed);
+  }
+
   useEffect(() => {
+    localStorage.setItem("intendedDestination", "/");
     setPostLoaded(true);
   }, []);
 
@@ -70,15 +80,23 @@ function PostDetailPage() {
         </div>
         <div className="flex gap-4 border-b-2 border-b-solid border-b-border m-3 pl-14">
           <button
-            className="rounded-md px-1 hover:bg-primary hover:text-textWhite transition"
-            onClick={() => setCommentFormDisplayed(!commentFormDisplayed)}
+            className={`${
+              commentFormDisplayed
+                ? "bg-primary text-textWhite hover:bg-primaryTint border-primary hover:border-primaryTint"
+                : "bg-lightBackground border-primary text-primary hover:border-primaryTint hover:text-primaryTint"
+            } border-solid border-2  rounded-md px-1 py-0.5 text-xs active:scale-105 transition`}
+            onClick={commentFormHandler}
           >
-            Comment
+            {commentFormDisplayed ? "Cancel" : "Comment"}
           </button>
           {post.owner_is_user ? (
             <React.Fragment>
               <button
-                className="rounded-md px-1 hover:bg-primary hover:text-textWhite transition"
+                className={`${
+                  updateFormOpen
+                    ? "bg-primary text-textWhite hover:bg-primaryTint"
+                    : "bg-lightBackground border-solid border-2 border-primary text-primary hover:border-primaryTint hover:text-primaryTint"
+                } rounded-md px-4 py-0.5 text-xs active:scale-105 transition`}
                 onClick={() => setUpdateFormOpen(!updateFormOpen)}
                 data-post={post.post_id}
               >
@@ -103,7 +121,9 @@ function PostDetailPage() {
           )}
 
           {comments.map((comment) => {
-            return <Comment key={comment.id} comment={comment} />;
+            return (
+              <Comment key={comment.id} comment={comment} postId={postId} />
+            );
           })}
         </div>
       </div>
