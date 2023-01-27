@@ -8,12 +8,15 @@ import CreatePost from "./components/posts/CreatePost";
 import PostDetailPage from "./components/posts/post_detail_page/PostDetailPage";
 import ProfilePage from "./components/profile/ProfilePage";
 import Loading from "./components/ui/Loading";
+import AuthHome from "./components/home/AuthHome";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { invalidateToken, validateToken } from "./store/rtk-slices/tokenSlice";
+import { useSelector } from "react-redux";
 
 function App() {
+  const token = useSelector((state) => state.token).token;
   const dispatch = useDispatch();
   useEffect(() => {
     const authorizationCookie = document.cookie;
@@ -30,7 +33,7 @@ function App() {
         <DesktopNavigation />
         <MobileNavigation />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={token ? <AuthHome /> : <Homepage />} />
           <Route path="posts" element={<PostsListPage />} />
           <Route path="posts/create" element={<CreatePost />} />
           <Route path="/posts/:postId" element={<PostDetailPage />} />

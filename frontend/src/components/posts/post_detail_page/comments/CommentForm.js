@@ -31,6 +31,7 @@ function CommentForm(props) {
 
     createComment(commentData);
     props.setCommentFormDisplayed(false);
+    props.openReplies();
   }
 
   return (

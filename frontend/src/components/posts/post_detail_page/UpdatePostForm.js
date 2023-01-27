@@ -43,17 +43,19 @@ function UpdatePostForm(props) {
       <input
         onChange={titleChangeHandler}
         value={title}
-        className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300"
+        className="w-full p-2 text-2xl rounded-md bg-darkBackground text-textGrey border-border border-2 focus:border-primary outline-none transition"
         placeholder="title"
       ></input>
       <textarea
         onChange={contentChangeHandler}
         ref={contentRef}
         value={content}
-        className="w-full p-2 text-2xl rounded-md border-black border-2 focus:border-primary outline-none transition duration-300 h-[100px]"
+        className="w-full p-2 text-2xl rounded-md bg-darkBackground text-textGrey border-border border-2 focus:border-primary outline-none transition h-[100px]"
         placeholder="Content"
       ></textarea>
-      <button>Submit</button>
+      <button className="py-2 px-4 text-xl bg-primary border-solid border-2 border-primary rounded-md text-textWhite hover:bg-primaryTint hover:border-primaryTint active:scale-105 transition-color self-end">
+        Submit
+      </button>
     </form>
   );
 }
