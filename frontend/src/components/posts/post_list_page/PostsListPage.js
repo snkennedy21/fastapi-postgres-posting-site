@@ -9,8 +9,10 @@ import Loading from "../../ui/Loading";
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function PostsListPage() {
+  const token = useSelector((state) => state.token).token;
   const navigate = useNavigate();
   const { data: posts, isLoading } = useGetAllPostsQuery();
 

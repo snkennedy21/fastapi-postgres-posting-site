@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../ui/Container";
 
 import PrimaryButton from "../../ui/PrimaryButton";
+import { useSelector } from "react-redux";
 
 function PostDetailPage() {
   const [commentFormDisplayed, setCommentFormDisplayed] = useState(false);
@@ -26,6 +27,7 @@ function PostDetailPage() {
   const { data: comments, isLoading: commentsLoading } =
     useGetCommentsQuery(postId);
   const [postLoaded, setPostLoaded] = useState(false);
+  const token = useSelector((state) => state.token).token;
 
   const navigate = useNavigate();
 
