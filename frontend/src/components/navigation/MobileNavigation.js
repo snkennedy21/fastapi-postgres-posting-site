@@ -32,13 +32,13 @@ function MobileNavigation() {
     };
   }, [windowSize]);
 
-  // useEffect(() => {
-  //   if (navOpen) {
-  //     document.body.style.overflow = "hidden";
-  //   } else if (!navOpen) {
-  //     document.body.style.overflow = "unset";
-  //   }
-  // }, [navOpen]);
+  useEffect(() => {
+    if (navOpen) {
+      document.body.style.overflow = "hidden";
+    } else if (!navOpen) {
+      document.body.style.overflow = "unset";
+    }
+  }, [navOpen]);
 
   function logoutUser() {
     logout();

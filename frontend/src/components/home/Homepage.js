@@ -18,6 +18,7 @@ function Homepage() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
   useEffect(() => {
+    localStorage.setItem("intendedDestination", "/");
     setTimeout(() => {
       setHeroImageLoaded(true);
     }, 200);

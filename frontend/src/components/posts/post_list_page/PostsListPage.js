@@ -5,6 +5,8 @@ import Post from "./Post";
 import PrimaryButton from "../../ui/PrimaryButton";
 import Loading from "../../ui/Loading";
 
+import { useEffect } from "react";
+
 // RTK Query Imports
 import { useGetAllPostsQuery } from "../../../store/rtk-query-apis/mainApi";
 
@@ -15,6 +17,10 @@ function PostsListPage() {
   const token = useSelector((state) => state.token).token;
   const navigate = useNavigate();
   const { data: posts, isLoading } = useGetAllPostsQuery();
+
+  useEffect(() => {
+    localStorage.setItem("intendedDestination", "/");
+  }, []);
 
   if (isLoading) {
     return <Loading />;
