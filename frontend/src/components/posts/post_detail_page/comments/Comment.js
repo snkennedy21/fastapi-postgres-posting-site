@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
-import { produceWithPatches } from "immer";
 
 function Comment({ comment, postId }) {
   const [deleteComment] = useDeleteCommentMutation();

@@ -18,7 +18,7 @@ function CreatePost() {
   useEffect(() => {
     localStorage.setItem("intendedDestination", "/");
     setFormLoaded(true);
-  });
+  }, []);
 
   function submitPostHandler(e) {
     e.preventDefault();
