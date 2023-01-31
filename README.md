@@ -47,6 +47,12 @@
 
 <p>Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.</p>
 
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img align="center" src="images/tables.png" alt="tables" width="800">
+  </a>
+</div>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
