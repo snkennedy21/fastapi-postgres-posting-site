@@ -1,17 +1,17 @@
 <!-- PROJECT LOGO -->
 <br />
 <div>
+  <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="400">
+    <img align="center" src="images/logo.png" alt="Logo" width="400">
   </a>
-  <br/>
+  </div>
   <br/>
   
   <p>
-    Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.
     <br />
     <div align="center">
-      <a href="https://github.com/github_username/repo_name">View Demo</a>
+      <a href="https://full-stack-overflow.netlify.app/">View Demo</a>
       ·
       <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
     </div>
@@ -36,8 +36,6 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -47,9 +45,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-`github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+<p>Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
