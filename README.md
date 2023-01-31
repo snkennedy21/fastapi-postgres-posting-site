@@ -24,15 +24,9 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -47,14 +41,6 @@
 
 <p>Fullstack Overflow is web application that allows users to create accounts, post content to the site, and interact with other users. Users are able to comment on the posts of other users and can also reply to comments of others. Users can also upvote or downvote posts and comments to show their agreement or disagreement with specific content.</p>
 
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img align="center" src="images/tables.png" alt="tables" width="800">
-  </a>
-</div>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Built With
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -62,6 +48,16 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
+### Database Schema
+
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img align="center" src="images/tables.png" alt="tables" width="800">
+  </a>
+</div>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
