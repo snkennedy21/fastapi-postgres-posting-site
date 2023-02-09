@@ -40,7 +40,7 @@ function CommentVoting(props) {
   }
 
   return (
-    <div className="flex flex-col items-center px-2">
+    <div className="flex flex-col items-center px-2 border-r-solid border-r-border border-r-2">
       <button
         onClick={voteHandler}
         data-comment_owned_by_current_user={props.comment.owner_is_user}

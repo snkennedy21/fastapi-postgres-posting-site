@@ -1,9 +1,11 @@
 import PostInfo from "./PostInfo";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Post(props) {
   const [postLoaded, setPostLoaded] = useState(false);
   const delay = props.index * 150;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -11,14 +13,23 @@ function Post(props) {
     }, delay);
   }, [delay]);
 
+  function viewPostDetailHandler(e) {
+    navigate(`/posts/${props.post.id}`);
+  }
+
   return (
     <div
       className={`${
         postLoaded ? "opacity-1" : "translate-y-20 opacity-0"
-      } flex w-full rounded-md overflow-hidden relative bg-lightBackground p-3 transition duration-500`}
+      } transition duration-500`}
     >
-      {/* <PostVoting post={props.post}></PostVoting> */}
-      <PostInfo post={props.post} />
+      <div
+        className={`flex w-full border-b-solid border-b border-b-border overflow-hidden relative p-3 transition hover:bg-extraExtraLightGrey hover:cursor-pointer`}
+        onClick={viewPostDetailHandler}
+      >
+        {/* <PostVoting post={props.post}></PostVoting> */}
+        <PostInfo post={props.post} />
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 function Container(props) {
   return (
     <div className="flex justify-center">
-      <div className="p-10 flex flex-col gap-4 w-[1100px]">
+      <div className="flex flex-col w-[600px] border-x-solid border-x-border border-x">
         {props.children}
       </div>
     </div>
